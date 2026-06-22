@@ -87,7 +87,7 @@ class HomePage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFEE1919),
+                      backgroundColor: Color(0xFFEE1919),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -112,7 +112,7 @@ class HomePage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFEE1919),
+                      backgroundColor: Color(0xFFEE1919),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -164,8 +164,8 @@ class HomePage extends StatelessWidget {
                   },
                   child: Text('İstatistiklerimiz'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
-                    onPrimary: Colors.white,
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
                     minimumSize: Size(200, 50),
                   ),
                 ),
@@ -184,8 +184,8 @@ class HomePage extends StatelessWidget {
                   },
                   child: Text('Hakkımızda'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
-                    onPrimary: Colors.white,
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
                     minimumSize: Size(200, 50),
                   ),
                 ),
@@ -206,8 +206,8 @@ class HomePage extends StatelessWidget {
                   },
                   child: Text('Bizi Değerlendir'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
-                    onPrimary: Colors.white,
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
                     minimumSize: Size(200, 50),
                   ),
                 ),
@@ -228,8 +228,8 @@ class HomePage extends StatelessWidget {
                   },
                   child: Text('Web Sitemiz'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
-                    onPrimary: Colors.white,
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
                     minimumSize: Size(200, 50),
                   ),
                 ),
@@ -250,8 +250,8 @@ class HomePage extends StatelessWidget {
                   },
                   child: Text('Katkıda Bulun'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
-                    onPrimary: Colors.white,
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
                     minimumSize: Size(200, 50),
                   ),
                 ),
