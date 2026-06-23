@@ -12,6 +12,11 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # Localization (TR / EN / AR)
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+
   cupertino_icons: ^1.0.2
 
   # State management & clean architecture
@@ -44,6 +49,7 @@ flutter_icons:
 
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
     - assets/images/gift-hand.png

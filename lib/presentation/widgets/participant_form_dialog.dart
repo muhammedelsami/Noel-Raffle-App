@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_constants.dart';
-import '../../core/constants/app_strings.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/utils/validators.dart';
 import '../../domain/entities/participant.dart';
 import 'app_text_field.dart';
@@ -62,11 +62,11 @@ class _ParticipantFormState extends State<_ParticipantForm> {
     if (!Validators.isNotBlank(name) ||
         !Validators.isNotBlank(surname) ||
         !Validators.isValidEmail(email)) {
-      _showError(AppStrings.allFieldsRequired);
+      _showError(context.l10n.allFieldsRequired);
       return;
     }
     if (widget.isDuplicate(email)) {
-      _showError(AppStrings.emailAlreadyAdded);
+      _showError(context.l10n.emailAlreadyAdded);
       return;
     }
     Navigator.of(context)
@@ -83,7 +83,8 @@ class _ParticipantFormState extends State<_ParticipantForm> {
   Widget build(BuildContext context) {
     return AlertDialog(
       insetPadding: AppConstants.dialogInset,
-      title: const Text(AppStrings.newParticipant, textAlign: TextAlign.center),
+      title:
+          Text(context.l10n.newParticipant, textAlign: TextAlign.center),
       content: SizedBox(
         width: double.maxFinite,
         child: SingleChildScrollView(
@@ -92,7 +93,7 @@ class _ParticipantFormState extends State<_ParticipantForm> {
             children: <Widget>[
             AppTextField(
               controller: _name,
-              label: AppStrings.name,
+              label: context.l10n.name,
               autofocus: true,
               textInputAction: TextInputAction.next,
               onSubmitted: (_) => _surnameFocus.requestFocus(),
@@ -100,7 +101,7 @@ class _ParticipantFormState extends State<_ParticipantForm> {
             const SizedBox(height: 12),
             AppTextField(
               controller: _surname,
-              label: AppStrings.surname,
+              label: context.l10n.surname,
               focusNode: _surnameFocus,
               textInputAction: TextInputAction.next,
               onSubmitted: (_) => _emailFocus.requestFocus(),
@@ -108,7 +109,7 @@ class _ParticipantFormState extends State<_ParticipantForm> {
             const SizedBox(height: 12),
             AppTextField(
               controller: _email,
-              label: AppStrings.email,
+              label: context.l10n.email,
               focusNode: _emailFocus,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.done,
@@ -121,7 +122,7 @@ class _ParticipantFormState extends State<_ParticipantForm> {
       actions: <Widget>[
         SizedBox(
           width: double.infinity,
-          child: PrimaryButton(label: AppStrings.add, onPressed: _submit),
+          child: PrimaryButton(label: context.l10n.add, onPressed: _submit),
         ),
       ],
     );

@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../core/constants/app_assets.dart';
 import '../../../core/constants/app_constants.dart';
-import '../../../core/constants/app_strings.dart';
+import '../../../core/l10n/l10n_extensions.dart';
 import '../../../core/utils/url_launcher_helper.dart';
 import '../../widgets/app_background.dart';
 import '../../widgets/app_logo_header.dart';
@@ -62,20 +62,20 @@ class AboutScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(AppConstants.pagePadding),
                     child: Text(
-                      AppStrings.aboutText,
+                      context.l10n.aboutText,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
-                  const TabBar(
+                  TabBar(
                     tabs: <Widget>[
                       Tab(
-                        icon: Icon(Icons.phone_android),
-                        text: AppStrings.mobileDevelopers,
+                        icon: const Icon(Icons.phone_android),
+                        text: context.l10n.mobileDevelopers,
                       ),
                       Tab(
-                        icon: Icon(Icons.developer_mode),
-                        text: AppStrings.backendDevelopers,
+                        icon: const Icon(Icons.developer_mode),
+                        text: context.l10n.backendDevelopers,
                       ),
                     ],
                   ),

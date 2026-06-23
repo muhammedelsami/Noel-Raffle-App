@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/app_assets.dart';
 import '../../../core/constants/app_constants.dart';
-import '../../../core/constants/app_strings.dart';
 import '../../../core/di/injection.dart';
+import '../../../core/l10n/l10n_extensions.dart';
 import '../../../domain/entities/gift.dart';
 import '../../../domain/entities/participant.dart';
 import '../../../domain/entities/raffle_config.dart';
@@ -62,7 +62,7 @@ class _GiftsView extends StatelessWidget {
   void _start(BuildContext context) {
     final GiftsCubit cubit = context.read<GiftsCubit>();
     if (!cubit.state.canProceed) {
-      showWarningDialog(context, AppStrings.minGifts);
+      showWarningDialog(context, context.l10n.minGifts);
       return;
     }
     context.read<RaffleSubmitCubit>().submit(
@@ -81,7 +81,7 @@ class _GiftsView extends StatelessWidget {
             MaterialPageRoute<void>(builder: (_) => const SuccessScreen()),
           );
         } else if (state.status == RaffleSubmitStatus.failure) {
-          showWarningDialog(context, state.error ?? AppStrings.genericError);
+          showWarningDialog(context, state.error ?? context.l10n.genericError);
         }
       },
       builder: (BuildContext context, RaffleSubmitState submitState) {
@@ -104,7 +104,7 @@ class _GiftsView extends StatelessWidget {
                         horizontal: AppConstants.pagePadding,
                       ),
                       child: PrimaryButton(
-                        label: AppStrings.addGift,
+                        label: context.l10n.addGift,
                         icon: Icons.add_box_rounded,
                         color: Theme.of(context).colorScheme.secondary,
                         onPressed: () => _addGift(context),
@@ -115,7 +115,7 @@ class _GiftsView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(AppConstants.pagePadding),
                       child: PrimaryButton(
-                        label: AppStrings.startRaffle,
+                        label: context.l10n.startRaffle,
                         icon: Icons.celebration_rounded,
                         onPressed: () => _start(context),
                       ),

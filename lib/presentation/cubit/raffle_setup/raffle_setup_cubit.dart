@@ -9,9 +9,7 @@ part 'raffle_setup_state.dart';
 class RaffleSetupCubit extends Cubit<RaffleSetupState> {
   RaffleSetupCubit() : super(const RaffleSetupState());
 
-  void selectGroup(String? label) =>
-      emit(state.copyWith(groupLabel: label));
+  void selectGroup(int? code) => emit(state.copyWith(groupCode: code));
 
-  void selectSector(String? label) =>
-      emit(state.copyWith(sectorLabel: label));
+  void selectSector(int? code) => emit(state.copyWith(sectorCode: code));
 }

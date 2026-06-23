@@ -14,23 +14,13 @@ abstract final class AppConstants {
   /// Numeric code used when no group/sector is chosen (legacy default).
   static const int unspecifiedCode = 100;
 
-  /// Group options (label → backend code).
-  static const Map<String, int> groupOptions = <String, int>{
-    'Ekip-Şirket': 10,
-    'Arkadaş-Sınıf': 20,
-    'Aile-Akraba': 30,
-    'Diğer': 40,
-  };
+  /// Group option backend codes, in display order. Labels are localized via
+  /// `groupLabel` in `core/l10n/option_labels.dart`.
+  static const List<int> groupCodes = <int>[10, 20, 30, 40];
 
-  /// Sector options (label → backend code).
-  static const Map<String, int> sectorOptions = <String, int>{
-    'Teknoloji': 10,
-    'Eğitim': 20,
-    'Gıda': 30,
-    'Sağlık': 40,
-    'Spor': 50,
-    'Diğer': 60,
-  };
+  /// Sector option backend codes, in display order. Labels are localized via
+  /// `sectorLabel` in `core/l10n/option_labels.dart`.
+  static const List<int> sectorCodes = <int>[10, 20, 30, 40, 50, 60];
 
   // External links.
   static const String playStoreUrl =

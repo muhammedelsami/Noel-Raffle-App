@@ -11,6 +11,7 @@ import '../../domain/usecases/create_raffle.dart';
 import '../../domain/usecases/get_statistics.dart';
 import '../../presentation/cubit/raffle_submit/raffle_submit_cubit.dart';
 import '../../presentation/cubit/statistics/statistics_cubit.dart';
+import '../l10n/locale_cubit.dart';
 import '../network/api_client.dart';
 import '../theme/theme_cubit.dart';
 
@@ -23,7 +24,12 @@ Future<void> configureDependencies() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   sl
     ..registerSingleton<SharedPreferences>(prefs)
-    ..registerLazySingleton<ApiClient>(ApiClient.new);
+    ..registerLazySingleton<LocaleCubit>(() => LocaleCubit(sl()))
+    ..registerLazySingleton<ApiClient>(
+      () => ApiClient(
+        languageProvider: () => sl<LocaleCubit>().state.languageCode,
+      ),
+    );
 
   // Data sources
   sl

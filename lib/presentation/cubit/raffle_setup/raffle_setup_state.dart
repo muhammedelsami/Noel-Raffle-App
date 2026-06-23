@@ -1,26 +1,24 @@
 part of 'raffle_setup_cubit.dart';
 
 class RaffleSetupState extends Equatable {
-  const RaffleSetupState({this.groupLabel, this.sectorLabel});
+  const RaffleSetupState({this.groupCode, this.sectorCode});
 
-  final String? groupLabel;
-  final String? sectorLabel;
+  final int? groupCode;
+  final int? sectorCode;
 
   /// Backend code for the chosen group, or the legacy default when none.
-  int get group =>
-      AppConstants.groupOptions[groupLabel] ?? AppConstants.unspecifiedCode;
+  int get group => groupCode ?? AppConstants.unspecifiedCode;
 
   /// Backend code for the chosen sector, or the legacy default when none.
-  int get sector =>
-      AppConstants.sectorOptions[sectorLabel] ?? AppConstants.unspecifiedCode;
+  int get sector => sectorCode ?? AppConstants.unspecifiedCode;
 
-  RaffleSetupState copyWith({String? groupLabel, String? sectorLabel}) {
+  RaffleSetupState copyWith({int? groupCode, int? sectorCode}) {
     return RaffleSetupState(
-      groupLabel: groupLabel ?? this.groupLabel,
-      sectorLabel: sectorLabel ?? this.sectorLabel,
+      groupCode: groupCode ?? this.groupCode,
+      sectorCode: sectorCode ?? this.sectorCode,
     );
   }
 
   @override
-  List<Object?> get props => <Object?>[groupLabel, sectorLabel];
+  List<Object?> get props => <Object?>[groupCode, sectorCode];
 }

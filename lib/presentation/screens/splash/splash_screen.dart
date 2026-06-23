@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_assets.dart';
 import '../../../core/constants/app_constants.dart';
-import '../../../core/constants/app_strings.dart';
+import '../../../core/l10n/l10n_extensions.dart';
 import '../../widgets/app_background.dart';
 import '../home/home_screen.dart';
 
@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Image.asset(AppAssets.logo, width: 180),
               const SizedBox(height: 16),
               Text(
-                AppStrings.appName,
+                context.l10n.appName,
                 style: Theme.of(context).textTheme.displayLarge,
               ),
             ],

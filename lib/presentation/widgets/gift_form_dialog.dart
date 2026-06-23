@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_constants.dart';
-import '../../core/constants/app_strings.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/utils/validators.dart';
 import '../../domain/entities/gift.dart';
 import 'app_text_field.dart';
@@ -50,7 +50,7 @@ class _GiftFormState extends State<_GiftForm> {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(
-          const SnackBar(content: Text(AppStrings.allGiftFieldsRequired)),
+          SnackBar(content: Text(context.l10n.allGiftFieldsRequired)),
         );
       return;
     }
@@ -61,7 +61,7 @@ class _GiftFormState extends State<_GiftForm> {
   Widget build(BuildContext context) {
     return AlertDialog(
       insetPadding: AppConstants.dialogInset,
-      title: const Text(AppStrings.addGift, textAlign: TextAlign.center),
+      title: Text(context.l10n.addGift, textAlign: TextAlign.center),
       content: SizedBox(
         width: double.maxFinite,
         child: SingleChildScrollView(
@@ -70,7 +70,7 @@ class _GiftFormState extends State<_GiftForm> {
             children: <Widget>[
             AppTextField(
               controller: _name,
-              label: AppStrings.giftName,
+              label: context.l10n.giftName,
               autofocus: true,
               textInputAction: TextInputAction.next,
               onSubmitted: (_) => _countFocus.requestFocus(),
@@ -78,7 +78,7 @@ class _GiftFormState extends State<_GiftForm> {
             const SizedBox(height: 12),
             AppTextField(
               controller: _count,
-              label: AppStrings.giftCount,
+              label: context.l10n.giftCount,
               focusNode: _countFocus,
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.done,
@@ -91,7 +91,7 @@ class _GiftFormState extends State<_GiftForm> {
       actions: <Widget>[
         SizedBox(
           width: double.infinity,
-          child: PrimaryButton(label: AppStrings.add, onPressed: _submit),
+          child: PrimaryButton(label: context.l10n.add, onPressed: _submit),
         ),
       ],
     );

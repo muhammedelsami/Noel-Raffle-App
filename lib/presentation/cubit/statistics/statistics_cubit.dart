@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/constants/app_strings.dart';
 import '../../../domain/entities/statistics.dart';
 import '../../../domain/usecases/get_statistics.dart';
 
@@ -19,10 +18,8 @@ class StatisticsCubit extends Cubit<StatisticsState> {
       final Statistics data = await _getStatistics();
       emit(StatisticsState(status: StatisticsStatus.loaded, data: data));
     } catch (_) {
-      emit(const StatisticsState(
-        status: StatisticsStatus.error,
-        error: AppStrings.genericError,
-      ));
+      // The UI shows a localized generic error for any failure.
+      emit(const StatisticsState(status: StatisticsStatus.error));
     }
   }
 }

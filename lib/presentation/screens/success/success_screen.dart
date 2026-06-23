@@ -4,7 +4,7 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_assets.dart';
-import '../../../core/constants/app_strings.dart';
+import '../../../core/l10n/l10n_extensions.dart';
 import '../../widgets/app_background.dart';
 
 /// Celebratory screen shown once a raffle has been submitted successfully.
@@ -45,7 +45,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
                   Padding(
                     padding: const EdgeInsets.all(24),
                     child: Text(
-                      AppStrings.successMessage,
+                      context.l10n.successMessage,
                       textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme

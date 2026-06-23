@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_assets.dart';
-import '../../../core/constants/app_strings.dart';
+import '../../../core/l10n/l10n_extensions.dart';
 import '../../../domain/entities/raffle_type.dart';
 import '../../widgets/app_background.dart';
 import '../../widgets/menu_dialog.dart';
@@ -66,19 +66,20 @@ class HomeScreen extends StatelessWidget {
                     children: <Widget>[
                       Image.asset(AppAssets.giftRaffle, width: 180, height: 180),
                       const SizedBox(height: 16),
-                      Text(AppStrings.homeTitle, style: text.displayMedium),
+                      Text(context.l10n.homeTitle, style: text.displayMedium),
                       const SizedBox(height: 8),
-                      Text(AppStrings.homeSubtitle, style: text.titleMedium),
+                      Text(context.l10n.homeSubtitle,
+                          style: text.titleMedium),
                       const SizedBox(height: 40),
                       PrimaryButton(
-                        label: AppStrings.newYearRaffle,
+                        label: context.l10n.newYearRaffle,
                         icon: Icons.celebration_rounded,
                         onPressed: () =>
                             _openSetup(context, RaffleType.newYear),
                       ),
                       const SizedBox(height: 16),
                       PrimaryButton(
-                        label: AppStrings.giftRaffle,
+                        label: context.l10n.giftRaffle,
                         icon: Icons.card_giftcard_rounded,
                         onPressed: () => _openSetup(context, RaffleType.gift),
                       ),

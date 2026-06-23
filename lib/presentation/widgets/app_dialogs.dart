@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_constants.dart';
-import '../../core/constants/app_strings.dart';
+import '../../core/l10n/l10n_extensions.dart';
 
-/// Shows the shared "Uyarı" alert with a single OK action.
+/// Shows the shared warning alert with a single OK action.
 Future<void> showWarningDialog(BuildContext context, String message) {
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
       insetPadding: AppConstants.dialogInset,
-      title: const Text(AppStrings.warning, textAlign: TextAlign.center),
+      title: Text(context.l10n.warning, textAlign: TextAlign.center),
       content: SizedBox(
         width: double.maxFinite,
         child: Text(message, textAlign: TextAlign.center),
@@ -18,7 +18,7 @@ Future<void> showWarningDialog(BuildContext context, String message) {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text(AppStrings.ok),
+          child: Text(context.l10n.ok),
         ),
       ],
     ),

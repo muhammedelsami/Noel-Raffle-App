@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/app_assets.dart';
 import '../../../core/constants/app_constants.dart';
-import '../../../core/constants/app_strings.dart';
 import '../../../core/di/injection.dart';
+import '../../../core/l10n/l10n_extensions.dart';
 import '../../../domain/entities/participant.dart';
 import '../../../domain/entities/raffle_config.dart';
 import '../../cubit/participants/participants_cubit.dart';
@@ -71,7 +71,7 @@ class _ParticipantsView extends StatelessWidget {
   void _onNext(BuildContext context) {
     final ParticipantsCubit cubit = context.read<ParticipantsCubit>();
     if (!cubit.state.canProceed) {
-      showWarningDialog(context, AppStrings.minParticipants);
+      showWarningDialog(context, context.l10n.minParticipants);
       return;
     }
     final List<Participant> participants = cubit.state.participants;
@@ -98,7 +98,7 @@ class _ParticipantsView extends StatelessWidget {
             MaterialPageRoute<void>(builder: (_) => const SuccessScreen()),
           );
         } else if (state.status == RaffleSubmitStatus.failure) {
-          showWarningDialog(context, state.error ?? AppStrings.genericError);
+          showWarningDialog(context, state.error ?? context.l10n.genericError);
         }
       },
       builder: (BuildContext context, RaffleSubmitState submitState) {
@@ -121,7 +121,7 @@ class _ParticipantsView extends StatelessWidget {
                         horizontal: AppConstants.pagePadding,
                       ),
                       child: PrimaryButton(
-                        label: AppStrings.addParticipant,
+                        label: context.l10n.addParticipant,
                         icon: Icons.person_add_alt_1_rounded,
                         color: Theme.of(context).colorScheme.secondary,
                         onPressed: () => _addParticipant(context),
@@ -132,7 +132,7 @@ class _ParticipantsView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(AppConstants.pagePadding),
                       child: PrimaryButton(
-                        label: AppStrings.next,
+                        label: context.l10n.next,
                         icon: Icons.arrow_forward_rounded,
                         onPressed: () => _onNext(context),
                       ),

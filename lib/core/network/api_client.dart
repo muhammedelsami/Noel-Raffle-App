@@ -5,17 +5,24 @@ import 'package:http/http.dart' as http;
 
 import '../error/exceptions.dart';
 
+/// Resolves the current UI language code (e.g. `tr`, `en`, `ar`) so requests
+/// carry the right `Accept-Language` and the backend localizes its emails.
+typedef LanguageProvider = String Function();
+
 /// Thin wrapper around [http.Client] that centralizes headers, JSON encoding
 /// and error translation so data sources stay declarative.
 class ApiClient {
-  ApiClient({http.Client? client}) : _client = client ?? http.Client();
+  ApiClient({http.Client? client, LanguageProvider? languageProvider})
+      : _client = client ?? http.Client(),
+        _languageProvider = languageProvider;
 
   final http.Client _client;
+  final LanguageProvider? _languageProvider;
 
-  static const Map<String, String> _headers = <String, String>{
-    'Content-Type': 'application/json',
-    'Accept-Language': 'tr',
-  };
+  Map<String, String> get _headers => <String, String>{
+        'Content-Type': 'application/json',
+        'Accept-Language': _languageProvider?.call() ?? 'tr',
+      };
 
   Future<Map<String, dynamic>> post(
     String url, {

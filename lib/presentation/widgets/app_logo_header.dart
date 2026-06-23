@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_assets.dart';
-import '../../core/constants/app_strings.dart';
+import '../../core/l10n/l10n_extensions.dart';
 
 /// Small logo + app name row used on secondary screens.
 class AppLogoHeader extends StatelessWidget {
@@ -16,7 +16,7 @@ class AppLogoHeader extends StatelessWidget {
           Image.asset(AppAssets.logoSmall, height: 64, width: 64),
           const SizedBox(width: 12),
           Text(
-            AppStrings.appName,
+            context.l10n.appName,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
         ],

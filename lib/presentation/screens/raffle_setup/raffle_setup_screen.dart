@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/app_assets.dart';
 import '../../../core/constants/app_constants.dart';
-import '../../../core/constants/app_strings.dart';
+import '../../../core/l10n/l10n_extensions.dart';
+import '../../../core/l10n/option_labels.dart';
 import '../../../core/utils/validators.dart';
 import '../../../domain/entities/raffle_config.dart';
 import '../../../domain/entities/raffle_type.dart';
@@ -41,7 +42,7 @@ class _RaffleSetupScreenState extends State<RaffleSetupScreen> {
 
   void _submit() {
     if (!Validators.isNotBlank(_titleController.text)) {
-      showWarningDialog(context, AppStrings.enterTitle);
+      showWarningDialog(context, context.l10n.enterTitle);
       return;
     }
     final RaffleSetupState state = _cubit.state;
@@ -82,24 +83,36 @@ class _RaffleSetupScreenState extends State<RaffleSetupScreen> {
                       children: <Widget>[
                         AppTextField(
                           controller: _titleController,
-                          label: AppStrings.raffleTitleHint,
+                          label: context.l10n.raffleTitleHint,
                           textInputAction: TextInputAction.done,
                         ),
                         const SizedBox(height: 16),
                         BlocBuilder<RaffleSetupCubit, RaffleSetupState>(
-                          builder: (context, state) => AppDropdown(
-                            value: state.groupLabel,
-                            hint: AppStrings.selectRaffleType,
-                            items: AppConstants.groupOptions.keys.toList(),
+                          builder: (context, state) => AppDropdown<int>(
+                            value: state.groupCode,
+                            hint: context.l10n.selectRaffleType,
+                            items: AppConstants.groupCodes
+                                .map((int code) => DropdownMenuItem<int>(
+                                      value: code,
+                                      child:
+                                          Text(groupLabel(context.l10n, code)),
+                                    ))
+                                .toList(),
                             onChanged: context.read<RaffleSetupCubit>().selectGroup,
                           ),
                         ),
                         const SizedBox(height: 16),
                         BlocBuilder<RaffleSetupCubit, RaffleSetupState>(
-                          builder: (context, state) => AppDropdown(
-                            value: state.sectorLabel,
-                            hint: AppStrings.selectSector,
-                            items: AppConstants.sectorOptions.keys.toList(),
+                          builder: (context, state) => AppDropdown<int>(
+                            value: state.sectorCode,
+                            hint: context.l10n.selectSector,
+                            items: AppConstants.sectorCodes
+                                .map((int code) => DropdownMenuItem<int>(
+                                      value: code,
+                                      child:
+                                          Text(sectorLabel(context.l10n, code)),
+                                    ))
+                                .toList(),
                             onChanged:
                                 context.read<RaffleSetupCubit>().selectSector,
                           ),
@@ -107,8 +120,8 @@ class _RaffleSetupScreenState extends State<RaffleSetupScreen> {
                         const SizedBox(height: 24),
                         PrimaryButton(
                           label: _isNewYear
-                              ? AppStrings.createNewYearRaffle
-                              : AppStrings.createGiftRaffle,
+                              ? context.l10n.createNewYearRaffle
+                              : context.l10n.createGiftRaffle,
                           color: Theme.of(context).colorScheme.secondary,
                           onPressed: _submit,
                         ),
