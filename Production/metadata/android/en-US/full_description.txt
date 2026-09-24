@@ -1,9 +1,16 @@
-Noel Raffle makes Secret Santa and gift raffles quick, fair and fun. Set up a draw in seconds, pass the phone around and let everyone discover their result in private. No sign-up and no internet connection needed.
+Noel Raffle makes Secret Santa and gift raffles quick, fair and fun. Set up a draw in seconds, pass the phone around and let everyone discover their result in private. No sign-up needed, and the draw works without an internet connection.
 
 Two ways to draw
 
 • New Year raffle (Secret Santa): everyone buys a gift for someone else. Participants are shuffled into a single gift circle, so nobody draws their own name and no two people simply swap gifts.
 • Gift raffle: list the prizes and how many of each, and Noel Raffle hands them out to random participants. Each person wins at most one gift.
+
+Your rules
+
+• Keep people apart, such as couples or roommates, so they never draw each other
+• Avoid last time's matches when the same group draws again
+• Add gift ideas for each person, shown to whoever draws them
+• Set the gift day and get a reminder on your phone the day before
 
 Results stay secret
 
@@ -11,23 +18,26 @@ Secret Santa results are hidden. Pass the phone around: each person taps their o
 
 Share the way you like
 
-Send each person their own result through WhatsApp, SMS or any other app on your phone, or by email when you add an address. Gift raffle winners can be shared as one list.
+Send each person their own result through WhatsApp, SMS or any other app, by email, or as a neat image card. Or publish the raffle online: everyone gets a personal code and looks up their own result in the app, on their own phone. Gift raffle winners can be shared as one list.
 
 Made for groups
 
-• Add participants in seconds, with an optional email address
-• Leave a note for everyone, such as the gift budget or the exchange date
+• Add participants one by one, or paste a whole list at once
+• Removed someone by mistake? Undo it with one tap
+• Leave a note for everyone, such as the gift budget
 • The same name can't be added twice, so there is no mix-up
+• Draw again with the same group from your history
 • Past raffles are saved on your device, with simple statistics
 
 Private by design
 
-The draw runs on your phone and your raffles stay on your device. No account needed.
+The draw runs on your phone and your raffles stay on your device. No account needed. Apart from anonymous totals for the global statistics, only the results you publish are stored online, without email addresses, and only someone with the code can open one.
 
 Comfortable to use
 
 • Light and dark themes, or follow your system setting
 • Turkish, English and Arabic, with right-to-left support
+• At home on phones and tablets, with a themed icon on Android 13 and later
 • A clean, accessible design that is easy to read
 
 Perfect for office parties, family gatherings, classrooms and groups of friends. Happy holidays!
