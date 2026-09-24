@@ -28,6 +28,7 @@ flutter gen-l10n                      # regenerate localizations from lib/l10n/*
 dart run flutter_launcher_icons:main  # regenerate app icons from icons/app_icon*.png
 flutterfire configure                 # connect a Firebase project (overwrites lib/firebase_options.dart)
 firebase deploy --only firestore:rules  # deploy firebase/firestore.rules
+flutter test Production/tool/store_assets.dart  # regenerate the Play Store artwork (see Production/README.md)
 ```
 
 Requires Dart SDK `>=3.2.3 <4.0.0` and a recent Flutter (3.44+). iOS deployment target is 15.0
