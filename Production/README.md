@@ -51,8 +51,8 @@ fastlane supply --metadata_path Production/metadata/android \
 ```
 
 `changelogs/default.txt` is used for any version. To tie the notes to one build, rename it to
-`<versionCode>.txt`. The redesigned release is version `2.0.0` (versionCode `9`) in
-`pubspec.yaml`; raise it again for every later upload.
+`<versionCode>.txt`. Builds are uploaded by GitHub Actions, which sets the version and uses
+`changelogs/default.txt` as release notes (see the main README, "Continuous delivery").
 
 ## Regenerating the images
 

@@ -125,6 +125,14 @@ links to history, statistics and about. Light/dark/system theme (`ThemeCubit`) a
   `dart run flutter_launcher_icons:main`. Native launch screens use the brand color
   (`android/.../values*/colors.xml`, iOS `LaunchBackground` color set) to avoid a white flash.
 
+### CI/CD
+`.github/workflows/ci.yml` runs analyze and tests on pull requests without secrets.
+`release.yml` builds a signed app bundle on push: `dev` goes to the Play internal track,
+`main` to production. The version comes from the run number (never commit a bumped build
+number); only major/minor in `pubspec.yaml` are edited by hand. Secrets live in the
+`play-store` environment, limited to `dev` and `main`; never echo them or add
+`pull_request_target` triggers.
+
 ## Conventions
 
 - Lint rules in `analysis_options.yaml` are enforced: single quotes, explicit return types,

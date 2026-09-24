@@ -114,6 +114,46 @@ screenshot at the top of this README, are rendered from the real app:
 flutter test Production/tool/store_assets.dart
 ```
 
+## Continuous delivery
+
+GitHub Actions builds and ships the Android app:
+
+| Workflow | Trigger | What it does |
+| --- | --- | --- |
+| `ci.yml` | Pull request to `dev` or `main` | `flutter analyze` and `flutter test`, no secrets |
+| `release.yml` | Push to `dev` | Signed app bundle to the Play **internal testing** track |
+| `release.yml` | Push to `main` | Signed app bundle to the Play **production** track |
+
+Versions come from the workflow run number, so CI never commits back:
+`versionCode = 9 + run number` and `versionName = <major>.<minor>.<run number>`, with
+major and minor read from `version:` in `pubspec.yaml`. The release notes are
+`Production/metadata/android/<language>/changelogs/default.txt`.
+
+The secrets are stored in the `play-store` environment (*Settings → Environments*), which
+only the `dev` and `main` branches can use. GitHub never shows secret values, and workflows
+triggered by pull requests from forks cannot read them.
+
+| Secret | Content |
+| --- | --- |
+| `PLAY_SERVICE_ACCOUNT_JSON` | Play service account key (JSON) |
+| `FIREBASE_OPTIONS_DART` | `lib/firebase_options.dart`, base64 |
+| `GOOGLE_SERVICES_JSON` | `android/app/google-services.json`, base64 |
+| `ANDROID_KEYSTORE_BASE64` | Upload keystore (`.jks`), base64 |
+| `ANDROID_KEYSTORE_PASSWORD` | Keystore password |
+| `ANDROID_KEY_ALIAS` | Key alias |
+| `ANDROID_KEY_PASSWORD` | Key password |
+
+To set or replace one:
+
+```bash
+base64 -i upload-keystore.jks | gh secret set ANDROID_KEYSTORE_BASE64 --env play-store
+gh secret set ANDROID_KEYSTORE_PASSWORD --env play-store   # prompts for the value
+```
+
+The service account must be invited in *Play Console → Users and permissions* with
+permission to release to testing tracks and production, and the Google Play Android
+Developer API must be enabled in its Google Cloud project.
+
 ## Contributing
 
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
