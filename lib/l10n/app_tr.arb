@@ -128,5 +128,7 @@
   "noValidMatch": "Bu kurallarla uygun bir eşleşme bulunamadı. Bir kuralı kaldırın ya da kişi ekleyin.",
   "wishOptional": "Hediye fikirleri (isteğe bağlı)",
   "giftIdeas": "Hediye fikirleri",
-  "shareWishLine": "Hediye fikirleri: {wish}"
+  "shareWishLine": "Hediye fikirleri: {wish}",
+  "drawAgain": "Bu grupla tekrar çek",
+  "moreOptions": "Diğer seçenekler"
 }

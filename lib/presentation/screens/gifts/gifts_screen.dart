@@ -30,16 +30,22 @@ class GiftsScreen extends StatelessWidget {
     super.key,
     required this.config,
     required this.participants,
+    this.initialGifts = const <Gift>[],
   });
 
   final RaffleConfig config;
   final List<Participant> participants;
 
+  /// Gifts to start with, e.g. from a past raffle drawn again.
+  final List<Gift> initialGifts;
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
-        BlocProvider<GiftsCubit>(create: (_) => GiftsCubit()),
+        BlocProvider<GiftsCubit>(
+          create: (_) => GiftsCubit(gifts: initialGifts),
+        ),
         BlocProvider<RaffleDrawCubit>(create: (_) => sl<RaffleDrawCubit>()),
       ],
       child: RaffleDrawListener(

@@ -8,7 +8,8 @@ part 'gifts_state.dart';
 
 /// Manages the in-memory gift list for a gift raffle.
 class GiftsCubit extends Cubit<GiftsState> {
-  GiftsCubit() : super(const GiftsState());
+  GiftsCubit({List<Gift> gifts = const <Gift>[]})
+      : super(GiftsState(gifts: gifts));
 
   void add(Gift gift) {
     emit(GiftsState(gifts: <Gift>[...state.gifts, gift]));

@@ -474,4 +474,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String shareWishLine(String wish) {
     return 'أفكار للهدايا: $wish';
   }
+
+  @override
+  String get drawAgain => 'اسحب مجددًا مع هذه المجموعة';
+
+  @override
+  String get moreOptions => 'خيارات أخرى';
 }

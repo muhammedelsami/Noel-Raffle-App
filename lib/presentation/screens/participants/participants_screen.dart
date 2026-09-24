@@ -9,6 +9,7 @@ import '../../../core/theme/theme_context.dart';
 import '../../../domain/entities/match_exclusion.dart';
 import '../../../domain/entities/participant.dart';
 import '../../../domain/entities/raffle_config.dart';
+import '../../../domain/entities/raffle_draft.dart';
 import '../../../domain/entities/raffle.dart';
 import '../../../domain/entities/raffle_rules.dart';
 import '../../../domain/usecases/get_raffle_history.dart';
@@ -33,9 +34,16 @@ import '../gifts/gifts_screen.dart';
 /// Second step: builds the participant list, then either continues to the
 /// gifts step (gift raffle) or draws right away (new-year raffle).
 class ParticipantsScreen extends StatelessWidget {
-  const ParticipantsScreen({super.key, required this.config});
+  const ParticipantsScreen({
+    super.key,
+    required this.config,
+    this.draft = RaffleDraft.empty,
+  });
 
   final RaffleConfig config;
+
+  /// People, rules and gifts to start with.
+  final RaffleDraft draft;
 
   @override
   Widget build(BuildContext context) {
@@ -43,20 +51,25 @@ class ParticipantsScreen extends StatelessWidget {
       providers: <BlocProvider<dynamic>>[
         BlocProvider<ParticipantsCubit>(
           create: (_) => ParticipantsCubit(
+            participants: draft.participants,
+            exclusions: draft.exclusions,
             history: config.type.isNewYear ? sl<GetRaffleHistory>() : null,
           ),
         ),
         BlocProvider<RaffleDrawCubit>(create: (_) => sl<RaffleDrawCubit>()),
       ],
-      child: RaffleDrawListener(child: _ParticipantsView(config: config)),
+      child: RaffleDrawListener(
+        child: _ParticipantsView(config: config, draft: draft),
+      ),
     );
   }
 }
 
 class _ParticipantsView extends StatelessWidget {
-  const _ParticipantsView({required this.config});
+  const _ParticipantsView({required this.config, required this.draft});
 
   final RaffleConfig config;
+  final RaffleDraft draft;
 
   Future<void> _addParticipant(BuildContext context) async {
     final ParticipantsCubit cubit = context.read<ParticipantsCubit>();
@@ -97,8 +110,11 @@ class _ParticipantsView extends StatelessWidget {
     if (config.type.hasGifts) {
       Navigator.of(context).push(
         MaterialPageRoute<void>(
-          builder: (_) =>
-              GiftsScreen(config: config, participants: participants),
+          builder: (_) => GiftsScreen(
+            config: config,
+            participants: participants,
+            initialGifts: draft.gifts,
+          ),
         ),
       );
     } else {
