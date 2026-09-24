@@ -27,4 +27,19 @@ void main() {
     cubit.removeAt(0);
     expect(cubit.state.gifts, isEmpty);
   });
+
+  test('insert puts a removed gift back where it was', () {
+    cubit
+      ..add(g1)
+      ..add(g2);
+    final Gift removed = cubit.removeAt(0);
+    cubit.insert(0, removed);
+    expect(cubit.state.gifts, <Gift>[g1, g2]);
+  });
+
+  test('starts with the given gifts', () {
+    final GiftsCubit prefilled = GiftsCubit(gifts: const <Gift>[g1]);
+    addTearDown(prefilled.close);
+    expect(prefilled.state.gifts, <Gift>[g1]);
+  });
 }

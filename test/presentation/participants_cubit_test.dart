@@ -95,6 +95,24 @@ void main() {
       expect(cubit.state.exclusions, isEmpty);
     });
 
+    test('restore undoes a removal, rules included', () {
+      cubit.addExclusion(rule);
+      final ParticipantRemoval removal = cubit.removeAt(0);
+      expect(cubit.state.exclusions, isEmpty);
+
+      cubit.restore(removal);
+      expect(cubit.state.participants, <Participant>[a, b, c]);
+      expect(cubit.state.exclusions, <MatchExclusion>[rule]);
+    });
+
+    test('restore does nothing when the name was taken again', () {
+      final ParticipantRemoval removal = cubit.removeAt(0);
+      cubit
+        ..add(const Participant(name: 'AYŞE'))
+        ..restore(removal);
+      expect(cubit.state.participants, hasLength(3));
+    });
+
     test('passes the rules to the draw constraints', () {
       cubit.addExclusion(rule);
       expect(cubit.state.constraints.allows('Ayşe', 'Burak'), isFalse);

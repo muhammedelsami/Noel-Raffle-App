@@ -510,4 +510,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bulkAddEmpty => 'Enter at least one new name.';
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String removedItem(String name) {
+    return '$name removed';
+  }
 }

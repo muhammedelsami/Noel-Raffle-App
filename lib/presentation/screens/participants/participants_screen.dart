@@ -30,6 +30,7 @@ import '../../widgets/section_header.dart';
 import '../../widgets/status_pill.dart';
 import '../../widgets/step_header.dart';
 import '../../widgets/tile_group.dart';
+import '../../widgets/undo_snack_bar.dart';
 import '../gifts/gifts_screen.dart';
 
 /// Second step: builds the participant list, then either continues to the
@@ -91,6 +92,18 @@ class _ParticipantsView extends StatelessWidget {
       ],
     );
     if (people != null) cubit.addAll(people);
+  }
+
+  void _remove(BuildContext context, int index) {
+    final ParticipantsCubit cubit = context.read<ParticipantsCubit>();
+    final ParticipantRemoval removal = cubit.removeAt(index);
+    showUndoSnackBar(
+      context,
+      name: removal.participant.name,
+      onUndo: () {
+        if (!cubit.isClosed) cubit.restore(removal);
+      },
+    );
   }
 
   Future<void> _editParticipant(
@@ -203,8 +216,7 @@ class _ParticipantsView extends StatelessWidget {
                   title: participant.name,
                   subtitle: details.isEmpty ? null : Text(details),
                   onTap: () => _editParticipant(context, index, participant),
-                  onDelete: () =>
-                      context.read<ParticipantsCubit>().removeAt(index),
+                  onDelete: () => _remove(context, index),
                 );
               },
             );

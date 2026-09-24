@@ -487,4 +487,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get bulkAddEmpty => 'En az bir yeni isim girin.';
+
+  @override
+  String get undo => 'Geri al';
+
+  @override
+  String removedItem(String name) {
+    return '$name silindi';
+  }
 }

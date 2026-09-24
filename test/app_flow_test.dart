@@ -255,4 +255,26 @@ void main() {
     expect(find.text(l10n.participantCount(3)), findsOneWidget);
     expect(find.text('burak@mail.com'), findsOneWidget);
   });
+
+  testWidgets('undoes removing a participant', (WidgetTester tester) async {
+    await bootToHome(tester);
+    await tapText(tester, l10n.newYearRaffle);
+    await tester.enterText(
+      find.widgetWithText(TextField, l10n.raffleTitleHint),
+      'Ekip',
+    );
+    await tapButton(tester, l10n.next);
+    await addParticipant(tester, 'Ayşe');
+    await addParticipant(tester, 'Burak');
+
+    await tester.tap(find.byTooltip(l10n.delete).first);
+    await tester.pumpAndSettle();
+    expect(find.text('Ayşe'), findsNothing);
+    expect(find.text(l10n.removedItem('Ayşe')), findsOneWidget);
+
+    await tester.tap(find.text(l10n.undo));
+    await tester.pumpAndSettle();
+    expect(find.text('Ayşe'), findsOneWidget);
+    expect(find.text(l10n.participantCount(2)), findsOneWidget);
+  });
 }
