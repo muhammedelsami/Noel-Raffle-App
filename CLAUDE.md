@@ -40,26 +40,32 @@ Clean architecture with strict layer boundaries. Dependencies point inward: `pre
 and `data` depend on `domain`; `domain` depends on nothing. `core` is cross-cutting.
 
 - **`domain/`**: pure Dart, no Flutter/Firebase imports.
-  - `entities/`: `Raffle` (config + `DrawAssignment`s + gifts), `Participant` (name + optional
-    email), `Gift`, `SharedResult`, `Statistics`, `RaffleRules`.
-  - `services/`: `RaffleDrawer` (the draw algorithm; inject a seeded `Random` in tests) and
-    `ShareCode` (personal code generation/normalization).
-  - `repositories/`: abstract interfaces.
+  - `entities/`: `Raffle` (`RaffleConfig` + `DrawAssignment`s + gifts + `MatchExclusion`s),
+    `RaffleConfig` (title, note, type, optional gift day `eventDate` and `remind`),
+    `Participant` (name + optional email and gift ideas `wish`), `Gift`, `SharedResult`,
+    `Statistics`, `RaffleRules`, `DrawConstraints` (exclusions + last time's pairs),
+    `RaffleDraft` (what "draw again" prefills).
+  - `services/`: `RaffleDrawer` (the draw algorithm; inject a seeded `Random` in tests),
+    `ShareCode` (personal code generation/normalization) and `findPreviousRaffle`.
+  - `repositories/`: abstract interfaces, including `ReminderScheduler` (local notifications).
   - `usecases/`: single-action classes with a `call(...)` method, e.g. `CreateRaffle`,
-    `PublishRaffle`.
+    `PublishRaffle`, `ScheduleReminder`.
 - **`data/`**: implements domain repositories.
   - `datasources/`: `RaffleLocalDataSource` (history as JSON in `SharedPreferences`) and
     `RaffleCloudDataSource` (Firestore).
-  - `models/`: JSON DTOs. `Model.fromEntity(e).toJson()` serializes; the static
+  - `models/`: JSON DTOs. Calendar days (the gift day) are stored as `yyyy-MM-dd` via
+    `DateOnly`. `Model.fromEntity(e).toJson()` serializes; the static
     `fromJson`/`fromFirestore` return the **plain entity**, never a model subclass. Equatable
     compares runtime types, and a reified `List<Model>` would reject plain entities.
   - `repositories/`: wire the datasources to the domain interfaces.
 - **`presentation/`**: `cubit/` (one folder per cubit, `*_cubit.dart` + `*_state.dart` with
   `state` as a `part`), `screens/`, and reusable `widgets/`.
 - **`core/`**: `di/injection.dart` (service locator), `firebase/` (optional init), `l10n/`
-  (locale cubit, `raffle_texts.dart` for localized labels and share messages), `theme/`
+  (locale cubit, `raffle_texts.dart` for localized labels, dates and share messages), `theme/`
   (see Design system), `constants/`, `utils/` (`Validators`, `UrlLauncherHelper`,
-  `ShareHelper`), `error/exceptions.dart`.
+  `ShareHelper` for text and PNG shares, `ParticipantListParser` for pasted lists),
+  `notifications/` (`LocalReminderScheduler`), `review/` (`ReviewPrompter`),
+  `error/exceptions.dart`.
 
 ### RaffleType drives both flows
 The two raffle variants are a single `RaffleType` enum (`newYear` / `gift`). Screens are shared.
@@ -69,7 +75,19 @@ in the `RaffleTypeStyle` extension in `core/theme/raffle_type_style.dart`, so th
 Flutter-free. Prefer extending the enum or that extension over branching on booleans or
 duplicating screens. Draw rules (minimum participants and gifts, at most one gift per
 participant) live in `RaffleRules`. `RaffleDrawer` throws `RaffleRuleException`, and the UI maps
-it with `ruleViolationMessage`.
+it with `ruleViolationMessage`. New-year draws take `DrawConstraints`: the circle is then found
+by a bounded randomized search, which throws `noValidMatch` when the rules leave no circle.
+
+### Gift day reminders
+The setup screen can set a gift day and "remind me the day before". Turning the switch on asks
+for notification permission through `ScheduleReminder.requestPermission`. After a successful
+draw `RaffleDrawListener` schedules the reminder (fire-and-forget) at 10:00 the day before, or
+9:00 on the day. `DeleteRaffle` cancels it. `LocalReminderScheduler` wraps
+flutter_local_notifications: it initializes lazily, schedules in UTC (no time zone database),
+and uses inexact alarms, so no exact-alarm permission is needed. The native setup (desugaring,
+the scheduled notification receivers, `RECEIVE_BOOT_COMPLETED`, `drawable/ic_notification.xml`
+kept by `res/raw/keep.xml`, and the iOS notification center delegate) must stay in place.
+Tests swap the scheduler for `test/fakes/recording_reminders.dart`.
 
 ### Optional Firebase
 `main()` calls `initializeFirebase()`, which returns `false` when `lib/firebase_options.dart` is
@@ -81,8 +99,8 @@ When it is off, `OnlineRaffleRepositoryImpl(null)` reports `isAvailable == false
   `.firebaserc` are gitignored and must never be committed. A fresh clone copies
   `lib/firebase_options.dart.example` or runs `flutterfire configure` (see README for the files
   to restore afterwards).
-- `results/{code}`: one participant's result, readable only by its code. Emails are never
-  uploaded.
+- `results/{code}`: one participant's result, readable only by its code: title, note, gift
+  day, name, match and (new-year) the match's gift ideas. Emails are never uploaded.
 - `stats/global`: counters incremented best-effort after each draw (fire-and-forget; never
   blocks or fails the draw).
 - Any new field or collection must also be allowed in `firebase/firestore.rules`.
@@ -91,7 +109,8 @@ When it is off, `OnlineRaffleRepositoryImpl(null)` reports `isAvailable == false
 `configureDependencies()` in `lib/core/di/injection.dart` runs once in `main()` before `runApp`.
 Access anywhere via the global `sl<T>()`. Registration conventions:
 - `registerSingleton` / `registerLazySingleton`: shared services and app-wide state
-  (repositories, use cases, `ThemeCubit`, `LocaleCubit`).
+  (repositories, use cases, `ReminderScheduler`, `ReviewPrompter`, `ThemeCubit`,
+  `LocaleCubit`).
 - `registerFactory` / `registerFactoryParam`: per-screen cubits that need a fresh instance
   (`RaffleDrawCubit`, `RaffleResultCubit` with the raffle as `param1`, `HistoryCubit`, ...),
   provided via `BlocProvider`.
@@ -101,8 +120,10 @@ Access anywhere via the global `sl<T>()`. Registration conventions:
 ### Navigation & theme
 Single `MaterialApp` in `lib/app/app.dart`. Screens navigate with `Navigator.push`/`MaterialPageRoute`
 (no named routes). Startup is `SplashScreen` (precaches the illustrations) → `HomeScreen`. The
-creation flow is setup → participants → (gifts); after a draw, `RaffleResultScreen.openAfterDraw`
-replaces it so "back" returns home. `SettingsScreen` holds the theme and language pickers and
+creation flow is setup → participants → (gifts); after a draw (with a short
+`showDrawAnimation`), `RaffleResultScreen.openAfterDraw` replaces it so "back" returns home.
+Leaving that fresh result counts towards the one-time store review prompt (`ReviewPrompter`).
+`RaffleSetupScreen.again` starts a new raffle prefilled from an old one. `SettingsScreen` holds the theme and language pickers and
 links to history, statistics and about. Light/dark/system theme (`ThemeCubit`) and language
 (`LocaleCubit`) are provided at the root and persisted to `SharedPreferences`.
 
@@ -119,14 +140,22 @@ links to history, statistics and about. Light/dark/system theme (`ThemeCubit`) a
   bottom action bar that stays above the keyboard), `AppButton` (primary/tonal/outlined/text,
   with `loading`), `AppCard`, `AppListTile`, `StepHeader`, `EditableListBody`, `EmptyState`,
   `InfoBanner`, `StatusPill`/`CountPill`, `IconBadge`, `InitialsAvatar`, `FormDialog`,
-  `ResultCard`. Compose screens from these instead of styling Material widgets inline.
+  `ResultCard`, `ResultShareCard` (the PNG card, always light), `NoteLine`, `TileGroup`,
+  `EqualHeightRow`, `showUndoSnackBar`. Compose screens from these instead of styling Material
+  widgets inline.
+- **Wide screens**: content is capped at `AppConstants.maxContentWidth`. From
+  `wideLayoutBreakpoint` (`ContentWidth.isWide`), card screens (home, statistics) use
+  `maxWideContentWidth` and place cards side by side.
 - **`BrandMark`** is the app logo, painted in code. The launcher icons in `icons/` are rendered
   from the same `BrandMarkPainter`; regenerate the platform icons with
-  `dart run flutter_launcher_icons:main`. Native launch screens use the brand color
+  `dart run flutter_launcher_icons:main`, then restore the `<monochrome>` line in
+  `mipmap-anydpi-v26/launcher_icon.xml` (the themed icon layer and the notification icon are
+  hand-traced vectors in `android/app/src/main/res/drawable/`). Native launch screens use the brand color
   (`android/.../values*/colors.xml`, iOS `LaunchBackground` color set) to avoid a white flash.
 
 ### CI/CD
-`.github/workflows/ci.yml` runs analyze and tests on pull requests without secrets.
+`.github/workflows/ci.yml` runs analyze, tests and a debug Android build on pull requests
+without secrets.
 `release.yml` builds a signed app bundle on push: `dev` goes to the Play internal track,
 `main` to production. The version comes from the run number (never commit a bumped build
 number); only major/minor in `pubspec.yaml` are edited by hand. Secrets live in the
