@@ -10,6 +10,7 @@ import '../../data/repositories/raffle_history_repository_impl.dart';
 import '../../domain/entities/raffle.dart';
 import '../../domain/repositories/online_raffle_repository.dart';
 import '../../domain/repositories/raffle_history_repository.dart';
+import '../../domain/repositories/reminder_scheduler.dart';
 import '../../domain/services/raffle_drawer.dart';
 import '../../domain/usecases/create_raffle.dart';
 import '../../domain/usecases/delete_raffle.dart';
@@ -18,12 +19,14 @@ import '../../domain/usecases/get_raffle_history.dart';
 import '../../domain/usecases/get_statistics.dart';
 import '../../domain/usecases/lookup_result.dart';
 import '../../domain/usecases/publish_raffle.dart';
+import '../../domain/usecases/schedule_reminder.dart';
 import '../../presentation/cubit/history/history_cubit.dart';
 import '../../presentation/cubit/raffle_draw/raffle_draw_cubit.dart';
 import '../../presentation/cubit/raffle_result/raffle_result_cubit.dart';
 import '../../presentation/cubit/result_lookup/result_lookup_cubit.dart';
 import '../../presentation/cubit/statistics/statistics_cubit.dart';
 import '../l10n/locale_cubit.dart';
+import '../notifications/local_reminder_scheduler.dart';
 import '../theme/theme_cubit.dart';
 
 /// Global service locator.
@@ -54,6 +57,7 @@ Future<void> configureDependencies({bool cloudEnabled = false}) async {
 
   // Repositories
   sl
+    ..registerLazySingleton<ReminderScheduler>(LocalReminderScheduler.new)
     ..registerLazySingleton<RaffleHistoryRepository>(
       () => RaffleHistoryRepositoryImpl(sl()),
     )
@@ -68,7 +72,10 @@ Future<void> configureDependencies({bool cloudEnabled = false}) async {
     ..registerLazySingleton<RaffleDrawer>(() => RaffleDrawer())
     ..registerLazySingleton<CreateRaffle>(() => CreateRaffle(sl(), sl(), sl()))
     ..registerLazySingleton<GetRaffleHistory>(() => GetRaffleHistory(sl()))
-    ..registerLazySingleton<DeleteRaffle>(() => DeleteRaffle(sl(), sl()))
+    ..registerLazySingleton<DeleteRaffle>(
+      () => DeleteRaffle(sl(), sl(), sl()),
+    )
+    ..registerLazySingleton<ScheduleReminder>(() => ScheduleReminder(sl()))
     ..registerLazySingleton<PublishRaffle>(() => PublishRaffle(sl(), sl()))
     ..registerLazySingleton<LookupResult>(() => LookupResult(sl()))
     ..registerLazySingleton<GetStatistics>(() => GetStatistics(sl()))

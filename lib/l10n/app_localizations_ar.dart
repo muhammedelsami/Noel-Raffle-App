@@ -551,4 +551,45 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get drawing => 'جارٍ السحب…';
+
+  @override
+  String get giftDay => 'يوم الهدايا';
+
+  @override
+  String get giftDayOptional => 'يوم الهدايا (اختياري)';
+
+  @override
+  String get giftDayHint => 'اليوم الذي تُسلَّم فيه الهدايا';
+
+  @override
+  String get clearDate => 'إزالة التاريخ';
+
+  @override
+  String get remindMe => 'ذكّرني قبلها بيوم';
+
+  @override
+  String get remindMeInfo => 'يصلك إشعار على هذا الهاتف';
+
+  @override
+  String get notificationsOff =>
+      'الإشعارات متوقفة لهذا التطبيق. فعّلها من إعدادات هاتفك لتصلك التذكيرات.';
+
+  @override
+  String get reminderOn => 'التذكير مفعّل';
+
+  @override
+  String get reminderChannel => 'التذكيرات';
+
+  @override
+  String get reminderChannelInfo => 'تذكيرات قبل يوم الهدايا';
+
+  @override
+  String reminderBody(String date) {
+    return 'يوم الهدايا: $date. هل هديتك جاهزة؟ 🎁';
+  }
+
+  @override
+  String shareDateLine(String date) {
+    return 'يوم الهدايا: $date';
+  }
 }

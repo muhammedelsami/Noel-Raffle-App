@@ -145,5 +145,17 @@
   "yourCode": "Kişisel kodun",
   "cardCodeHint": "Noel Raffle'ı aç ve \"Sonucumu gör\" bölümüne gir.",
   "drawnWith": "Noel Raffle ile çekildi",
-  "drawing": "Çekiliş yapılıyor…"
+  "drawing": "Çekiliş yapılıyor…",
+  "giftDay": "Hediye günü",
+  "giftDayOptional": "Hediye günü (isteğe bağlı)",
+  "giftDayHint": "Hediyelerin verileceği gün",
+  "clearDate": "Tarihi kaldır",
+  "remindMe": "Bir gün önce hatırlat",
+  "remindMeInfo": "Bu telefona bildirim gelir",
+  "notificationsOff": "Bu uygulamanın bildirimleri kapalı. Hatırlatma almak için telefonunuzun ayarlarından açın.",
+  "reminderOn": "Hatırlatma açık",
+  "reminderChannel": "Hatırlatmalar",
+  "reminderChannelInfo": "Hediye günü öncesi hatırlatmalar",
+  "reminderBody": "Hediye günü: {date}. Hediyen hazır mı? 🎁",
+  "shareDateLine": "Hediye günü: {date}"
 }

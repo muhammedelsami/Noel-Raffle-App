@@ -540,4 +540,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get drawing => 'Drawing…';
+
+  @override
+  String get giftDay => 'Gift day';
+
+  @override
+  String get giftDayOptional => 'Gift day (optional)';
+
+  @override
+  String get giftDayHint => 'When the gifts are handed out';
+
+  @override
+  String get clearDate => 'Remove date';
+
+  @override
+  String get remindMe => 'Remind me the day before';
+
+  @override
+  String get remindMeInfo => 'A notification on this phone';
+
+  @override
+  String get notificationsOff =>
+      'Notifications are off for this app. Turn them on in your phone\'s settings to get a reminder.';
+
+  @override
+  String get reminderOn => 'Reminder on';
+
+  @override
+  String get reminderChannel => 'Reminders';
+
+  @override
+  String get reminderChannelInfo => 'Reminders before a gift day';
+
+  @override
+  String reminderBody(String date) {
+    return 'Gift day: $date. Is your gift ready? 🎁';
+  }
+
+  @override
+  String shareDateLine(String date) {
+    return 'Gift day: $date';
+  }
 }

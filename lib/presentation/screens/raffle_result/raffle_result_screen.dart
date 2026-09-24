@@ -16,6 +16,7 @@ import '../../../core/utils/url_launcher_helper.dart';
 import '../../../domain/entities/draw_assignment.dart';
 import '../../../domain/entities/raffle.dart';
 import '../../../domain/services/share_code.dart';
+import '../../../domain/usecases/schedule_reminder.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubit/raffle_result/raffle_result_cubit.dart';
 import '../../widgets/app_button.dart';
@@ -277,16 +278,31 @@ class _Header extends StatelessWidget {
     final TextTheme text = context.textTheme;
     final ColorScheme colors = context.colors;
     final AccentColors accent = raffle.type.accentColors(colors);
+    final DateTime? day = raffle.eventDate;
+    final bool reminderPending = raffle.config.remind &&
+        day != null &&
+        ScheduleReminder.reminderTime(day, DateTime.now()) != null;
     return AppCard(
       padding: const EdgeInsets.all(AppSpacing.page),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          StatusPill(
-            label: raffleTypeLabel(context.l10n, raffle.type),
-            icon: raffle.type.icon,
-            background: accent.container,
-            foreground: accent.onContainer,
+          Wrap(
+            spacing: AppSpacing.sm,
+            runSpacing: AppSpacing.sm,
+            children: <Widget>[
+              StatusPill(
+                label: raffleTypeLabel(context.l10n, raffle.type),
+                icon: raffle.type.icon,
+                background: accent.container,
+                foreground: accent.onContainer,
+              ),
+              if (reminderPending)
+                StatusPill(
+                  label: context.l10n.reminderOn,
+                  icon: Icons.notifications_active_outlined,
+                ),
+            ],
           ),
           const SizedBox(height: AppSpacing.md),
           Text(raffle.title, style: text.headlineSmall),
@@ -295,6 +311,14 @@ class _Header extends StatelessWidget {
             raffleSummary(context.l10n, raffle),
             style: text.bodyMedium?.copyWith(color: colors.onSurfaceVariant),
           ),
+          if (day != null) ...<Widget>[
+            const SizedBox(height: AppSpacing.md),
+            NoteLine(
+              giftDayLabel(context.l10n, day),
+              icon: Icons.event_rounded,
+              label: context.l10n.giftDay,
+            ),
+          ],
           if (raffle.note.isNotEmpty) ...<Widget>[
             const SizedBox(height: AppSpacing.md),
             NoteLine(raffle.note),
@@ -378,6 +402,7 @@ class _AssignmentTile extends StatelessWidget {
             match: _assignment.match,
             matchWish: raffle.wishOf(_assignment.match),
             note: raffle.note,
+            eventDate: raffle.eventDate,
           ),
         ),
         actions: <Widget>[

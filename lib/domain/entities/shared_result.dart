@@ -12,6 +12,7 @@ class SharedResult extends Equatable {
     this.match,
     this.matchWish,
     this.note = '',
+    this.eventDate,
   });
 
   final String title;
@@ -25,7 +26,17 @@ class SharedResult extends Equatable {
   final String? matchWish;
   final String note;
 
+  /// The raffle's gift day, if it has one.
+  final DateTime? eventDate;
+
   @override
-  List<Object?> get props =>
-      <Object?>[title, type, participantName, match, matchWish, note];
+  List<Object?> get props => <Object?>[
+        title,
+        type,
+        participantName,
+        match,
+        matchWish,
+        note,
+        eventDate,
+      ];
 }

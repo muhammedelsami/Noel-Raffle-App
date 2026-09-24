@@ -145,5 +145,17 @@
   "yourCode": "رمزك الشخصي",
   "cardCodeHint": "افتح Noel Raffle وأدخله في قسم \"اعرض نتيجتي\".",
   "drawnWith": "سُحبت عبر Noel Raffle",
-  "drawing": "جارٍ السحب…"
+  "drawing": "جارٍ السحب…",
+  "giftDay": "يوم الهدايا",
+  "giftDayOptional": "يوم الهدايا (اختياري)",
+  "giftDayHint": "اليوم الذي تُسلَّم فيه الهدايا",
+  "clearDate": "إزالة التاريخ",
+  "remindMe": "ذكّرني قبلها بيوم",
+  "remindMeInfo": "يصلك إشعار على هذا الهاتف",
+  "notificationsOff": "الإشعارات متوقفة لهذا التطبيق. فعّلها من إعدادات هاتفك لتصلك التذكيرات.",
+  "reminderOn": "التذكير مفعّل",
+  "reminderChannel": "التذكيرات",
+  "reminderChannelInfo": "تذكيرات قبل يوم الهدايا",
+  "reminderBody": "يوم الهدايا: {date}. هل هديتك جاهزة؟ 🎁",
+  "shareDateLine": "يوم الهدايا: {date}"
 }

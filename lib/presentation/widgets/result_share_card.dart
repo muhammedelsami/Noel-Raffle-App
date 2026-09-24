@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
+import '../../core/l10n/raffle_texts.dart';
 import '../../core/theme/app_dimens.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/theme/theme_context.dart';
@@ -140,11 +141,13 @@ class ResultShareCard extends StatelessWidget {
                                 ? raffle.wishOf(assignment.match)
                                 : null,
                             note: raffle.note,
+                            eventDate: raffle.eventDate,
                           )
                         : _CodeBody(
                             name: assignment.participant.name,
                             code: code,
                             note: raffle.note,
+                            eventDate: raffle.eventDate,
                           ),
                   ),
                   Padding(
@@ -211,16 +214,23 @@ class _Header extends StatelessWidget {
 /// A published result: only the code, so whoever sends the card cannot see
 /// the match.
 class _CodeBody extends StatelessWidget {
-  const _CodeBody({required this.name, required this.code, required this.note});
+  const _CodeBody({
+    required this.name,
+    required this.code,
+    required this.note,
+    required this.eventDate,
+  });
 
   final String name;
   final String code;
   final String note;
+  final DateTime? eventDate;
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme colors = context.colors;
     final TextTheme text = context.textTheme;
+    final DateTime? day = eventDate;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -263,6 +273,14 @@ class _CodeBody extends StatelessWidget {
           textAlign: TextAlign.center,
           style: text.bodyMedium?.copyWith(color: colors.onSurfaceVariant),
         ),
+        if (day != null) ...<Widget>[
+          const SizedBox(height: AppSpacing.lg),
+          NoteLine(
+            giftDayLabel(context.l10n, day),
+            icon: Icons.event_rounded,
+            label: context.l10n.giftDay,
+          ),
+        ],
         if (note.isNotEmpty) ...<Widget>[
           const SizedBox(height: AppSpacing.lg),
           NoteLine(note),

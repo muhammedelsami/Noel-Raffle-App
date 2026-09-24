@@ -4,13 +4,18 @@ import 'package:get_it/get_it.dart';
 import 'package:noel_raffle/app/app.dart';
 import 'package:noel_raffle/core/constants/app_constants.dart';
 import 'package:noel_raffle/core/di/injection.dart';
+import 'package:noel_raffle/core/l10n/raffle_texts.dart';
 import 'package:noel_raffle/domain/entities/draw_assignment.dart';
 import 'package:noel_raffle/domain/entities/raffle.dart';
+import 'package:noel_raffle/domain/repositories/reminder_scheduler.dart';
 import 'package:noel_raffle/domain/usecases/get_raffle_history.dart';
+import 'package:noel_raffle/domain/usecases/schedule_reminder.dart';
 import 'package:noel_raffle/l10n/app_localizations.dart';
 import 'package:noel_raffle/presentation/screens/home/home_screen.dart';
 import 'package:noel_raffle/presentation/screens/raffle_result/raffle_result_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'fakes/recording_reminders.dart';
 
 void main() {
   late AppLocalizations l10n;
@@ -276,5 +281,55 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Ayşe'), findsOneWidget);
     expect(find.text(l10n.participantCount(2)), findsOneWidget);
+  });
+
+  testWidgets('sets a gift day with a reminder', (WidgetTester tester) async {
+    final RecordingReminders reminders = RecordingReminders(allowed: false);
+    sl
+      ..unregister<ReminderScheduler>()
+      ..registerSingleton<ReminderScheduler>(reminders);
+    await bootToHome(tester);
+    await tapText(tester, l10n.newYearRaffle);
+    await tester.enterText(
+      find.widgetWithText(TextField, l10n.raffleTitleHint),
+      'Aile',
+    );
+
+    // The date picker opens a week ahead.
+    await tapText(tester, l10n.giftDayOptional);
+    await tapText(
+      tester,
+      MaterialLocalizations.of(tester.element(find.byType(DatePickerDialog)))
+          .okButtonLabel,
+    );
+    final DateTime now = DateTime.now();
+    final DateTime day = DateTime(now.year, now.month, now.day + 7);
+    expect(find.text(giftDayLabel(l10n, day)), findsOneWidget);
+
+    // Without notification permission the reminder stays off and says why.
+    await tapText(tester, l10n.remindMe);
+    expect(find.text(l10n.notificationsOff), findsOneWidget);
+    reminders.allowed = true;
+    await tapText(tester, l10n.remindMe);
+    expect(find.text(l10n.notificationsOff), findsNothing);
+
+    await tapButton(tester, l10n.next);
+    for (final String name in <String>['Ayşe', 'Burak', 'Cem']) {
+      await addParticipant(tester, name);
+    }
+    await tapButton(tester, l10n.startRaffle);
+
+    expect(find.text(l10n.reminderOn), findsOneWidget);
+    expect(find.text(giftDayLabel(l10n, day)), findsOneWidget);
+    final Raffle saved = (await sl<GetRaffleHistory>()()).single;
+    expect(saved.eventDate, day);
+    expect(
+      reminders.scheduled[saved.id]?.at,
+      ScheduleReminder.reminderTime(day, DateTime.now()),
+    );
+    expect(
+      reminders.scheduled[saved.id]?.body,
+      l10n.reminderBody(giftDayLabel(l10n, day)),
+    );
   });
 }

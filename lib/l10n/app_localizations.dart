@@ -975,6 +975,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Drawing…'**
   String get drawing;
+
+  /// No description provided for @giftDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift day'**
+  String get giftDay;
+
+  /// No description provided for @giftDayOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift day (optional)'**
+  String get giftDayOptional;
+
+  /// No description provided for @giftDayHint.
+  ///
+  /// In en, this message translates to:
+  /// **'When the gifts are handed out'**
+  String get giftDayHint;
+
+  /// No description provided for @clearDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove date'**
+  String get clearDate;
+
+  /// No description provided for @remindMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me the day before'**
+  String get remindMe;
+
+  /// No description provided for @remindMeInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'A notification on this phone'**
+  String get remindMeInfo;
+
+  /// No description provided for @notificationsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off for this app. Turn them on in your phone\'s settings to get a reminder.'**
+  String get notificationsOff;
+
+  /// No description provided for @reminderOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder on'**
+  String get reminderOn;
+
+  /// No description provided for @reminderChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get reminderChannel;
+
+  /// No description provided for @reminderChannelInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders before a gift day'**
+  String get reminderChannelInfo;
+
+  /// No description provided for @reminderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift day: {date}. Is your gift ready? 🎁'**
+  String reminderBody(String date);
+
+  /// No description provided for @shareDateLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift day: {date}'**
+  String shareDateLine(String date);
 }
 
 class _AppLocalizationsDelegate

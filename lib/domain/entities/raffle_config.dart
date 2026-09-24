@@ -8,6 +8,8 @@ class RaffleConfig extends Equatable {
     required this.title,
     required this.type,
     this.note = '',
+    this.eventDate,
+    this.remind = false,
   });
 
   final String title;
@@ -17,6 +19,12 @@ class RaffleConfig extends Equatable {
   /// (e.g. the gift budget or when the gifts are exchanged).
   final String note;
 
+  /// The day the gifts are handed out, as a local date without a time.
+  final DateTime? eventDate;
+
+  /// Whether this device reminds about [eventDate] with a notification.
+  final bool remind;
+
   @override
-  List<Object?> get props => <Object?>[title, type, note];
+  List<Object?> get props => <Object?>[title, type, note, eventDate, remind];
 }

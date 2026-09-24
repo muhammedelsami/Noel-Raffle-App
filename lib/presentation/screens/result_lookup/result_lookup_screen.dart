@@ -152,6 +152,7 @@ class _LookupOutcome extends StatelessWidget {
             match: result.match,
             matchWish: result.matchWish,
             note: result.note,
+            eventDate: result.eventDate,
           ),
         ],
       ),

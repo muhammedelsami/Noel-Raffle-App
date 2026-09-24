@@ -42,10 +42,15 @@ service cloud.firestore {
       return value is string && value.size() <= max;
     }
 
+    function isDay(value) {
+      // A calendar day as stored by DateOnly in lib/data/models.
+      return value is string && value.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$');
+    }
+
     function isValidResult(data) {
       return data.keys().hasOnly([
           'title', 'note', 'type', 'participantName', 'match', 'matchWish',
-          'raffleId', 'ownerUid', 'createdAt'])
+          'eventDate', 'raffleId', 'ownerUid', 'createdAt'])
         && data.keys().hasAll([
           'title', 'type', 'participantName', 'raffleId', 'ownerUid',
           'createdAt'])
@@ -60,6 +65,7 @@ service cloud.firestore {
         && (!('match' in data) || data.match == null
             || isShortString(data.match, 100))
         && (!('matchWish' in data) || isShortString(data.matchWish, 300))
+        && (!('eventDate' in data) || isDay(data.eventDate))
         && isShortString(data.raffleId, 40);
     }
 
