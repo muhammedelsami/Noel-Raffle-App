@@ -68,8 +68,8 @@ writes every image for all three languages, plus the project README showcase
 
 ## Notes
 
-- The listing does not mention online result codes: `lib/firebase_options.dart` is still the
-  placeholder, so that feature is hidden in this build. Add it to the descriptions once Firebase
-  is configured.
+- The listing does not mention online result codes. Builds without a configured
+  `lib/firebase_options.dart` hide that feature. Add it to the descriptions once release builds
+  ship with Firebase.
 - Claims in the texts match the app: the draw runs offline on the device, no account is needed,
   nobody draws their own name, and each person wins at most one gift.

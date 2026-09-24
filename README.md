@@ -52,11 +52,12 @@ and adds online result codes.
 
 ```bash
 flutter pub get
+cp lib/firebase_options.dart.example lib/firebase_options.dart   # offline placeholder
 flutter run
 ```
 
-The app runs fully offline as is. The online features stay hidden until Firebase
-is configured.
+The app runs fully offline with the placeholder. The online features stay hidden until
+Firebase is configured.
 
 ## Firebase setup (optional)
 
@@ -66,12 +67,19 @@ billing account is needed.
 1. Create a project in the [Firebase console](https://console.firebase.google.com/).
 2. **Authentication → Sign-in method:** enable **Anonymous**.
 3. **Firestore Database:** create a database (production mode).
-4. Connect the app. This overwrites the placeholder `lib/firebase_options.dart` and adds
-   the platform config files:
+4. Connect the app. This writes `lib/firebase_options.dart` and the platform config files:
    ```bash
    dart pub global activate flutterfire_cli
-   flutterfire configure
+   flutterfire configure --platforms=android,ios
    ```
+   These files are **not committed** (see `.gitignore`), and neither is `.firebaserc`. Each
+   machine runs `flutterfire configure` itself. The Dart options are enough to start Firebase,
+   so after configuring, keep these repository files as they are:
+   - `firebase.json`: remove the `flutter` section the command adds (it lists app IDs).
+   - `ios/Runner.xcodeproj/project.pbxproj`: undo the `GoogleService-Info.plist` reference,
+     otherwise iOS builds fail on machines without the file.
+   - `android/app/build.gradle`: keep the conditional `google-services` plugin instead of the
+     one the command adds to the `plugins` block.
 5. Deploy the security rules from `firebase/firestore.rules`:
    ```bash
    npm install -g firebase-tools

@@ -26,7 +26,7 @@ flutter test test/domain/raffle_drawer_test.dart       # single test file
 flutter test --plain-name 'boots to splash'            # single test by name
 flutter gen-l10n                      # regenerate localizations from lib/l10n/*.arb
 dart run flutter_launcher_icons:main  # regenerate app icons from icons/app_icon*.png
-flutterfire configure                 # connect a Firebase project (overwrites lib/firebase_options.dart)
+flutterfire configure                 # connect a Firebase project (writes the gitignored lib/firebase_options.dart)
 firebase deploy --only firestore:rules  # deploy firebase/firestore.rules
 flutter test Production/tool/store_assets.dart  # regenerate the Play Store artwork (see Production/README.md)
 ```
@@ -77,6 +77,10 @@ still the placeholder or init fails. That flag goes to `configureDependencies(cl
 When it is off, `OnlineRaffleRepositoryImpl(null)` reports `isAvailable == false` and throws
 `CloudUnavailableException`. The UI checks `isAvailable` on the relevant use case
 (`LookupResult`, `PublishRaffle`, `GetGlobalStatistics`) to hide online features.
+- `lib/firebase_options.dart`, `google-services.json`, `GoogleService-Info.plist` and
+  `.firebaserc` are gitignored and must never be committed. A fresh clone copies
+  `lib/firebase_options.dart.example` or runs `flutterfire configure` (see README for the files
+  to restore afterwards).
 - `results/{code}`: one participant's result, readable only by its code. Emails are never
   uploaded.
 - `stats/global`: counters incremented best-effort after each draw (fire-and-forget; never
