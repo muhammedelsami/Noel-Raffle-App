@@ -537,4 +537,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get drawnWith => 'Drawn with Noel Raffle';
+
+  @override
+  String get drawing => 'Drawing…';
 }

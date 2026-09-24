@@ -548,4 +548,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get drawnWith => 'سُحبت عبر Noel Raffle';
+
+  @override
+  String get drawing => 'جارٍ السحب…';
 }

@@ -345,5 +345,6 @@
   "resultCard": "Result card",
   "yourCode": "Your personal code",
   "cardCodeHint": "Open Noel Raffle and enter it under \"View my result\".",
-  "drawnWith": "Drawn with Noel Raffle"
+  "drawnWith": "Drawn with Noel Raffle",
+  "drawing": "Drawing…"
 }
