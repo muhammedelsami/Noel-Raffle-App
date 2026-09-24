@@ -47,35 +47,24 @@ dev_dependencies:
   fake_cloud_firestore: ^4.3.0
   firebase_auth_mocks: ^0.15.2
 
+# App icons are rendered from the in-app BrandMark painter.
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "icons/noelapplogo.jpeg"
+  image_path: "icons/app_icon.png"
+  adaptive_icon_background: "icons/app_icon_background.png"
+  adaptive_icon_foreground: "icons/app_icon_foreground.png"
 
 flutter:
   uses-material-design: true
   generate: true
 
   assets:
-    - assets/images/gift-hand.png
-    - assets/images/logo.png
-    - assets/images/background.jpg
     - assets/images/gift-raffle.png
-    - assets/images/logo2.png
-    - assets/images/logo3.png
-    - assets/images/menu.jpg
-    - assets/images/Vector.png
+    - assets/images/gift-hand.png
 
   fonts:
-    - family: MountainsofChristmas
-      fonts:
-        - asset: assets/fonts/MountainsofChristmas-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/MountainsofChristmas-Regular.ttf
-          weight: 400
+    # Variable font (wght 200–1000) with Latin, Turkish and Arabic glyphs.
     - family: Cairo
       fonts:
         - asset: assets/fonts/Cairo.ttf
-    - family: DancingScript
-      fonts:
-        - asset: assets/fonts/DancingScript.ttf

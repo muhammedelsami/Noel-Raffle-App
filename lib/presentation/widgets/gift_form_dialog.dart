@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../core/constants/app_constants.dart';
 import '../../core/l10n/l10n_extensions.dart';
+import '../../core/theme/app_dimens.dart';
 import '../../core/utils/validators.dart';
 import '../../domain/entities/gift.dart';
 import 'app_text_field.dart';
-import 'form_error_text.dart';
-import 'primary_button.dart';
+import 'form_dialog.dart';
 
 /// Shows the add/edit gift form and resolves to the saved [Gift], or `null`
 /// if dismissed.
@@ -59,47 +60,36 @@ class _GiftFormState extends State<_GiftForm> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      insetPadding: AppConstants.dialogInset,
-      title: Text(context.l10n.addGift, textAlign: TextAlign.center),
-      content: SizedBox(
-        width: double.maxFinite,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              AppTextField(
-                controller: _name,
-                label: context.l10n.giftName,
-                autofocus: true,
-                maxLength: AppConstants.maxNameLength,
-                textCapitalization: TextCapitalization.sentences,
-                textInputAction: TextInputAction.next,
-                onSubmitted: (_) => _countFocus.requestFocus(),
-              ),
-              const SizedBox(height: 12),
-              AppTextField(
-                controller: _count,
-                label: context.l10n.giftCount,
-                focusNode: _countFocus,
-                keyboardType: TextInputType.number,
-                maxLength: 3,
-                textInputAction: TextInputAction.done,
-                onSubmitted: (_) => _submit(),
-              ),
-              if (_error != null) FormErrorText(_error!),
-            ],
-          ),
+    final bool isNew = widget.initial == null;
+    return FormDialog(
+      title: isNew ? context.l10n.newGift : context.l10n.editGift,
+      submitLabel: isNew ? context.l10n.add : context.l10n.save,
+      onSubmit: _submit,
+      error: _error,
+      children: <Widget>[
+        AppTextField(
+          controller: _name,
+          label: context.l10n.giftName,
+          icon: Icons.card_giftcard_rounded,
+          autofocus: true,
+          maxLength: AppConstants.maxNameLength,
+          textCapitalization: TextCapitalization.sentences,
+          textInputAction: TextInputAction.next,
+          onSubmitted: (_) => _countFocus.requestFocus(),
         ),
-      ),
-      actions: <Widget>[
-        SizedBox(
-          width: double.infinity,
-          child: PrimaryButton(
-            label:
-                widget.initial == null ? context.l10n.add : context.l10n.save,
-            onPressed: _submit,
-          ),
+        const SizedBox(height: AppSpacing.md),
+        AppTextField(
+          controller: _count,
+          label: context.l10n.giftCount,
+          icon: Icons.tag_rounded,
+          focusNode: _countFocus,
+          keyboardType: TextInputType.number,
+          maxLength: AppConstants.maxGiftCountDigits,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          textInputAction: TextInputAction.done,
+          onSubmitted: (_) => _submit(),
         ),
       ],
     );

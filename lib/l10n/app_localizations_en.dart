@@ -12,10 +12,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'Noel Raffle';
 
   @override
-  String get homeTitle => 'Gift Raffle';
+  String get homeTitle => 'Start a new raffle';
 
   @override
-  String get homeSubtitle => 'Choose a raffle type';
+  String get homeSubtitle => 'Pick the raffle type that suits your event.';
 
   @override
   String get newYearRaffle => 'New Year Raffle';
@@ -24,22 +24,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get giftRaffle => 'Gift Raffle';
 
   @override
-  String get statistics => 'Our Statistics';
+  String get statistics => 'Statistics';
 
   @override
-  String get about => 'About Us';
+  String get about => 'About us';
 
   @override
-  String get rateUs => 'Rate Us';
+  String get rateUs => 'Rate us';
 
   @override
-  String get website => 'Our Website';
+  String get website => 'Our website';
 
   @override
-  String get contribute => 'Contribute';
-
-  @override
-  String get close => 'Close';
+  String get contribute => 'Contribute on GitHub';
 
   @override
   String get theme => 'Theme';
@@ -57,19 +54,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language => 'Language';
 
   @override
-  String get raffleTitleHint => 'Enter Raffle Title*';
+  String get raffleTitleHint => 'Raffle title';
 
   @override
-  String get createNewYearRaffle => 'Create New Year Raffle';
+  String get addParticipant => 'Add participant';
 
   @override
-  String get createGiftRaffle => 'Create Gift Raffle';
-
-  @override
-  String get addParticipant => 'Add New Participant';
-
-  @override
-  String get newParticipant => 'New Participant';
+  String get newParticipant => 'New participant';
 
   @override
   String get name => 'Full name';
@@ -84,19 +75,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get next => 'Continue';
 
   @override
-  String get addGift => 'Add New Gift';
+  String get addGift => 'Add gift';
 
   @override
-  String get giftName => 'Gift Name';
+  String get giftName => 'Gift name';
 
   @override
-  String get giftCount => 'Gift Count';
+  String get giftCount => 'Quantity';
 
   @override
-  String get startRaffle => 'Start Raffle';
+  String get startRaffle => 'Start raffle';
 
   @override
-  String get statTotalRaffle => 'Raffles';
+  String get statTotalRaffle => 'Raffles in total';
 
   @override
   String get statNewYearRaffle => 'New Year Raffle';
@@ -105,20 +96,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statGiftRaffle => 'Gift Raffle';
 
   @override
-  String get statGiftCount => 'Gift Count';
+  String get statGiftCount => 'Gifts';
 
   @override
-  String get statParticipantCount => 'Participant Count';
+  String get statParticipantCount => 'Participants';
 
   @override
   String get aboutText =>
       'A new year is a fresh start. It is time to leave the past behind and step into a tomorrow full of new hopes. Look ahead with hope, discover the beauties of life and share them with your loved ones. May the new year bring you happiness, health and success! 🌟 🎉';
 
   @override
-  String get mobileDevelopers => 'Mobile Developers';
+  String get mobileDevelopers => 'Mobile developers';
 
   @override
-  String get backendDevelopers => 'BackEnd Developers';
+  String get backendDevelopers => 'Backend developers';
 
   @override
   String get warning => 'Warning';
@@ -152,10 +143,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get genericError => 'An error occurred. Please try again.';
 
   @override
-  String get history => 'Past Raffles';
+  String get history => 'Past raffles';
 
   @override
-  String get viewMyResult => 'View My Result';
+  String get viewMyResult => 'View my result';
 
   @override
   String get raffleNoteHint => 'Note for participants (optional)';
@@ -185,7 +176,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get globalStatsError => 'Global statistics are unavailable right now.';
 
   @override
-  String get retry => 'Try Again';
+  String get retry => 'Try again';
 
   @override
   String get resultSecretInfo =>
@@ -240,7 +231,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noPrizeShort => 'No prize';
 
   @override
-  String get shareResults => 'Share Results';
+  String get shareResults => 'Share results';
 
   @override
   String get share => 'Share';
@@ -249,11 +240,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sendByEmail => 'Send by email';
 
   @override
-  String get publishOnline => 'Create Online Codes';
+  String get publishOnline => 'Create online codes';
 
   @override
   String get publishInfo =>
-      'A personal code is created for each participant. Participants enter it under \"View My Result\" in the Noel Raffle app and see only their own result.';
+      'A personal code is created for each participant. Participants enter it under \"View my result\" in the Noel Raffle app and see only their own result.';
 
   @override
   String get codesReady =>
@@ -285,7 +276,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String shareCodeMessage(String title, String name, String code, String url) {
-    return '🎄 $title\nHi $name! To see your raffle result, open the Noel Raffle app and enter this code under \"View My Result\": $code\n\nApp: $url';
+    return '🎄 $title\nHi $name! To see your raffle result, open the Noel Raffle app and enter this code under \"View my result\": $code\n\nApp: $url';
   }
 
   @override
@@ -341,5 +332,92 @@ class AppLocalizationsEn extends AppLocalizations {
       'Couldn\'t get the result. Check your internet connection and try again.';
 
   @override
-  String get showResult => 'Show Result';
+  String get showResult => 'Show result';
+
+  @override
+  String get newYearRaffleDescription =>
+      'Secret Santa: everyone buys a gift for someone else.';
+
+  @override
+  String get giftRaffleDescription =>
+      'Hand out your gifts to random participants.';
+
+  @override
+  String get lookupDescription =>
+      'Got a code from the organizer? See your result.';
+
+  @override
+  String get quickAccess => 'Quick access';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get more => 'More';
+
+  @override
+  String get support => 'Support us';
+
+  @override
+  String get raffleDetails => 'Raffle details';
+
+  @override
+  String get raffleDetailsInfo =>
+      'Give your raffle a name. You can also leave a note for the participants.';
+
+  @override
+  String stepProgress(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get participantsTitle => 'Participants';
+
+  @override
+  String participantsInfo(int count) {
+    return 'Add at least $count people. Tap a name to edit it.';
+  }
+
+  @override
+  String get participantsEmpty => 'No participants yet';
+
+  @override
+  String get giftsTitle => 'Gifts';
+
+  @override
+  String get giftsInfo =>
+      'Add the gifts to hand out. Each person wins at most one gift.';
+
+  @override
+  String get giftsEmpty => 'No gifts yet';
+
+  @override
+  String get editGift => 'Edit gift';
+
+  @override
+  String get editParticipant => 'Edit participant';
+
+  @override
+  String giftQuantity(int count) {
+    return 'Quantity: $count';
+  }
+
+  @override
+  String giftUnits(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gifts',
+      one: '1 gift',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String revealProgress(int seen, int total) {
+    return '$seen of $total revealed';
+  }
+
+  @override
+  String get newGift => 'New gift';
 }

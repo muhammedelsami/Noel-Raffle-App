@@ -77,10 +77,9 @@ String allResultsMessage(AppLocalizations l10n, Raffle raffle) {
 String _withNote(AppLocalizations l10n, String body, String note) =>
     note.isEmpty ? body : '$body\n\n${l10n.shareNoteLine(note)}';
 
-/// One-line description for history rows: type, date and participant count.
+/// One-line description of a drawn raffle: date and participant count.
 String raffleSummary(AppLocalizations l10n, Raffle raffle) {
   final String date =
       DateFormat.yMMMd(l10n.localeName).add_Hm().format(raffle.createdAt);
-  return '${raffleTypeLabel(l10n, raffle.type)} • $date • '
-      '${l10n.participantCount(raffle.assignments.length)}';
+  return '$date • ${l10n.participantCount(raffle.assignments.length)}';
 }

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
+import '../../core/theme/app_dimens.dart';
+import '../../core/theme/raffle_type_style.dart';
+import '../../core/theme/theme_context.dart';
 import '../../domain/entities/raffle_type.dart';
+import 'icon_badge.dart';
+import 'quote_note.dart';
 
 /// A participant's own result: who they buy a gift for, or which gift they
 /// won. Used when revealing results on the device and after an online lookup.
@@ -23,50 +28,68 @@ class ResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme text = Theme.of(context).textTheme;
-    final ColorScheme scheme = Theme.of(context).colorScheme;
+    final TextTheme text = context.textTheme;
+    final ColorScheme colors = context.colors;
+    final AccentColors accent = type.accentColors(colors);
     final String? match = this.match;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Icon(
-          type.isNewYear ? Icons.redeem_rounded : Icons.card_giftcard_rounded,
-          size: 56,
-          color: scheme.primary,
+        Center(
+          child: IconBadge(
+            icon: match == null ? Icons.sentiment_satisfied_rounded : type.icon,
+            size: 64,
+            circle: true,
+            background: accent.container,
+            foreground: accent.onContainer,
+          ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.lg),
         Text(
           context.l10n.greeting(participantName),
           textAlign: TextAlign.center,
-          style: text.headlineMedium,
+          style: text.headlineSmall,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.lg),
         if (match == null)
           Text(
             context.l10n.noPrize,
             textAlign: TextAlign.center,
-            style: text.titleMedium,
+            style: text.bodyLarge?.copyWith(color: colors.onSurfaceVariant),
           )
-        else ...<Widget>[
-          Text(
-            type.isNewYear ? context.l10n.yourGiftee : context.l10n.yourPrize,
-            textAlign: TextAlign.center,
-            style: text.titleMedium,
+        else
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: accent.container,
+              borderRadius: AppRadius.large,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.xl),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    type.isNewYear
+                        ? context.l10n.yourGiftee
+                        : context.l10n.yourPrize,
+                    textAlign: TextAlign.center,
+                    style: text.labelLarge?.copyWith(color: accent.onContainer),
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  Text(
+                    match,
+                    textAlign: TextAlign.center,
+                    style:
+                        text.headlineLarge?.copyWith(color: accent.onContainer),
+                  ),
+                ],
+              ),
+            ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            match,
-            textAlign: TextAlign.center,
-            style: text.displayMedium?.copyWith(color: scheme.primary),
-          ),
-        ],
         if (note.isNotEmpty) ...<Widget>[
-          const SizedBox(height: 16),
-          Text(
-            note,
-            textAlign: TextAlign.center,
-            style: text.bodyMedium?.copyWith(fontStyle: FontStyle.italic),
-          ),
+          const SizedBox(height: AppSpacing.lg),
+          QuoteNote(note),
         ],
       ],
     );

@@ -109,13 +109,13 @@ abstract class AppLocalizations {
   /// No description provided for @homeTitle.
   ///
   /// In en, this message translates to:
-  /// **'Gift Raffle'**
+  /// **'Start a new raffle'**
   String get homeTitle;
 
   /// No description provided for @homeSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Choose a raffle type'**
+  /// **'Pick the raffle type that suits your event.'**
   String get homeSubtitle;
 
   /// No description provided for @newYearRaffle.
@@ -133,38 +133,32 @@ abstract class AppLocalizations {
   /// No description provided for @statistics.
   ///
   /// In en, this message translates to:
-  /// **'Our Statistics'**
+  /// **'Statistics'**
   String get statistics;
 
   /// No description provided for @about.
   ///
   /// In en, this message translates to:
-  /// **'About Us'**
+  /// **'About us'**
   String get about;
 
   /// No description provided for @rateUs.
   ///
   /// In en, this message translates to:
-  /// **'Rate Us'**
+  /// **'Rate us'**
   String get rateUs;
 
   /// No description provided for @website.
   ///
   /// In en, this message translates to:
-  /// **'Our Website'**
+  /// **'Our website'**
   String get website;
 
   /// No description provided for @contribute.
   ///
   /// In en, this message translates to:
-  /// **'Contribute'**
+  /// **'Contribute on GitHub'**
   String get contribute;
-
-  /// No description provided for @close.
-  ///
-  /// In en, this message translates to:
-  /// **'Close'**
-  String get close;
 
   /// No description provided for @theme.
   ///
@@ -199,31 +193,19 @@ abstract class AppLocalizations {
   /// No description provided for @raffleTitleHint.
   ///
   /// In en, this message translates to:
-  /// **'Enter Raffle Title*'**
+  /// **'Raffle title'**
   String get raffleTitleHint;
-
-  /// No description provided for @createNewYearRaffle.
-  ///
-  /// In en, this message translates to:
-  /// **'Create New Year Raffle'**
-  String get createNewYearRaffle;
-
-  /// No description provided for @createGiftRaffle.
-  ///
-  /// In en, this message translates to:
-  /// **'Create Gift Raffle'**
-  String get createGiftRaffle;
 
   /// No description provided for @addParticipant.
   ///
   /// In en, this message translates to:
-  /// **'Add New Participant'**
+  /// **'Add participant'**
   String get addParticipant;
 
   /// No description provided for @newParticipant.
   ///
   /// In en, this message translates to:
-  /// **'New Participant'**
+  /// **'New participant'**
   String get newParticipant;
 
   /// No description provided for @name.
@@ -253,31 +235,31 @@ abstract class AppLocalizations {
   /// No description provided for @addGift.
   ///
   /// In en, this message translates to:
-  /// **'Add New Gift'**
+  /// **'Add gift'**
   String get addGift;
 
   /// No description provided for @giftName.
   ///
   /// In en, this message translates to:
-  /// **'Gift Name'**
+  /// **'Gift name'**
   String get giftName;
 
   /// No description provided for @giftCount.
   ///
   /// In en, this message translates to:
-  /// **'Gift Count'**
+  /// **'Quantity'**
   String get giftCount;
 
   /// No description provided for @startRaffle.
   ///
   /// In en, this message translates to:
-  /// **'Start Raffle'**
+  /// **'Start raffle'**
   String get startRaffle;
 
   /// No description provided for @statTotalRaffle.
   ///
   /// In en, this message translates to:
-  /// **'Raffles'**
+  /// **'Raffles in total'**
   String get statTotalRaffle;
 
   /// No description provided for @statNewYearRaffle.
@@ -295,13 +277,13 @@ abstract class AppLocalizations {
   /// No description provided for @statGiftCount.
   ///
   /// In en, this message translates to:
-  /// **'Gift Count'**
+  /// **'Gifts'**
   String get statGiftCount;
 
   /// No description provided for @statParticipantCount.
   ///
   /// In en, this message translates to:
-  /// **'Participant Count'**
+  /// **'Participants'**
   String get statParticipantCount;
 
   /// No description provided for @aboutText.
@@ -313,13 +295,13 @@ abstract class AppLocalizations {
   /// No description provided for @mobileDevelopers.
   ///
   /// In en, this message translates to:
-  /// **'Mobile Developers'**
+  /// **'Mobile developers'**
   String get mobileDevelopers;
 
   /// No description provided for @backendDevelopers.
   ///
   /// In en, this message translates to:
-  /// **'BackEnd Developers'**
+  /// **'Backend developers'**
   String get backendDevelopers;
 
   /// No description provided for @warning.
@@ -367,13 +349,13 @@ abstract class AppLocalizations {
   /// No description provided for @history.
   ///
   /// In en, this message translates to:
-  /// **'Past Raffles'**
+  /// **'Past raffles'**
   String get history;
 
   /// No description provided for @viewMyResult.
   ///
   /// In en, this message translates to:
-  /// **'View My Result'**
+  /// **'View my result'**
   String get viewMyResult;
 
   /// No description provided for @raffleNoteHint.
@@ -433,7 +415,7 @@ abstract class AppLocalizations {
   /// No description provided for @retry.
   ///
   /// In en, this message translates to:
-  /// **'Try Again'**
+  /// **'Try again'**
   String get retry;
 
   /// No description provided for @resultSecretInfo.
@@ -529,7 +511,7 @@ abstract class AppLocalizations {
   /// No description provided for @shareResults.
   ///
   /// In en, this message translates to:
-  /// **'Share Results'**
+  /// **'Share results'**
   String get shareResults;
 
   /// No description provided for @share.
@@ -547,13 +529,13 @@ abstract class AppLocalizations {
   /// No description provided for @publishOnline.
   ///
   /// In en, this message translates to:
-  /// **'Create Online Codes'**
+  /// **'Create online codes'**
   String get publishOnline;
 
   /// No description provided for @publishInfo.
   ///
   /// In en, this message translates to:
-  /// **'A personal code is created for each participant. Participants enter it under \"View My Result\" in the Noel Raffle app and see only their own result.'**
+  /// **'A personal code is created for each participant. Participants enter it under \"View my result\" in the Noel Raffle app and see only their own result.'**
   String get publishInfo;
 
   /// No description provided for @codesReady.
@@ -595,7 +577,7 @@ abstract class AppLocalizations {
   /// No description provided for @shareCodeMessage.
   ///
   /// In en, this message translates to:
-  /// **'🎄 {title}\nHi {name}! To see your raffle result, open the Noel Raffle app and enter this code under \"View My Result\": {code}\n\nApp: {url}'**
+  /// **'🎄 {title}\nHi {name}! To see your raffle result, open the Noel Raffle app and enter this code under \"View my result\": {code}\n\nApp: {url}'**
   String shareCodeMessage(String title, String name, String code, String url);
 
   /// No description provided for @shareNoteLine.
@@ -673,8 +655,140 @@ abstract class AppLocalizations {
   /// No description provided for @showResult.
   ///
   /// In en, this message translates to:
-  /// **'Show Result'**
+  /// **'Show result'**
   String get showResult;
+
+  /// No description provided for @newYearRaffleDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Secret Santa: everyone buys a gift for someone else.'**
+  String get newYearRaffleDescription;
+
+  /// No description provided for @giftRaffleDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Hand out your gifts to random participants.'**
+  String get giftRaffleDescription;
+
+  /// No description provided for @lookupDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Got a code from the organizer? See your result.'**
+  String get lookupDescription;
+
+  /// No description provided for @quickAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick access'**
+  String get quickAccess;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @more.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get more;
+
+  /// No description provided for @support.
+  ///
+  /// In en, this message translates to:
+  /// **'Support us'**
+  String get support;
+
+  /// No description provided for @raffleDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Raffle details'**
+  String get raffleDetails;
+
+  /// No description provided for @raffleDetailsInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Give your raffle a name. You can also leave a note for the participants.'**
+  String get raffleDetailsInfo;
+
+  /// No description provided for @stepProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String stepProgress(int current, int total);
+
+  /// No description provided for @participantsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Participants'**
+  String get participantsTitle;
+
+  /// No description provided for @participantsInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least {count} people. Tap a name to edit it.'**
+  String participantsInfo(int count);
+
+  /// No description provided for @participantsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No participants yet'**
+  String get participantsEmpty;
+
+  /// No description provided for @giftsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Gifts'**
+  String get giftsTitle;
+
+  /// No description provided for @giftsInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the gifts to hand out. Each person wins at most one gift.'**
+  String get giftsInfo;
+
+  /// No description provided for @giftsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No gifts yet'**
+  String get giftsEmpty;
+
+  /// No description provided for @editGift.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit gift'**
+  String get editGift;
+
+  /// No description provided for @editParticipant.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit participant'**
+  String get editParticipant;
+
+  /// No description provided for @giftQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity: {count}'**
+  String giftQuantity(int count);
+
+  /// No description provided for @giftUnits.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 gift} other{{count} gifts}}'**
+  String giftUnits(int count);
+
+  /// No description provided for @revealProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{seen} of {total} revealed'**
+  String revealProgress(int seen, int total);
+
+  /// No description provided for @newGift.
+  ///
+  /// In en, this message translates to:
+  /// **'New gift'**
+  String get newGift;
 }
 
 class _AppLocalizationsDelegate
