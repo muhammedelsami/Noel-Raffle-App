@@ -31,8 +31,20 @@ void main() {
     l10n = AppLocalizations.of(tester.element(find.byType(HomeScreen)));
   }
 
+  /// Taps the button labelled [label]: any Material button, including the
+  /// icon variants that `find.widgetWithText` would miss.
   Future<void> tapButton(WidgetTester tester, String label) async {
-    await tester.tap(find.widgetWithText(ElevatedButton, label));
+    await tester.tap(
+      find.ancestor(
+        of: find.text(label),
+        matching: find.byWidgetPredicate((Widget w) => w is ButtonStyleButton),
+      ),
+    );
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> tapText(WidgetTester tester, String text) async {
+    await tester.tap(find.text(text));
     await tester.pumpAndSettle();
   }
 
@@ -52,12 +64,18 @@ void main() {
       (WidgetTester tester) async {
     await bootToHome(tester);
 
-    await tapButton(tester, l10n.newYearRaffle);
+    await tapText(tester, l10n.newYearRaffle);
+    // A missing title is reported on the field itself.
+    await tapButton(tester, l10n.next);
+    expect(find.text(l10n.enterTitle), findsOneWidget);
     await tester.enterText(
       find.widgetWithText(TextField, l10n.raffleTitleHint),
       'Ofis',
     );
-    await tapButton(tester, l10n.createNewYearRaffle);
+    await tester.pump();
+    expect(find.text(l10n.enterTitle), findsNothing);
+    await tapButton(tester, l10n.next);
+    expect(find.text(l10n.participantsEmpty), findsOneWidget);
 
     // Too few people: the draw is refused.
     await addParticipant(tester, 'Ayşe');
@@ -83,14 +101,13 @@ void main() {
     await tester.tap(find.text('Burak'));
     await tester.pumpAndSettle();
     expect(find.text(l10n.revealTitle('Burak')), findsOneWidget);
-    await tester.tap(find.widgetWithText(TextButton, l10n.reveal));
-    await tester.pumpAndSettle();
+    await tapButton(tester, l10n.reveal);
     expect(find.text(l10n.greeting('Burak')), findsOneWidget);
     expect(find.text(l10n.yourGiftee), findsOneWidget);
 
-    await tester.tap(find.text(l10n.hide));
-    await tester.pumpAndSettle();
+    await tapButton(tester, l10n.hide);
     expect(find.text(l10n.seen), findsOneWidget);
+    expect(find.text(l10n.revealProgress(1, 3)), findsOneWidget);
     expect(find.text(l10n.publishOnline), findsNothing);
 
     // The raffle was saved, and going back lands on the home screen.
@@ -105,12 +122,12 @@ void main() {
       (WidgetTester tester) async {
     await bootToHome(tester);
 
-    await tapButton(tester, l10n.giftRaffle);
+    await tapText(tester, l10n.giftRaffle);
     await tester.enterText(
       find.widgetWithText(TextField, l10n.raffleTitleHint),
       'Yılbaşı Partisi',
     );
-    await tapButton(tester, l10n.createGiftRaffle);
+    await tapButton(tester, l10n.next);
     for (final String name in <String>['Ayşe', 'Burak', 'Cem']) {
       await addParticipant(tester, name);
     }
@@ -121,6 +138,7 @@ void main() {
         find.widgetWithText(TextField, l10n.giftName), 'Kupa');
     await tester.enterText(find.widgetWithText(TextField, l10n.giftCount), '2');
     await tapButton(tester, l10n.add);
+    expect(find.text(l10n.giftUnits(2)), findsOneWidget);
     await tapButton(tester, l10n.startRaffle);
 
     // Gift results are public: two winners and one without a prize.
@@ -131,9 +149,8 @@ void main() {
 
     await tester.pageBack();
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.menu_rounded));
-    await tester.pumpAndSettle();
-    await tapButton(tester, l10n.history);
+    await tester.scrollUntilVisible(find.text(l10n.history), 200);
+    await tapText(tester, l10n.history);
     expect(find.text('Yılbaşı Partisi'), findsOneWidget);
   });
 }

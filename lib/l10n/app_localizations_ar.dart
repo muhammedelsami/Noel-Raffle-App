@@ -12,10 +12,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appName => 'Noel Raffle';
 
   @override
-  String get homeTitle => 'قرعة الهدايا';
+  String get homeTitle => 'ابدأ قرعة جديدة';
 
   @override
-  String get homeSubtitle => 'اختر نوع القرعة';
+  String get homeSubtitle => 'اختر نوع القرعة المناسب لمناسبتك.';
 
   @override
   String get newYearRaffle => 'قرعة رأس السنة';
@@ -24,7 +24,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get giftRaffle => 'قرعة الهدايا';
 
   @override
-  String get statistics => 'إحصاءاتنا';
+  String get statistics => 'الإحصاءات';
 
   @override
   String get about => 'من نحن';
@@ -36,10 +36,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get website => 'موقعنا';
 
   @override
-  String get contribute => 'ساهم';
-
-  @override
-  String get close => 'إغلاق';
+  String get contribute => 'ساهم على GitHub';
 
   @override
   String get theme => 'السمة';
@@ -57,16 +54,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get language => 'اللغة';
 
   @override
-  String get raffleTitleHint => 'أدخل عنوان القرعة*';
+  String get raffleTitleHint => 'عنوان القرعة';
 
   @override
-  String get createNewYearRaffle => 'إنشاء قرعة رأس السنة';
-
-  @override
-  String get createGiftRaffle => 'إنشاء قرعة الهدايا';
-
-  @override
-  String get addParticipant => 'إضافة مشارك جديد';
+  String get addParticipant => 'إضافة مشارك';
 
   @override
   String get newParticipant => 'مشارك جديد';
@@ -84,19 +75,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get next => 'متابعة';
 
   @override
-  String get addGift => 'إضافة هدية جديدة';
+  String get addGift => 'إضافة هدية';
 
   @override
   String get giftName => 'اسم الهدية';
 
   @override
-  String get giftCount => 'عدد الهدايا';
+  String get giftCount => 'الكمية';
 
   @override
   String get startRaffle => 'ابدأ القرعة';
 
   @override
-  String get statTotalRaffle => 'القرعات';
+  String get statTotalRaffle => 'إجمالي القرعات';
 
   @override
   String get statNewYearRaffle => 'قرعة رأس السنة';
@@ -105,10 +96,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get statGiftRaffle => 'قرعة الهدايا';
 
   @override
-  String get statGiftCount => 'عدد الهدايا';
+  String get statGiftCount => 'الهدايا';
 
   @override
-  String get statParticipantCount => 'عدد المشاركين';
+  String get statParticipantCount => 'المشاركون';
 
   @override
   String get aboutText =>
@@ -152,7 +143,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get genericError => 'حدث خطأ. يرجى المحاولة مرة أخرى.';
 
   @override
-  String get history => 'السحوبات السابقة';
+  String get history => 'القرعات السابقة';
 
   @override
   String get viewMyResult => 'اعرض نتيجتي';
@@ -345,4 +336,94 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get showResult => 'اعرض النتيجة';
+
+  @override
+  String get newYearRaffleDescription =>
+      'بابا نويل السري: يشتري كل شخص هدية لشخص آخر.';
+
+  @override
+  String get giftRaffleDescription =>
+      'وزّع هداياك على مشاركين يُختارون عشوائيًا.';
+
+  @override
+  String get lookupDescription => 'هل وصلك رمز من المنظّم؟ اعرض نتيجتك.';
+
+  @override
+  String get quickAccess => 'وصول سريع';
+
+  @override
+  String get settings => 'الإعدادات';
+
+  @override
+  String get more => 'المزيد';
+
+  @override
+  String get support => 'ادعمنا';
+
+  @override
+  String get raffleDetails => 'تفاصيل القرعة';
+
+  @override
+  String get raffleDetailsInfo =>
+      'أعطِ القرعة اسمًا، ويمكنك أيضًا ترك ملاحظة للمشاركين.';
+
+  @override
+  String stepProgress(int current, int total) {
+    return 'الخطوة $current من $total';
+  }
+
+  @override
+  String get participantsTitle => 'المشاركون';
+
+  @override
+  String participantsInfo(int count) {
+    return 'أضف $count أشخاص على الأقل. اضغط على أي اسم لتعديله.';
+  }
+
+  @override
+  String get participantsEmpty => 'لا يوجد مشاركون بعد';
+
+  @override
+  String get giftsTitle => 'الهدايا';
+
+  @override
+  String get giftsInfo =>
+      'أضف الهدايا التي ستوزَّع. يفوز كل شخص بهدية واحدة على الأكثر.';
+
+  @override
+  String get giftsEmpty => 'لا توجد هدايا بعد';
+
+  @override
+  String get editGift => 'تعديل الهدية';
+
+  @override
+  String get editParticipant => 'تعديل المشارك';
+
+  @override
+  String giftQuantity(int count) {
+    return 'الكمية: $count';
+  }
+
+  @override
+  String giftUnits(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count هدية',
+      many: '$count هدية',
+      few: '$count هدايا',
+      two: 'هديتان',
+      one: 'هدية واحدة',
+      zero: 'لا هدايا',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String revealProgress(int seen, int total) {
+    return 'كشف $seen من $total';
+  }
+
+  @override
+  String get newGift => 'هدية جديدة';
 }

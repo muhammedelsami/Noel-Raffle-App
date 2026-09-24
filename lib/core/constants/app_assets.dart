@@ -2,11 +2,12 @@
 abstract final class AppAssets {
   static const String _images = 'assets/images';
 
-  static const String background = '$_images/background.jpg';
-  static const String logo = '$_images/logo.png';
-  static const String logoSmall = '$_images/logo3.png';
-  static const String newYearLogo = '$_images/logo2.png';
-  static const String giftRaffle = '$_images/gift-raffle.png';
+  /// 3D gift box, the new-year raffle artwork.
+  static const String giftBox = '$_images/gift-raffle.png';
+
+  /// 3D hand holding a gift, the gift raffle artwork.
   static const String giftHand = '$_images/gift-hand.png';
-  static const String menuIcon = '$_images/Vector.png';
+
+  /// Every illustration, precached during the splash so screens never pop in.
+  static const List<String> illustrations = <String>[giftBox, giftHand];
 }

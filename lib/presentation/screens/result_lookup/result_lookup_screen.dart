@@ -4,13 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/l10n_extensions.dart';
+import '../../../core/theme/app_dimens.dart';
+import '../../../core/theme/theme_context.dart';
 import '../../../domain/entities/shared_result.dart';
 import '../../cubit/result_lookup/result_lookup_cubit.dart';
-import '../../widgets/app_background.dart';
-import '../../widgets/app_logo_header.dart';
+import '../../widgets/app_button.dart';
+import '../../widgets/app_card.dart';
 import '../../widgets/app_text_field.dart';
-import '../../widgets/glass_card.dart';
-import '../../widgets/primary_button.dart';
+import '../../widgets/icon_badge.dart';
+import '../../widgets/info_banner.dart';
+import '../../widgets/page_scaffold.dart';
 import '../../widgets/result_card.dart';
 
 /// Lets a participant see their own result with the personal code the
@@ -50,61 +53,70 @@ class _ResultLookupViewState extends State<_ResultLookupView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(),
-      body: AppBackground(
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(AppConstants.pagePadding),
-            child: BlocBuilder<ResultLookupCubit, ResultLookupState>(
-              builder: (BuildContext context, ResultLookupState state) {
-                return Column(
-                  children: <Widget>[
-                    const AppLogoHeader(),
-                    GlassCard(
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            context.l10n.lookupInfo,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          const SizedBox(height: 16),
-                          AppTextField(
-                            controller: _codeController,
-                            label: context.l10n.codeHint,
-                            maxLength: 12,
-                            textCapitalization: TextCapitalization.characters,
-                            keyboardType: TextInputType.visiblePassword,
-                            textInputAction: TextInputAction.search,
-                            onSubmitted: (_) => _lookup(),
-                          ),
-                          const SizedBox(height: 16),
-                          PrimaryButton(
-                            label: context.l10n.showResult,
-                            icon: Icons.search_rounded,
-                            loading: state.isLoading,
-                            onPressed: _lookup,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    _LookupOutcome(state: state),
-                  ],
-                );
-              },
+    final ColorScheme colors = context.colors;
+    return PageScaffold(
+      title: context.l10n.viewMyResult,
+      body: BlocBuilder<ResultLookupCubit, ResultLookupState>(
+        builder: (BuildContext context, ResultLookupState state) {
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.page,
+              AppSpacing.lg,
+              AppSpacing.page,
+              AppSpacing.xl,
             ),
-          ),
-        ),
+            children: <Widget>[
+              Center(
+                child: IconBadge(
+                  icon: Icons.key_rounded,
+                  size: 64,
+                  circle: true,
+                  background: colors.tertiaryContainer,
+                  foreground: colors.onTertiaryContainer,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              Text(
+                context.l10n.lookupInfo,
+                textAlign: TextAlign.center,
+                style: context.textTheme.titleMedium,
+              ),
+              const SizedBox(height: AppSpacing.xl),
+              AppTextField(
+                controller: _codeController,
+                label: context.l10n.codeHint,
+                icon: Icons.password_rounded,
+                maxLength: AppConstants.maxCodeLength,
+                textCapitalization: TextCapitalization.characters,
+                keyboardType: TextInputType.visiblePassword,
+                textInputAction: TextInputAction.search,
+                onSubmitted: (_) => _lookup(),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              AppButton(
+                label: context.l10n.showResult,
+                icon: Icons.search_rounded,
+                loading: state.isLoading,
+                onPressed: _lookup,
+              ),
+              const SizedBox(height: AppSpacing.xl),
+              AnimatedSwitcher(
+                duration: AppMotion.medium,
+                child: _LookupOutcome(
+                  key: ValueKey<ResultLookupStatus>(state.status),
+                  state: state,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 }
 
 class _LookupOutcome extends StatelessWidget {
-  const _LookupOutcome({required this.state});
+  const _LookupOutcome({super.key, required this.state});
 
   final ResultLookupState state;
 
@@ -117,29 +129,23 @@ class _LookupOutcome extends StatelessWidget {
       _ => null,
     };
     if (error != null) {
-      return GlassCard(
-        child: Text(
-          error,
-          textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium
-              ?.copyWith(color: Theme.of(context).colorScheme.error),
-        ),
-      );
+      return InfoBanner(tone: BannerTone.error, message: error);
     }
 
     final SharedResult? result = state.result;
     if (result == null) return const SizedBox.shrink();
-    return GlassCard(
+    return AppCard(
+      padding: const EdgeInsets.all(AppSpacing.xl),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Text(
             result.title,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: context.textTheme.titleMedium
+                ?.copyWith(color: context.colors.onSurfaceVariant),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.lg),
           ResultCard(
             type: result.type,
             participantName: result.participantName,
