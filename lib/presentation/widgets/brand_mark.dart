@@ -171,8 +171,8 @@ class BrandMarkPainter extends CustomPainter {
       ..drawRect(box(0.455, 0.4, 0.545, 0.8), gold)
       ..drawCircle(Offset(0.5 * s, 0.39 * s), s * 0.045, gold);
 
-    _sparkle(canvas, Offset(0.79 * s, 0.22 * s), s * 0.075, gold);
-    _sparkle(
+    paintSparkle(canvas, Offset(0.79 * s, 0.22 * s), s * 0.075, gold);
+    paintSparkle(
       canvas,
       Offset(0.21 * s, 0.25 * s),
       s * 0.04,
@@ -180,8 +180,9 @@ class BrandMarkPainter extends CustomPainter {
     );
   }
 
-  /// A four-pointed star with concave sides.
-  void _sparkle(Canvas canvas, Offset c, double r, Paint paint) {
+  /// Paints a four-pointed star with concave sides, centered on [c] with
+  /// radius [r]. Also used by the store artwork generator.
+  static void paintSparkle(Canvas canvas, Offset c, double r, Paint paint) {
     final Path path = Path()..moveTo(c.dx, c.dy - r);
     for (int i = 1; i <= 4; i++) {
       final double angle = -math.pi / 2 + i * math.pi / 2;
