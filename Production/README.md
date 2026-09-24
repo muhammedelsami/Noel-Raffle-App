@@ -51,8 +51,8 @@ fastlane supply --metadata_path Production/metadata/android \
 ```
 
 `changelogs/default.txt` is used for any version. To tie the notes to one build, rename it to
-`<versionCode>.txt`. The version in `pubspec.yaml` (currently `1.0.0+8`) must be raised before
-the redesigned build can be uploaded.
+`<versionCode>.txt`. The redesigned release is version `2.0.0` (versionCode `9`) in
+`pubspec.yaml`; raise it again for every later upload.
 
 ## Regenerating the images
 
