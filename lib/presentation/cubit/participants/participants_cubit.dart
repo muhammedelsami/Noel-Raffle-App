@@ -11,6 +11,14 @@ import '../../../domain/usecases/get_raffle_history.dart';
 
 part 'participants_state.dart';
 
+/// A removed participant with the rules removed along with them, enough to
+/// undo the removal.
+typedef ParticipantRemoval = ({
+  int index,
+  Participant participant,
+  List<MatchExclusion> exclusions,
+});
+
 /// Manages the in-memory participant list for a raffle and, for a new-year
 /// raffle, its matching rules.
 class ParticipantsCubit extends Cubit<ParticipantsState> {
@@ -65,16 +73,33 @@ class ParticipantsCubit extends Cubit<ParticipantsState> {
     );
   }
 
-  /// Removes the participant at [index] together with their rules.
-  void removeAt(int index) {
-    final String name = state.participants[index].name;
-    final List<Participant> list = <Participant>[...state.participants]
-      ..removeAt(index);
+  /// Removes the participant at [index] together with their rules, and
+  /// returns what [restore] needs to undo it.
+  ParticipantRemoval removeAt(int index) {
+    final Participant participant = state.participants[index];
+    final List<MatchExclusion> rules = <MatchExclusion>[
+      for (final MatchExclusion e in state.exclusions)
+        if (e.involves(participant.name)) e,
+    ];
+    _emit(
+      participants: <Participant>[...state.participants]..removeAt(index),
+      exclusions: state.exclusions
+          .where((MatchExclusion e) => !rules.contains(e))
+          .toList(),
+    );
+    return (index: index, participant: participant, exclusions: rules);
+  }
+
+  /// Undoes [removeAt], unless the name was taken again in the meantime.
+  void restore(ParticipantRemoval removal) {
+    if (_nameIn(state.participants, removal.participant.name)) return;
+    final List<Participant> list = <Participant>[...state.participants]..insert(
+        removal.index.clamp(0, state.participants.length),
+        removal.participant,
+      );
     _emit(
       participants: list,
-      exclusions: state.exclusions
-          .where((MatchExclusion e) => !e.involves(name))
-          .toList(),
+      exclusions: <MatchExclusion>[...state.exclusions, ...removal.exclusions],
     );
   }
 

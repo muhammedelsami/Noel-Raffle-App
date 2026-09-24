@@ -921,6 +921,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter at least one new name.'**
   String get bulkAddEmpty;
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// No description provided for @removedItem.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} removed'**
+  String removedItem(String name);
 }
 
 class _AppLocalizationsDelegate

@@ -522,4 +522,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get bulkAddEmpty => 'أدخل اسمًا جديدًا واحدًا على الأقل.';
+
+  @override
+  String get undo => 'تراجع';
+
+  @override
+  String removedItem(String name) {
+    return 'تم حذف $name';
+  }
 }

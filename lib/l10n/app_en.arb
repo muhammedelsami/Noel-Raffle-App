@@ -330,5 +330,14 @@
       }
     }
   },
-  "bulkAddEmpty": "Enter at least one new name."
+  "bulkAddEmpty": "Enter at least one new name.",
+  "undo": "Undo",
+  "removedItem": "{name} removed",
+  "@removedItem": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }

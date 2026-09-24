@@ -6,8 +6,9 @@ import '../../core/theme/app_dimens.dart';
 /// The standard page: an app bar, a width-limited body and an optional
 /// [bottomBar] of actions.
 ///
-/// The bottom bar is laid out below the body rather than in
-/// `Scaffold.bottomNavigationBar`, so it stays visible above the keyboard.
+/// The bottom bar sits in `Scaffold.bottomNavigationBar`, so snack bars float
+/// above it, and is lifted by the keyboard height so it stays visible while
+/// typing.
 class PageScaffold extends StatelessWidget {
   const PageScaffold({
     super.key,
@@ -33,13 +34,16 @@ class PageScaffold extends StatelessWidget {
       body: SafeArea(
         top: false,
         bottom: bottomBar == null,
-        child: Column(
-          children: <Widget>[
-            Expanded(child: ContentWidth(child: body)),
-            if (bottomBar != null) BottomActionBar(child: bottomBar),
-          ],
-        ),
+        child: ContentWidth(child: body),
       ),
+      bottomNavigationBar: bottomBar == null
+          ? null
+          : Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.viewInsetsOf(context).bottom,
+              ),
+              child: BottomActionBar(child: bottomBar),
+            ),
     );
   }
 }
@@ -81,8 +85,11 @@ class ContentWidth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Only as tall as the child, so it doesn't stretch to fill loose slots
+    // such as the scaffold's bottom bar.
     return Align(
       alignment: Alignment.topCenter,
+      heightFactor: 1,
       child: ConstrainedBox(
         constraints:
             const BoxConstraints(maxWidth: AppConstants.maxContentWidth),

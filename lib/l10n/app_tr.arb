@@ -136,5 +136,7 @@
   "bulkAddHint": "İsterseniz virgülden sonra e-posta ekleyin: Ayşe Kaya, ayse@mail.com",
   "bulkAddPreview": "{count, plural, =0{Henüz yeni isim yok} other{{count} yeni kişi eklenecek}}",
   "bulkAddSkipped": "{count} isim zaten listede",
-  "bulkAddEmpty": "En az bir yeni isim girin."
+  "bulkAddEmpty": "En az bir yeni isim girin.",
+  "undo": "Geri al",
+  "removedItem": "{name} silindi"
 }
