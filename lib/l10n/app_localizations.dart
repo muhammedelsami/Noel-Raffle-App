@@ -885,6 +885,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'More options'**
   String get moreOptions;
+
+  /// No description provided for @bulkAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add several'**
+  String get bulkAdd;
+
+  /// No description provided for @bulkAddLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Names, one per line'**
+  String get bulkAddLabel;
+
+  /// No description provided for @bulkAddHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add an email after a comma if you like: Ann Lee, ann@mail.com'**
+  String get bulkAddHint;
+
+  /// No description provided for @bulkAddPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No new names yet} =1{1 new person will be added} other{{count} new people will be added}}'**
+  String bulkAddPreview(int count);
+
+  /// No description provided for @bulkAddSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 name is already on the list} other{{count} names are already on the list}}'**
+  String bulkAddSkipped(int count);
+
+  /// No description provided for @bulkAddEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter at least one new name.'**
+  String get bulkAddEmpty;
 }
 
 class _AppLocalizationsDelegate

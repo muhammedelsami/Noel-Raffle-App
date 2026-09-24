@@ -18,6 +18,7 @@ import '../../cubit/raffle_draw/raffle_draw_cubit.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_dialogs.dart';
 import '../../widgets/app_list_tile.dart';
+import '../../widgets/bulk_add_dialog.dart';
 import '../../widgets/exclusion_form_dialog.dart';
 import '../../widgets/editable_list_body.dart';
 import '../../widgets/initials_avatar.dart';
@@ -79,6 +80,17 @@ class _ParticipantsView extends StatelessWidget {
       askWish: config.type.isNewYear,
     );
     if (result != null) cubit.add(result);
+  }
+
+  Future<void> _addMany(BuildContext context) async {
+    final ParticipantsCubit cubit = context.read<ParticipantsCubit>();
+    final List<Participant>? people = await showBulkAddForm(
+      context,
+      existingNames: <String>[
+        for (final Participant p in cubit.state.participants) p.name,
+      ],
+    );
+    if (people != null) cubit.addAll(people);
   }
 
   Future<void> _editParticipant(
@@ -150,10 +162,28 @@ class _ParticipantsView extends StatelessWidget {
                   complete: state.canProceed,
                 ),
               ),
-              addButton: AppButton.tonal(
-                label: context.l10n.addParticipant,
-                icon: Icons.person_add_alt_1_rounded,
-                onPressed: () => _addParticipant(context),
+              addButton: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: AppButton.tonal(
+                      label: context.l10n.addParticipant,
+                      icon: Icons.person_add_alt_1_rounded,
+                      onPressed: () => _addParticipant(context),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
+                  IconButton.filledTonal(
+                    tooltip: context.l10n.bulkAdd,
+                    style: IconButton.styleFrom(
+                      minimumSize: const Size.square(52),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: AppRadius.medium,
+                      ),
+                    ),
+                    icon: const Icon(Icons.playlist_add_rounded),
+                    onPressed: () => _addMany(context),
+                  ),
+                ],
               ),
               emptyIcon: Icons.group_add_outlined,
               emptyTitle: context.l10n.participantsEmpty,

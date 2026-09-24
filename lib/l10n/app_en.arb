@@ -310,5 +310,25 @@
     }
   },
   "drawAgain": "Draw again with this group",
-  "moreOptions": "More options"
+  "moreOptions": "More options",
+  "bulkAdd": "Add several",
+  "bulkAddLabel": "Names, one per line",
+  "bulkAddHint": "Add an email after a comma if you like: Ann Lee, ann@mail.com",
+  "bulkAddPreview": "{count, plural, =0{No new names yet} =1{1 new person will be added} other{{count} new people will be added}}",
+  "@bulkAddPreview": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bulkAddSkipped": "{count, plural, =1{1 name is already on the list} other{{count} names are already on the list}}",
+  "@bulkAddSkipped": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bulkAddEmpty": "Enter at least one new name."
 }

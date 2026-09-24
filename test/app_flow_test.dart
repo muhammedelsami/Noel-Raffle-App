@@ -229,4 +229,30 @@ void main() {
     expect(await sl<GetRaffleHistory>()(), hasLength(2));
     expect(find.byType(RaffleResultScreen), findsOneWidget);
   });
+
+  testWidgets('adds a pasted list of participants',
+      (WidgetTester tester) async {
+    await bootToHome(tester);
+    await tapText(tester, l10n.newYearRaffle);
+    await tester.enterText(
+      find.widgetWithText(TextField, l10n.raffleTitleHint),
+      'Sınıf',
+    );
+    await tapButton(tester, l10n.next);
+    await addParticipant(tester, 'Ayşe');
+
+    await tester.tap(find.byTooltip(l10n.bulkAdd));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.widgetWithText(TextField, l10n.bulkAddLabel),
+      'ayşe\nBurak, burak@mail.com\nCem',
+    );
+    await tester.pump();
+    expect(find.text(l10n.bulkAddPreview(2)), findsOneWidget);
+    expect(find.text(l10n.bulkAddSkipped(1)), findsOneWidget);
+    await tapButton(tester, l10n.add);
+
+    expect(find.text(l10n.participantCount(3)), findsOneWidget);
+    expect(find.text('burak@mail.com'), findsOneWidget);
+  });
 }

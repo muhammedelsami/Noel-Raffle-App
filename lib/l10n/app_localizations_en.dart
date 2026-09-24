@@ -474,4 +474,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moreOptions => 'More options';
+
+  @override
+  String get bulkAdd => 'Add several';
+
+  @override
+  String get bulkAddLabel => 'Names, one per line';
+
+  @override
+  String get bulkAddHint =>
+      'Add an email after a comma if you like: Ann Lee, ann@mail.com';
+
+  @override
+  String bulkAddPreview(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count new people will be added',
+      one: '1 new person will be added',
+      zero: 'No new names yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bulkAddSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count names are already on the list',
+      one: '1 name is already on the list',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get bulkAddEmpty => 'Enter at least one new name.';
 }
