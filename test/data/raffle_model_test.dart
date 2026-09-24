@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:noel_raffle/data/models/participant_model.dart';
 import 'package:noel_raffle/data/models/raffle_model.dart';
 import 'package:noel_raffle/data/models/statistics_model.dart';
 import 'package:noel_raffle/domain/entities/draw_assignment.dart';
@@ -56,6 +57,17 @@ void main() {
 
       json.remove('exclusions');
       expect(RaffleModel.fromJson(json).exclusions, isEmpty);
+    });
+
+    test('keeps gift ideas', () {
+      const Participant withWish =
+          Participant(name: 'Deniz', wish: 'Bir kitap');
+      expect(
+        ParticipantModel.fromJson(
+          ParticipantModel.fromEntity(withWish).toJson(),
+        ),
+        withWish,
+      );
     });
 
     test('omits empty emails and missing codes', () {

@@ -125,5 +125,8 @@
   "ruleSamePerson": "İki farklı kişi seçin.",
   "ruleExists": "Bu kural zaten var.",
   "avoidPrevious": "Geçen seferki eşleşmeleri tekrarlama",
-  "noValidMatch": "Bu kurallarla uygun bir eşleşme bulunamadı. Bir kuralı kaldırın ya da kişi ekleyin."
+  "noValidMatch": "Bu kurallarla uygun bir eşleşme bulunamadı. Bir kuralı kaldırın ya da kişi ekleyin.",
+  "wishOptional": "Hediye fikirleri (isteğe bağlı)",
+  "giftIdeas": "Hediye fikirleri",
+  "shareWishLine": "Hediye fikirleri: {wish}"
 }

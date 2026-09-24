@@ -36,6 +36,17 @@ class Raffle extends Equatable {
       assignments.isNotEmpty &&
       assignments.every((DrawAssignment a) => a.code != null);
 
+  /// Gift ideas of the participant called [name], if they left any.
+  String? wishOf(String? name) {
+    if (name == null) return null;
+    for (final DrawAssignment a in assignments) {
+      if (a.participant.name == name && a.participant.hasWish) {
+        return a.participant.wish;
+      }
+    }
+    return null;
+  }
+
   /// Total number of gift items handed out (a gift with count 3 counts as 3).
   int get giftUnitCount => gifts.fold(0, (int sum, Gift g) => sum + g.count);
 

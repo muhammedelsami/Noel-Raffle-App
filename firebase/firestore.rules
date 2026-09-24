@@ -44,7 +44,7 @@ service cloud.firestore {
 
     function isValidResult(data) {
       return data.keys().hasOnly([
-          'title', 'note', 'type', 'participantName', 'match',
+          'title', 'note', 'type', 'participantName', 'match', 'matchWish',
           'raffleId', 'ownerUid', 'createdAt'])
         && data.keys().hasAll([
           'title', 'type', 'participantName', 'raffleId', 'ownerUid',
@@ -59,6 +59,7 @@ service cloud.firestore {
         && data.participantName.size() > 0
         && (!('match' in data) || data.match == null
             || isShortString(data.match, 100))
+        && (!('matchWish' in data) || isShortString(data.matchWish, 300))
         && isShortString(data.raffleId, 40);
     }
 

@@ -63,6 +63,7 @@ class _ParticipantsView extends StatelessWidget {
     final Participant? result = await showParticipantForm(
       context,
       isDuplicate: (String name) => cubit.nameExists(name),
+      askWish: config.type.isNewYear,
     );
     if (result != null) cubit.add(result);
   }
@@ -78,6 +79,7 @@ class _ParticipantsView extends StatelessWidget {
       initial: participant,
       isDuplicate: (String name) =>
           cubit.nameExists(name, excludingIndex: index),
+      askWish: config.type.isNewYear,
     );
     if (result != null) cubit.update(index, result);
   }
@@ -145,12 +147,15 @@ class _ParticipantsView extends StatelessWidget {
               itemCount: participants.length,
               itemBuilder: (BuildContext context, int index) {
                 final Participant participant = participants[index];
-                final String? email = participant.email;
+                final String details = <String?>[
+                  participant.email,
+                  participant.wish,
+                ].nonNulls.where((String s) => s.isNotEmpty).join(' • ');
                 return AppListTile(
                   key: ValueKey<String>(participant.name.toLowerCase()),
                   leading: InitialsAvatar(participant.name),
                   title: participant.name,
-                  subtitle: email == null ? null : Text(email),
+                  subtitle: details.isEmpty ? null : Text(details),
                   onTap: () => _editParticipant(context, index, participant),
                   onDelete: () =>
                       context.read<ParticipantsCubit>().removeAt(index),

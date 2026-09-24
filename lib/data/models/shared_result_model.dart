@@ -13,6 +13,7 @@ class SharedResultModel extends SharedResult {
     required super.type,
     required super.participantName,
     super.match,
+    super.matchWish,
     super.note,
   });
 
@@ -26,21 +27,25 @@ class SharedResultModel extends SharedResult {
       type: RaffleType.fromName(data['type'] as String?),
       participantName: data['participantName'] as String? ?? '',
       match: data['match'] as String?,
+      matchWish: data['matchWish'] as String?,
     );
   }
 
   /// The result fields for [assignment]; the data source adds ownership and
-  /// timestamp fields.
+  /// timestamp fields. A new-year result carries the giftee's gift ideas.
   static Map<String, dynamic> toFirestore(
     Raffle raffle,
     DrawAssignment assignment,
   ) {
+    final String? matchWish =
+        raffle.type.isNewYear ? raffle.wishOf(assignment.match) : null;
     return <String, dynamic>{
       'title': raffle.title,
       'note': raffle.note,
       'type': raffle.type.name,
       'participantName': assignment.participant.name,
       'match': assignment.match,
+      if (matchWish != null) 'matchWish': matchWish,
     };
   }
 }

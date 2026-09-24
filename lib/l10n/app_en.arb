@@ -298,5 +298,15 @@
   "ruleSamePerson": "Pick two different people.",
   "ruleExists": "This rule already exists.",
   "avoidPrevious": "Don't repeat last time's matches",
-  "noValidMatch": "No draw fits these rules. Remove a rule or add more people."
+  "noValidMatch": "No draw fits these rules. Remove a rule or add more people.",
+  "wishOptional": "Gift ideas (optional)",
+  "giftIdeas": "Gift ideas",
+  "shareWishLine": "Gift ideas: {wish}",
+  "@shareWishLine": {
+    "placeholders": {
+      "wish": {
+        "type": "String"
+      }
+    }
+  }
 }

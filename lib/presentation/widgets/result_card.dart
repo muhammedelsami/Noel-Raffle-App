@@ -6,7 +6,7 @@ import '../../core/theme/raffle_type_style.dart';
 import '../../core/theme/theme_context.dart';
 import '../../domain/entities/raffle_type.dart';
 import 'icon_badge.dart';
-import 'quote_note.dart';
+import 'note_line.dart';
 
 /// A participant's own result: who they buy a gift for, or which gift they
 /// won. Used when revealing results on the device and after an online lookup.
@@ -16,6 +16,7 @@ class ResultCard extends StatelessWidget {
     required this.type,
     required this.participantName,
     this.match,
+    this.matchWish,
     this.note = '',
   });
 
@@ -24,6 +25,9 @@ class ResultCard extends StatelessWidget {
 
   /// See `DrawAssignment.match`.
   final String? match;
+
+  /// Gift ideas of [match] in a new-year raffle.
+  final String? matchWish;
   final String note;
 
   @override
@@ -32,6 +36,7 @@ class ResultCard extends StatelessWidget {
     final ColorScheme colors = context.colors;
     final AccentColors accent = type.accentColors(colors);
     final String? match = this.match;
+    final String? wish = matchWish;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -87,9 +92,17 @@ class ResultCard extends StatelessWidget {
               ),
             ),
           ),
+        if (wish != null && wish.isNotEmpty) ...<Widget>[
+          const SizedBox(height: AppSpacing.lg),
+          NoteLine(
+            wish,
+            icon: Icons.lightbulb_outline_rounded,
+            label: context.l10n.giftIdeas,
+          ),
+        ],
         if (note.isNotEmpty) ...<Widget>[
           const SizedBox(height: AppSpacing.lg),
-          QuoteNote(note),
+          NoteLine(note),
         ],
       ],
     );

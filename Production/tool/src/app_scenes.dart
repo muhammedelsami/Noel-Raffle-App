@@ -199,9 +199,15 @@ class AppScenes {
   Future<void> _addParticipants() async {
     for (int i = 0; i < 4; i++) {
       await _tapText(l10n.addParticipant);
-      await tester.enterText(find.byType(TextField).first, store.names[i]);
+      await tester.enterText(
+        find.widgetWithText(TextField, l10n.name),
+        store.names[i],
+      );
       if (i == 0) {
-        await tester.enterText(find.byType(TextField).last, store.email);
+        await tester.enterText(
+          find.widgetWithText(TextField, l10n.emailOptional),
+          store.email,
+        );
       }
       await _tapText(l10n.add);
     }

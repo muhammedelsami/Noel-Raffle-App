@@ -457,4 +457,15 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get noValidMatch =>
       'No draw fits these rules. Remove a rule or add more people.';
+
+  @override
+  String get wishOptional => 'Gift ideas (optional)';
+
+  @override
+  String get giftIdeas => 'Gift ideas';
+
+  @override
+  String shareWishLine(String wish) {
+    return 'Gift ideas: $wish';
+  }
 }

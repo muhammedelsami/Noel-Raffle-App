@@ -855,6 +855,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No draw fits these rules. Remove a rule or add more people.'**
   String get noValidMatch;
+
+  /// No description provided for @wishOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift ideas (optional)'**
+  String get wishOptional;
+
+  /// No description provided for @giftIdeas.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift ideas'**
+  String get giftIdeas;
+
+  /// No description provided for @shareWishLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift ideas: {wish}'**
+  String shareWishLine(String wish);
 }
 
 class _AppLocalizationsDelegate

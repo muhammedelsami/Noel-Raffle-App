@@ -10,6 +10,7 @@ class SharedResult extends Equatable {
     required this.type,
     required this.participantName,
     this.match,
+    this.matchWish,
     this.note = '',
   });
 
@@ -19,9 +20,12 @@ class SharedResult extends Equatable {
 
   /// See `DrawAssignment.match`.
   final String? match;
+
+  /// New-year raffle: the gift ideas of [match], if they left any.
+  final String? matchWish;
   final String note;
 
   @override
   List<Object?> get props =>
-      <Object?>[title, type, participantName, match, note];
+      <Object?>[title, type, participantName, match, matchWish, note];
 }

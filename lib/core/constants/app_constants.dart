@@ -8,6 +8,7 @@ abstract final class AppConstants {
   static const int maxTitleLength = 80;
   static const int maxNoteLength = 300;
   static const int maxNameLength = 60;
+  static const int maxWishLength = 200;
   static const int maxGiftCountDigits = 3;
   static const int maxCodeLength = 12;
 

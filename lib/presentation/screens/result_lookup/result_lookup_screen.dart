@@ -150,6 +150,7 @@ class _LookupOutcome extends StatelessWidget {
             type: result.type,
             participantName: result.participantName,
             match: result.match,
+            matchWish: result.matchWish,
             note: result.note,
           ),
         ],

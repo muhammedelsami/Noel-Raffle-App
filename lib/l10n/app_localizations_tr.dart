@@ -441,4 +441,15 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get noValidMatch =>
       'Bu kurallarla uygun bir eşleşme bulunamadı. Bir kuralı kaldırın ya da kişi ekleyin.';
+
+  @override
+  String get wishOptional => 'Hediye fikirleri (isteğe bağlı)';
+
+  @override
+  String get giftIdeas => 'Hediye fikirleri';
+
+  @override
+  String shareWishLine(String wish) {
+    return 'Hediye fikirleri: $wish';
+  }
 }
