@@ -109,9 +109,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mobileDevelopers => 'Mobil geliştiriciler';
 
   @override
-  String get backendDevelopers => 'Backend geliştiriciler';
-
-  @override
   String get warning => 'Uyarı';
 
   @override
