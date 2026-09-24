@@ -6,8 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:noel_raffle/core/constants/app_assets.dart';
+import 'package:noel_raffle/core/constants/app_constants.dart';
 import 'package:noel_raffle/core/di/injection.dart';
 import 'package:noel_raffle/core/l10n/locale_cubit.dart';
+import 'package:noel_raffle/core/theme/app_dimens.dart';
 import 'package:noel_raffle/core/theme/app_theme.dart';
 import 'package:noel_raffle/core/theme/theme_cubit.dart';
 import 'package:noel_raffle/domain/entities/draw_assignment.dart';
@@ -23,6 +25,7 @@ import 'package:noel_raffle/presentation/screens/home/home_screen.dart';
 import 'package:noel_raffle/presentation/screens/participants/participants_screen.dart';
 import 'package:noel_raffle/presentation/screens/raffle_result/raffle_result_screen.dart';
 import 'package:noel_raffle/presentation/screens/settings/settings_screen.dart';
+import 'package:noel_raffle/presentation/screens/splash/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'store_locale.dart';
@@ -102,11 +105,43 @@ class AppScenes {
     };
   }
 
+  /// The splash screen, captured once its intro animation has played.
+  Future<PhoneScreen> splash() async {
+    await _pumpApp(home: const SplashScreen(), dark: false);
+    await tester.pump(AppMotion.slow);
+    final ui.Image image = await _capture();
+    // Lets the splash timer fire and hand over to the home screen.
+    await tester.pump(AppConstants.splashDuration);
+    await tester.pumpAndSettle();
+    // The splash is drawn on the dark brand gradient.
+    return (image: image, dark: true);
+  }
+
   Future<PhoneScreen> _render(
     Widget screen, {
     required bool dark,
     Future<void> Function()? seed,
     Future<void> Function()? interact,
+  }) async {
+    await _pumpApp(home: const HomeScreen(), dark: dark, seed: seed);
+    // Opened from home, like in the app, so the app bar shows a back button.
+    if (screen is! HomeScreen) {
+      _navigator.currentState!
+          .push(MaterialPageRoute<void>(builder: (_) => screen));
+    }
+    // Lets asynchronous loads (history, statistics) finish.
+    await tester.runAsync(() => Future<void>.delayed(Duration.zero));
+    await tester.pumpAndSettle();
+    await interact?.call();
+    await tester.pumpAndSettle();
+    return (image: await _capture(), dark: dark);
+  }
+
+  /// Starts the app from an empty store with [home] as the first screen.
+  Future<void> _pumpApp({
+    required Widget home,
+    required bool dark,
+    Future<void> Function()? seed,
   }) async {
     tester.view
       ..physicalSize = phoneSize * _pixelRatio
@@ -140,29 +175,20 @@ class AppScenes {
             supportedLocales: AppLocalizations.supportedLocales,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             navigatorKey: _navigator,
-            home: const HomeScreen(),
+            home: home,
           ),
         ),
       ),
     );
-    // Opened from home, like in the app, so the app bar shows a back button.
-    if (screen is! HomeScreen) {
-      _navigator.currentState!
-          .push(MaterialPageRoute<void>(builder: (_) => screen));
-    }
     await precacheIllustrations(tester, find.byType(MaterialApp));
-    // Lets asynchronous loads (history, statistics) finish.
-    await tester.runAsync(() => Future<void>.delayed(Duration.zero));
-    await tester.pumpAndSettle();
-    await interact?.call();
-    await tester.pumpAndSettle();
+  }
 
+  Future<ui.Image> _capture() async {
     final RenderRepaintBoundary boundary =
         _boundary.currentContext!.findRenderObject()! as RenderRepaintBoundary;
-    final ui.Image image = (await tester.runAsync(
+    return (await tester.runAsync(
       () => boundary.toImage(pixelRatio: _pixelRatio),
     ))!;
-    return (image: image, dark: dark);
   }
 
   Future<void> _tapText(String text) async {
