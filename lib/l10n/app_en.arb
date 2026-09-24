@@ -308,5 +308,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "drawAgain": "Draw again with this group",
+  "moreOptions": "More options"
 }

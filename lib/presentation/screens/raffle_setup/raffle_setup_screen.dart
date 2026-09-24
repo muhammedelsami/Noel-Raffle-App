@@ -6,7 +6,9 @@ import '../../../core/l10n/raffle_texts.dart';
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/raffle_type_style.dart';
 import '../../../core/utils/validators.dart';
+import '../../../domain/entities/raffle.dart';
 import '../../../domain/entities/raffle_config.dart';
+import '../../../domain/entities/raffle_draft.dart';
 import '../../../domain/entities/raffle_type.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_text_field.dart';
@@ -18,17 +20,26 @@ import '../participants/participants_screen.dart';
 /// First step of both flows: the raffle title and an optional note for the
 /// participants.
 class RaffleSetupScreen extends StatefulWidget {
-  const RaffleSetupScreen({super.key, required this.type});
+  const RaffleSetupScreen({super.key, required this.type}) : template = null;
+
+  /// Starts a new raffle for the same group as [raffle]: its title, note,
+  /// people, gifts and rules are filled in and can still be changed.
+  RaffleSetupScreen.again(Raffle raffle, {super.key})
+      : type = raffle.type,
+        template = raffle;
 
   final RaffleType type;
+  final Raffle? template;
 
   @override
   State<RaffleSetupScreen> createState() => _RaffleSetupScreenState();
 }
 
 class _RaffleSetupScreenState extends State<RaffleSetupScreen> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _noteController = TextEditingController();
+  late final TextEditingController _titleController =
+      TextEditingController(text: widget.template?.title);
+  late final TextEditingController _noteController =
+      TextEditingController(text: widget.template?.note);
   final FocusNode _titleFocus = FocusNode();
   final FocusNode _noteFocus = FocusNode();
 
@@ -61,7 +72,13 @@ class _RaffleSetupScreenState extends State<RaffleSetupScreen> {
     );
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => ParticipantsScreen(config: config),
+        builder: (_) => ParticipantsScreen(
+          config: config,
+          draft: switch (widget.template) {
+            final Raffle raffle => RaffleDraft.from(raffle),
+            null => RaffleDraft.empty,
+          },
+        ),
       ),
     );
   }

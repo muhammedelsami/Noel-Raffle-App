@@ -16,6 +16,7 @@ import '../../widgets/empty_state.dart';
 import '../../widgets/icon_badge.dart';
 import '../../widgets/page_scaffold.dart';
 import '../raffle_result/raffle_result_screen.dart';
+import '../raffle_setup/raffle_setup_screen.dart';
 
 /// Raffles drawn on this device, newest first.
 class HistoryScreen extends StatelessWidget {
@@ -57,6 +58,8 @@ class HistoryScreen extends StatelessWidget {
   }
 }
 
+enum _HistoryAction { drawAgain, delete }
+
 class _HistoryList extends StatelessWidget {
   const _HistoryList({required this.raffles});
 
@@ -71,6 +74,12 @@ class _HistoryList extends StatelessWidget {
     );
     // Publishing on the result screen updates the saved raffle.
     await cubit.load();
+  }
+
+  void _drawAgain(BuildContext context, Raffle raffle) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => RaffleSetupScreen.again(raffle)),
+    );
   }
 
   Future<void> _delete(BuildContext context, Raffle raffle) async {
@@ -115,7 +124,31 @@ class _HistoryList extends StatelessWidget {
           title: raffle.title,
           subtitle: Text(raffleSummary(context.l10n, raffle)),
           onTap: () => _open(context, raffle),
-          onDelete: () => _delete(context, raffle),
+          trailing: PopupMenuButton<_HistoryAction>(
+            tooltip: context.l10n.moreOptions,
+            icon: const Icon(Icons.more_vert_rounded),
+            onSelected: (_HistoryAction action) => switch (action) {
+              _HistoryAction.drawAgain => _drawAgain(context, raffle),
+              _HistoryAction.delete => _delete(context, raffle),
+            },
+            itemBuilder: (BuildContext context) =>
+                <PopupMenuEntry<_HistoryAction>>[
+              PopupMenuItem<_HistoryAction>(
+                value: _HistoryAction.drawAgain,
+                child: ListTile(
+                  leading: const Icon(Icons.replay_rounded),
+                  title: Text(context.l10n.drawAgain),
+                ),
+              ),
+              PopupMenuItem<_HistoryAction>(
+                value: _HistoryAction.delete,
+                child: ListTile(
+                  leading: const Icon(Icons.delete_outline_rounded),
+                  title: Text(context.l10n.delete),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

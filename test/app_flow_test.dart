@@ -194,4 +194,39 @@ void main() {
     expect(giftee['Ayşe'], isNot('Burak'));
     expect(giftee['Burak'], isNot('Ayşe'));
   });
+
+  testWidgets('draws the same group again from the history',
+      (WidgetTester tester) async {
+    await bootToHome(tester);
+
+    await tapText(tester, l10n.giftRaffle);
+    await tester.enterText(
+      find.widgetWithText(TextField, l10n.raffleTitleHint),
+      'Kulüp',
+    );
+    await tapButton(tester, l10n.next);
+    for (final String name in <String>['Ayşe', 'Burak', 'Cem']) {
+      await addParticipant(tester, name);
+    }
+    await tapButton(tester, l10n.next);
+    await tapButton(tester, l10n.addGift);
+    await tester.enterText(
+        find.widgetWithText(TextField, l10n.giftName), 'Kupa');
+    await tester.enterText(find.widgetWithText(TextField, l10n.giftCount), '1');
+    await tapButton(tester, l10n.add);
+    await tapButton(tester, l10n.startRaffle);
+
+    // From the result screen: everything is filled in already.
+    await tester.tap(find.byTooltip(l10n.drawAgain));
+    await tester.pumpAndSettle();
+    expect(find.widgetWithText(TextField, 'Kulüp'), findsOneWidget);
+    await tapButton(tester, l10n.next);
+    expect(find.text(l10n.participantCount(3)), findsOneWidget);
+    await tapButton(tester, l10n.next);
+    expect(find.text('Kupa'), findsOneWidget);
+    await tapButton(tester, l10n.startRaffle);
+
+    expect(await sl<GetRaffleHistory>()(), hasLength(2));
+    expect(find.byType(RaffleResultScreen), findsOneWidget);
+  });
 }

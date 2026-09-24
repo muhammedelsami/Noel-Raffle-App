@@ -873,6 +873,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Gift ideas: {wish}'**
   String shareWishLine(String wish);
+
+  /// No description provided for @drawAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw again with this group'**
+  String get drawAgain;
+
+  /// No description provided for @moreOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get moreOptions;
 }
 
 class _AppLocalizationsDelegate

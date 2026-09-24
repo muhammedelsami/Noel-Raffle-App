@@ -452,4 +452,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String shareWishLine(String wish) {
     return 'Hediye fikirleri: $wish';
   }
+
+  @override
+  String get drawAgain => 'Bu grupla tekrar çek';
+
+  @override
+  String get moreOptions => 'Diğer seçenekler';
 }

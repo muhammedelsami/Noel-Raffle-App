@@ -83,9 +83,7 @@ String _withNote(AppLocalizations l10n, String body, String note) =>
     note.isEmpty ? body : '$body\n\n${l10n.shareNoteLine(note)}';
 
 String _withWish(AppLocalizations l10n, String body, String? wish) =>
-    wish == null || wish.isEmpty
-        ? body
-        : '$body\n${l10n.shareWishLine(wish)}';
+    wish == null || wish.isEmpty ? body : '$body\n${l10n.shareWishLine(wish)}';
 
 /// When [raffle] was drawn, e.g. "Dec 24, 2026 19:30".
 String raffleDate(AppLocalizations l10n, Raffle raffle) =>

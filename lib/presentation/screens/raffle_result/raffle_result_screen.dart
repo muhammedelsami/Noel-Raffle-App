@@ -29,6 +29,7 @@ import '../../widgets/page_scaffold.dart';
 import '../../widgets/note_line.dart';
 import '../../widgets/result_card.dart';
 import '../../widgets/status_pill.dart';
+import '../raffle_setup/raffle_setup_screen.dart';
 
 /// Shows a drawn raffle. New-year results stay hidden until each participant
 /// reveals their own; gift raffle winners are listed openly. Results can be
@@ -112,6 +113,17 @@ class _RaffleResultView extends StatelessWidget {
         return LoadingOverlay(
           isLoading: state.isPublishing,
           child: PageScaffold(
+            actions: <Widget>[
+              IconButton(
+                tooltip: context.l10n.drawAgain,
+                icon: const Icon(Icons.replay_rounded),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => RaffleSetupScreen.again(raffle),
+                  ),
+                ),
+              ),
+            ],
             body: Stack(
               children: <Widget>[
                 CustomScrollView(

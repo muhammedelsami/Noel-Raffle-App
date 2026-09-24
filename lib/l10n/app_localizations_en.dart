@@ -468,4 +468,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String shareWishLine(String wish) {
     return 'Gift ideas: $wish';
   }
+
+  @override
+  String get drawAgain => 'Draw again with this group';
+
+  @override
+  String get moreOptions => 'More options';
 }
