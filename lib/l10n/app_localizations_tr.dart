@@ -458,4 +458,33 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get moreOptions => 'Diğer seçenekler';
+
+  @override
+  String get bulkAdd => 'Toplu ekle';
+
+  @override
+  String get bulkAddLabel => 'İsimler, her satıra bir kişi';
+
+  @override
+  String get bulkAddHint =>
+      'İsterseniz virgülden sonra e-posta ekleyin: Ayşe Kaya, ayse@mail.com';
+
+  @override
+  String bulkAddPreview(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count yeni kişi eklenecek',
+      zero: 'Henüz yeni isim yok',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bulkAddSkipped(int count) {
+    return '$count isim zaten listede';
+  }
+
+  @override
+  String get bulkAddEmpty => 'En az bir yeni isim girin.';
 }

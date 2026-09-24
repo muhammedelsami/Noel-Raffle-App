@@ -55,6 +55,13 @@ void main() {
     expect(cubit.nameExists('Cem'), isFalse);
   });
 
+  test('addAll skips names that are already on the list', () {
+    cubit
+      ..add(a)
+      ..addAll(const <Participant>[Participant(name: 'ayşe'), b, c]);
+    expect(cubit.state.participants, <Participant>[a, b, c]);
+  });
+
   group('matching rules', () {
     const MatchExclusion rule = MatchExclusion('Ayşe', 'Burak');
 

@@ -480,4 +480,46 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get moreOptions => 'خيارات أخرى';
+
+  @override
+  String get bulkAdd => 'إضافة عدة أشخاص';
+
+  @override
+  String get bulkAddLabel => 'الأسماء، شخص في كل سطر';
+
+  @override
+  String get bulkAddHint =>
+      'يمكنك إضافة بريد إلكتروني بعد فاصلة: سارة علي، sara@mail.com';
+
+  @override
+  String bulkAddPreview(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'ستتم إضافة $count شخص جديد',
+      many: 'ستتم إضافة $count شخصًا جديدًا',
+      few: 'ستتم إضافة $count أشخاص جدد',
+      two: 'ستتم إضافة شخصين جديدين',
+      one: 'ستتم إضافة شخص جديد',
+      zero: 'لا توجد أسماء جديدة بعد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bulkAddSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count اسم موجود بالفعل في القائمة',
+      many: '$count اسمًا موجودًا بالفعل في القائمة',
+      few: '$count أسماء موجودة بالفعل في القائمة',
+      two: 'اسمان موجودان بالفعل في القائمة',
+      one: 'اسم واحد موجود بالفعل في القائمة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get bulkAddEmpty => 'أدخل اسمًا جديدًا واحدًا على الأقل.';
 }

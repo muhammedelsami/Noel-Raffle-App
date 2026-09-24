@@ -43,6 +43,15 @@ class ParticipantsCubit extends Cubit<ParticipantsState> {
     _emit(participants: <Participant>[...state.participants, participant]);
   }
 
+  /// Adds every participant whose name is not taken yet.
+  void addAll(Iterable<Participant> participants) {
+    final List<Participant> list = <Participant>[...state.participants];
+    for (final Participant participant in participants) {
+      if (!_nameIn(list, participant.name)) list.add(participant);
+    }
+    if (list.length > state.participants.length) _emit(participants: list);
+  }
+
   void update(int index, Participant participant) {
     final String oldName = state.participants[index].name;
     final List<Participant> list = <Participant>[...state.participants];
@@ -98,6 +107,11 @@ class ParticipantsCubit extends Cubit<ParticipantsState> {
       if (state.participants[i].name.toLowerCase() == normalized) return true;
     }
     return false;
+  }
+
+  static bool _nameIn(List<Participant> list, String name) {
+    final String normalized = name.trim().toLowerCase();
+    return list.any((Participant p) => p.name.toLowerCase() == normalized);
   }
 
   void _emit({
