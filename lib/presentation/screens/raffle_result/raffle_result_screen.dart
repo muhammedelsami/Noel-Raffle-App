@@ -26,7 +26,7 @@ import '../../widgets/info_banner.dart';
 import '../../widgets/initials_avatar.dart';
 import '../../widgets/loading_overlay.dart';
 import '../../widgets/page_scaffold.dart';
-import '../../widgets/quote_note.dart';
+import '../../widgets/note_line.dart';
 import '../../widgets/result_card.dart';
 import '../../widgets/status_pill.dart';
 
@@ -284,7 +284,7 @@ class _Header extends StatelessWidget {
           ),
           if (raffle.note.isNotEmpty) ...<Widget>[
             const SizedBox(height: AppSpacing.md),
-            QuoteNote(raffle.note),
+            NoteLine(raffle.note),
           ],
         ],
       ),
@@ -363,6 +363,7 @@ class _AssignmentTile extends StatelessWidget {
             type: raffle.type,
             participantName: name,
             match: _assignment.match,
+            matchWish: raffle.wishOf(_assignment.match),
             note: raffle.note,
           ),
         ),

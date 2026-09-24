@@ -13,23 +13,33 @@ import 'form_dialog.dart';
 ///
 /// [isDuplicate] is asked before saving so the same name cannot be added
 /// twice (the participant being edited is excluded by the caller).
+/// [askWish] adds the gift ideas field, used by new-year raffles.
 Future<Participant?> showParticipantForm(
   BuildContext context, {
   Participant? initial,
   required bool Function(String name) isDuplicate,
+  bool askWish = false,
 }) {
   return showDialog<Participant>(
     context: context,
-    builder: (_) =>
-        _ParticipantForm(initial: initial, isDuplicate: isDuplicate),
+    builder: (_) => _ParticipantForm(
+      initial: initial,
+      isDuplicate: isDuplicate,
+      askWish: askWish,
+    ),
   );
 }
 
 class _ParticipantForm extends StatefulWidget {
-  const _ParticipantForm({this.initial, required this.isDuplicate});
+  const _ParticipantForm({
+    this.initial,
+    required this.isDuplicate,
+    required this.askWish,
+  });
 
   final Participant? initial;
   final bool Function(String name) isDuplicate;
+  final bool askWish;
 
   @override
   State<_ParticipantForm> createState() => _ParticipantFormState();
@@ -40,8 +50,11 @@ class _ParticipantFormState extends State<_ParticipantForm> {
       TextEditingController(text: widget.initial?.name);
   late final TextEditingController _email =
       TextEditingController(text: widget.initial?.email);
+  late final TextEditingController _wish =
+      TextEditingController(text: widget.initial?.wish);
 
   final FocusNode _emailFocus = FocusNode();
+  final FocusNode _wishFocus = FocusNode();
 
   /// Validation message shown inside the dialog. A SnackBar would outlive the
   /// dialog and cover the buttons of the screen below.
@@ -51,13 +64,16 @@ class _ParticipantFormState extends State<_ParticipantForm> {
   void dispose() {
     _name.dispose();
     _email.dispose();
+    _wish.dispose();
     _emailFocus.dispose();
+    _wishFocus.dispose();
     super.dispose();
   }
 
   void _submit() {
     final String name = _name.text.trim();
     final String email = _email.text.trim();
+    final String wish = _wish.text.trim();
 
     final String? error = _validate(name, email);
     if (error != null) {
@@ -65,7 +81,11 @@ class _ParticipantFormState extends State<_ParticipantForm> {
       return;
     }
     Navigator.of(context).pop(
-      Participant(name: name, email: email.isEmpty ? null : email),
+      Participant(
+        name: name,
+        email: email.isEmpty ? null : email,
+        wish: wish.isEmpty ? null : wish,
+      ),
     );
   }
 
@@ -104,9 +124,24 @@ class _ParticipantFormState extends State<_ParticipantForm> {
           icon: Icons.alternate_email_rounded,
           focusNode: _emailFocus,
           keyboardType: TextInputType.emailAddress,
-          textInputAction: TextInputAction.done,
-          onSubmitted: (_) => _submit(),
+          textInputAction:
+              widget.askWish ? TextInputAction.next : TextInputAction.done,
+          onSubmitted: (_) =>
+              widget.askWish ? _wishFocus.requestFocus() : _submit(),
         ),
+        if (widget.askWish) ...<Widget>[
+          const SizedBox(height: AppSpacing.md),
+          AppTextField(
+            controller: _wish,
+            label: context.l10n.wishOptional,
+            icon: Icons.lightbulb_outline_rounded,
+            focusNode: _wishFocus,
+            maxLength: AppConstants.maxWishLength,
+            maxLines: 3,
+            textCapitalization: TextCapitalization.sentences,
+            keyboardType: TextInputType.multiline,
+          ),
+        ],
       ],
     );
   }

@@ -463,4 +463,15 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get noValidMatch =>
       'لا توجد قرعة تناسب هذه القواعد. احذف قاعدة أو أضف أشخاصًا.';
+
+  @override
+  String get wishOptional => 'أفكار للهدايا (اختياري)';
+
+  @override
+  String get giftIdeas => 'أفكار للهدايا';
+
+  @override
+  String shareWishLine(String wish) {
+    return 'أفكار للهدايا: $wish';
+  }
 }

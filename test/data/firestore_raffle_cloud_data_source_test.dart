@@ -29,7 +29,10 @@ void main() {
         match: 'Burak',
       ),
       DrawAssignment(participant: Participant(name: 'Burak'), match: 'Cem'),
-      DrawAssignment(participant: Participant(name: 'Cem'), match: 'Ayşe'),
+      DrawAssignment(
+        participant: Participant(name: 'Cem', wish: 'Kitap, termos'),
+        match: 'Ayşe',
+      ),
     ],
   );
 
@@ -67,6 +70,8 @@ void main() {
     expect(doc['match'], 'Burak');
     expect(doc['ownerUid'], auth.currentUser!.uid);
     expect(doc.containsKey('email'), isFalse, reason: 'emails stay local');
+    expect(doc.containsKey('matchWish'), isFalse,
+        reason: 'Burak left no gift ideas');
   });
 
   test('lookup returns only the requested participant', () async {
@@ -82,6 +87,7 @@ void main() {
         type: RaffleType.newYear,
         participantName: 'Burak',
         match: 'Cem',
+        matchWish: 'Kitap, termos',
       ),
     );
   });
