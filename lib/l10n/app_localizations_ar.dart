@@ -109,9 +109,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mobileDevelopers => 'مطورو تطبيقات الجوال';
 
   @override
-  String get backendDevelopers => 'مطورو الخوادم';
-
-  @override
   String get warning => 'تنبيه';
 
   @override

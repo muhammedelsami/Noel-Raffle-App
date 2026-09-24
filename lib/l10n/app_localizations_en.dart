@@ -109,9 +109,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mobileDevelopers => 'Mobile developers';
 
   @override
-  String get backendDevelopers => 'Backend developers';
-
-  @override
   String get warning => 'Warning';
 
   @override
