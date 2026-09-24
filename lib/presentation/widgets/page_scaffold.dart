@@ -16,12 +16,16 @@ class PageScaffold extends StatelessWidget {
     this.title,
     this.actions,
     this.bottomBar,
+    this.maxWidth = AppConstants.maxContentWidth,
   });
 
   final Widget body;
   final String? title;
   final List<Widget>? actions;
   final Widget? bottomBar;
+
+  /// Widest the body grows; see [ContentWidth].
+  final double maxWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +38,7 @@ class PageScaffold extends StatelessWidget {
       body: SafeArea(
         top: false,
         bottom: bottomBar == null,
-        child: ContentWidth(child: body),
+        child: ContentWidth(maxWidth: maxWidth, child: body),
       ),
       bottomNavigationBar: bottomBar == null
           ? null
@@ -76,12 +80,20 @@ class BottomActionBar extends StatelessWidget {
   }
 }
 
-/// Centers [child] and gives it the full width, up to
-/// [AppConstants.maxContentWidth].
+/// Centers [child] and gives it the full width, up to [maxWidth].
 class ContentWidth extends StatelessWidget {
-  const ContentWidth({super.key, required this.child});
+  const ContentWidth({
+    super.key,
+    required this.child,
+    this.maxWidth = AppConstants.maxContentWidth,
+  });
 
   final Widget child;
+  final double maxWidth;
+
+  /// Whether the window is wide enough to place cards side by side.
+  static bool isWide(BuildContext context) =>
+      MediaQuery.sizeOf(context).width >= AppConstants.wideLayoutBreakpoint;
 
   @override
   Widget build(BuildContext context) {
@@ -91,8 +103,7 @@ class ContentWidth extends StatelessWidget {
       alignment: Alignment.topCenter,
       heightFactor: 1,
       child: ConstrainedBox(
-        constraints:
-            const BoxConstraints(maxWidth: AppConstants.maxContentWidth),
+        constraints: BoxConstraints(maxWidth: maxWidth),
         child: SizedBox(width: double.infinity, child: child),
       ),
     );

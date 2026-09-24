@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/app_constants.dart';
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/l10n_extensions.dart';
 import '../../../core/l10n/raffle_texts.dart';
@@ -10,6 +11,7 @@ import '../../../domain/entities/raffle_type.dart';
 import '../../../domain/usecases/lookup_result.dart';
 import '../../widgets/app_card.dart';
 import '../../widgets/brand_mark.dart';
+import '../../widgets/equal_height_row.dart';
 import '../../widgets/icon_badge.dart';
 import '../../widgets/illustration.dart';
 import '../../widgets/page_scaffold.dart';
@@ -21,7 +23,8 @@ import '../settings/settings_screen.dart';
 import '../statistics/statistics_screen.dart';
 
 /// Landing screen: pick a raffle type, look up your own result (online only)
-/// or jump to the history, statistics and settings.
+/// or jump to the history, statistics and settings. On wide screens the
+/// raffle types sit side by side.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -32,7 +35,15 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool canLookup = sl<LookupResult>().isAvailable;
+    final bool wide = ContentWidth.isWide(context);
     final TextTheme text = context.textTheme;
+    final List<Widget> raffleTypes = <Widget>[
+      for (final RaffleType type in RaffleType.values)
+        _RaffleTypeCard(
+          type: type,
+          onTap: () => _push(context, RaffleSetupScreen(type: type)),
+        ),
+    ];
     return Scaffold(
       appBar: AppBar(
         titleSpacing: AppSpacing.page,
@@ -49,6 +60,9 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         top: false,
         child: ContentWidth(
+          maxWidth: wide
+              ? AppConstants.maxWideContentWidth
+              : AppConstants.maxContentWidth,
           child: ListView(
             padding: const EdgeInsets.fromLTRB(
               AppSpacing.page,
@@ -68,13 +82,14 @@ class HomeScreen extends StatelessWidget {
                     ?.copyWith(color: context.colors.onSurfaceVariant),
               ),
               const SizedBox(height: AppSpacing.xl),
-              for (final RaffleType type in RaffleType.values) ...<Widget>[
-                _RaffleTypeCard(
-                  type: type,
-                  onTap: () => _push(context, RaffleSetupScreen(type: type)),
-                ),
+              if (wide) ...<Widget>[
+                EqualHeightRow(children: raffleTypes),
                 const SizedBox(height: AppSpacing.md),
-              ],
+              ] else
+                for (final Widget card in raffleTypes) ...<Widget>[
+                  card,
+                  const SizedBox(height: AppSpacing.md),
+                ],
               if (canLookup)
                 _ActionRow(
                   icon: Icons.key_rounded,
@@ -83,27 +98,19 @@ class HomeScreen extends StatelessWidget {
                   onTap: () => _push(context, const ResultLookupScreen()),
                 ),
               SectionHeader(context.l10n.quickAccess),
-              IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Expanded(
-                      child: _QuickAction(
-                        icon: Icons.history_rounded,
-                        label: context.l10n.history,
-                        onTap: () => _push(context, const HistoryScreen()),
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.md),
-                    Expanded(
-                      child: _QuickAction(
-                        icon: Icons.insights_rounded,
-                        label: context.l10n.statistics,
-                        onTap: () => _push(context, const StatisticsScreen()),
-                      ),
-                    ),
-                  ],
-                ),
+              EqualHeightRow(
+                children: <Widget>[
+                  _QuickAction(
+                    icon: Icons.history_rounded,
+                    label: context.l10n.history,
+                    onTap: () => _push(context, const HistoryScreen()),
+                  ),
+                  _QuickAction(
+                    icon: Icons.insights_rounded,
+                    label: context.l10n.statistics,
+                    onTap: () => _push(context, const StatisticsScreen()),
+                  ),
+                ],
               ),
             ],
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/constants/app_constants.dart';
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/l10n_extensions.dart';
 import '../../../core/theme/app_dimens.dart';
@@ -10,6 +11,7 @@ import '../../../domain/entities/statistics.dart';
 import '../../cubit/statistics/statistics_cubit.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/app_card.dart';
+import '../../widgets/equal_height_row.dart';
 import '../../widgets/icon_badge.dart';
 import '../../widgets/info_banner.dart';
 import '../../widgets/page_scaffold.dart';
@@ -27,6 +29,9 @@ class StatisticsScreen extends StatelessWidget {
       child: Builder(
         builder: (BuildContext context) => PageScaffold(
           title: context.l10n.statistics,
+          maxWidth: ContentWidth.isWide(context)
+              ? AppConstants.maxWideContentWidth
+              : AppConstants.maxContentWidth,
           body: BlocBuilder<StatisticsCubit, StatisticsState>(
             builder: (BuildContext context, StatisticsState state) {
               final Statistics? local = state.local;
@@ -90,7 +95,8 @@ class _GlobalStatistics extends StatelessWidget {
   }
 }
 
-/// The total as a highlighted card, then the breakdown two by two.
+/// The total as a highlighted card, then the breakdown two by two, or in
+/// one row on wide screens.
 class _StatisticsGrid extends StatelessWidget {
   const _StatisticsGrid(this.stats);
 
@@ -99,6 +105,28 @@ class _StatisticsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colors = context.colors;
+    final List<Widget> breakdown = <Widget>[
+      _StatTile(
+        icon: Icons.ac_unit_rounded,
+        label: context.l10n.statNewYearRaffle,
+        value: stats.newYearRaffleCount,
+      ),
+      _StatTile(
+        icon: Icons.card_giftcard_rounded,
+        label: context.l10n.statGiftRaffle,
+        value: stats.giftRaffleCount,
+      ),
+      _StatTile(
+        icon: Icons.group_rounded,
+        label: context.l10n.statParticipantCount,
+        value: stats.participantCount,
+      ),
+      _StatTile(
+        icon: Icons.inventory_2_outlined,
+        label: context.l10n.statGiftCount,
+        value: stats.giftCount,
+      ),
+    ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -111,54 +139,14 @@ class _StatisticsGrid extends StatelessWidget {
           large: true,
         ),
         const SizedBox(height: AppSpacing.md),
-        _TilePair(
-          _StatTile(
-            icon: Icons.ac_unit_rounded,
-            label: context.l10n.statNewYearRaffle,
-            value: stats.newYearRaffleCount,
-          ),
-          _StatTile(
-            icon: Icons.card_giftcard_rounded,
-            label: context.l10n.statGiftRaffle,
-            value: stats.giftRaffleCount,
-          ),
-        ),
-        const SizedBox(height: AppSpacing.md),
-        _TilePair(
-          _StatTile(
-            icon: Icons.group_rounded,
-            label: context.l10n.statParticipantCount,
-            value: stats.participantCount,
-          ),
-          _StatTile(
-            icon: Icons.inventory_2_outlined,
-            label: context.l10n.statGiftCount,
-            value: stats.giftCount,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-/// Two tiles side by side with equal heights.
-class _TilePair extends StatelessWidget {
-  const _TilePair(this.start, this.end);
-
-  final Widget start;
-  final Widget end;
-
-  @override
-  Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Expanded(child: start),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(child: end),
+        if (ContentWidth.isWide(context))
+          EqualHeightRow(children: breakdown)
+        else ...<Widget>[
+          EqualHeightRow(children: breakdown.sublist(0, 2)),
+          const SizedBox(height: AppSpacing.md),
+          EqualHeightRow(children: breakdown.sublist(2)),
         ],
-      ),
+      ],
     );
   }
 }

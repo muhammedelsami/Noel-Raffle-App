@@ -25,6 +25,11 @@ abstract final class AppConstants {
   /// keep a readable line length.
   static const double maxContentWidth = 640;
 
+  /// From this window width on (Material's "expanded" size), screens made of
+  /// cards place them side by side, up to [maxWideContentWidth].
+  static const double wideLayoutBreakpoint = 840;
+  static const double maxWideContentWidth = 1040;
+
   /// Margin between a modal and the screen edges.
   static const EdgeInsets dialogInset =
       EdgeInsets.symmetric(horizontal: 20, vertical: 24);
