@@ -1,20 +1,25 @@
-/// Thrown by data sources when a remote call fails.
-class ServerException implements Exception {
-  const ServerException(this.message, [this.statusCode]);
-
-  final String message;
-  final int? statusCode;
+/// Thrown when an online feature is used while Firebase is not configured.
+class CloudUnavailableException implements Exception {
+  const CloudUnavailableException();
 
   @override
-  String toString() => 'ServerException($statusCode): $message';
+  String toString() => 'CloudUnavailableException';
 }
 
-/// Thrown when the device cannot reach the network.
-class NetworkException implements Exception {
-  const NetworkException([this.message = 'Ağ bağlantısı kurulamadı.']);
+/// Thrown when a cloud call fails (no connection, timeout, permission denied).
+class CloudException implements Exception {
+  const CloudException(this.message);
 
   final String message;
 
   @override
-  String toString() => 'NetworkException: $message';
+  String toString() => 'CloudException: $message';
+}
+
+/// Thrown when no online result exists for a share code.
+class ResultNotFoundException implements Exception {
+  const ResultNotFoundException();
+
+  @override
+  String toString() => 'ResultNotFoundException';
 }

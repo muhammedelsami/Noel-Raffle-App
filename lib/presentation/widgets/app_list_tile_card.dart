@@ -2,19 +2,28 @@ import 'package:flutter/material.dart';
 
 import '../../core/constants/app_constants.dart';
 
-/// A tinted list row used for participants and gifts, with an edit tap target
-/// and a delete action.
+/// A tinted list row used for participants, gifts, results and history, with
+/// an optional tap target and either a custom [trailing] widget or a delete
+/// action.
 class AppListTileCard extends StatelessWidget {
   const AppListTileCard({
     super.key,
     required this.title,
-    required this.subtitle,
+    this.subtitle,
+    this.leading,
+    this.trailing,
     this.onTap,
     this.onDelete,
   });
 
   final String title;
-  final String subtitle;
+
+  /// Hidden when null or empty.
+  final String? subtitle;
+  final IconData? leading;
+
+  /// Replaces the delete button when set.
+  final Widget? trailing;
   final VoidCallback? onTap;
   final VoidCallback? onDelete;
 
@@ -30,6 +39,7 @@ class AppListTileCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: ListTile(
           onTap: onTap,
+          leading: leading == null ? null : Icon(leading, color: onContainer),
           title: Text(
             title,
             style: Theme.of(context)
@@ -37,19 +47,23 @@ class AppListTileCard extends StatelessWidget {
                 .titleMedium
                 ?.copyWith(color: onContainer),
           ),
-          subtitle: Text(
-            subtitle,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(color: onContainer.withValues(alpha: 0.85)),
-          ),
-          trailing: onDelete == null
+          subtitle: subtitle == null || subtitle!.isEmpty
               ? null
-              : IconButton(
-                  icon: Icon(Icons.delete_outline, color: onContainer),
-                  onPressed: onDelete,
+              : Text(
+                  subtitle!,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: onContainer.withValues(alpha: 0.85)),
                 ),
+          iconColor: onContainer,
+          trailing: trailing ??
+              (onDelete == null
+                  ? null
+                  : IconButton(
+                      icon: Icon(Icons.delete_outline, color: onContainer),
+                      onPressed: onDelete,
+                    )),
         ),
       ),
     );

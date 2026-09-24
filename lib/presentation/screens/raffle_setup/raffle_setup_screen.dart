@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/app_assets.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/l10n/l10n_extensions.dart';
-import '../../../core/l10n/option_labels.dart';
 import '../../../core/utils/validators.dart';
 import '../../../domain/entities/raffle_config.dart';
 import '../../../domain/entities/raffle_type.dart';
-import '../../cubit/raffle_setup/raffle_setup_cubit.dart';
 import '../../widgets/app_background.dart';
 import '../../widgets/app_dialogs.dart';
-import '../../widgets/app_dropdown.dart';
 import '../../widgets/app_text_field.dart';
 import '../../widgets/glass_card.dart';
 import '../../widgets/primary_button.dart';
 import '../participants/participants_screen.dart';
 
-/// Collects the raffle title, group and sector. Shared by both raffle types.
+/// Collects the raffle title and an optional note for participants. Shared by
+/// both raffle types.
 class RaffleSetupScreen extends StatefulWidget {
   const RaffleSetupScreen({super.key, required this.type});
 
@@ -29,14 +26,14 @@ class RaffleSetupScreen extends StatefulWidget {
 
 class _RaffleSetupScreenState extends State<RaffleSetupScreen> {
   final TextEditingController _titleController = TextEditingController();
-  final RaffleSetupCubit _cubit = RaffleSetupCubit();
+  final TextEditingController _noteController = TextEditingController();
 
-  bool get _isNewYear => widget.type == RaffleType.newYear;
+  bool get _isNewYear => widget.type.isNewYear;
 
   @override
   void dispose() {
     _titleController.dispose();
-    _cubit.close();
+    _noteController.dispose();
     super.dispose();
   }
 
@@ -45,12 +42,10 @@ class _RaffleSetupScreenState extends State<RaffleSetupScreen> {
       showWarningDialog(context, context.l10n.enterTitle);
       return;
     }
-    final RaffleSetupState state = _cubit.state;
     final RaffleConfig config = RaffleConfig(
       title: _titleController.text.trim(),
+      note: _noteController.text.trim(),
       type: widget.type,
-      group: state.group,
-      sector: state.sector,
     );
     Navigator.of(context).push(
       MaterialPageRoute<void>(
@@ -61,75 +56,52 @@ class _RaffleSetupScreenState extends State<RaffleSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RaffleSetupCubit>.value(
-      value: _cubit,
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(),
-        body: AppBackground(
-          child: SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppConstants.pagePadding),
-              child: Column(
-                children: <Widget>[
-                  Image.asset(
-                    _isNewYear ? AppAssets.newYearLogo : AppAssets.giftHand,
-                    height: 220,
-                    fit: BoxFit.contain,
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(),
+      body: AppBackground(
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(AppConstants.pagePadding),
+            child: Column(
+              children: <Widget>[
+                Image.asset(
+                  _isNewYear ? AppAssets.newYearLogo : AppAssets.giftHand,
+                  height: 220,
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(height: 24),
+                GlassCard(
+                  child: Column(
+                    children: <Widget>[
+                      AppTextField(
+                        controller: _titleController,
+                        label: context.l10n.raffleTitleHint,
+                        maxLength: AppConstants.maxTitleLength,
+                        textCapitalization: TextCapitalization.sentences,
+                        textInputAction: TextInputAction.next,
+                      ),
+                      const SizedBox(height: 16),
+                      AppTextField(
+                        controller: _noteController,
+                        label: context.l10n.raffleNoteHint,
+                        maxLength: AppConstants.maxNoteLength,
+                        maxLines: 4,
+                        textCapitalization: TextCapitalization.sentences,
+                        keyboardType: TextInputType.multiline,
+                      ),
+                      const SizedBox(height: 24),
+                      PrimaryButton(
+                        label: _isNewYear
+                            ? context.l10n.createNewYearRaffle
+                            : context.l10n.createGiftRaffle,
+                        color: Theme.of(context).colorScheme.secondary,
+                        onPressed: _submit,
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 24),
-                  GlassCard(
-                    child: Column(
-                      children: <Widget>[
-                        AppTextField(
-                          controller: _titleController,
-                          label: context.l10n.raffleTitleHint,
-                          textInputAction: TextInputAction.done,
-                        ),
-                        const SizedBox(height: 16),
-                        BlocBuilder<RaffleSetupCubit, RaffleSetupState>(
-                          builder: (context, state) => AppDropdown<int>(
-                            value: state.groupCode,
-                            hint: context.l10n.selectRaffleType,
-                            items: AppConstants.groupCodes
-                                .map((int code) => DropdownMenuItem<int>(
-                                      value: code,
-                                      child:
-                                          Text(groupLabel(context.l10n, code)),
-                                    ))
-                                .toList(),
-                            onChanged: context.read<RaffleSetupCubit>().selectGroup,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        BlocBuilder<RaffleSetupCubit, RaffleSetupState>(
-                          builder: (context, state) => AppDropdown<int>(
-                            value: state.sectorCode,
-                            hint: context.l10n.selectSector,
-                            items: AppConstants.sectorCodes
-                                .map((int code) => DropdownMenuItem<int>(
-                                      value: code,
-                                      child:
-                                          Text(sectorLabel(context.l10n, code)),
-                                    ))
-                                .toList(),
-                            onChanged:
-                                context.read<RaffleSetupCubit>().selectSector,
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        PrimaryButton(
-                          label: _isNewYear
-                              ? context.l10n.createNewYearRaffle
-                              : context.l10n.createGiftRaffle,
-                          color: Theme.of(context).colorScheme.secondary,
-                          onPressed: _submit,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

@@ -17,15 +17,11 @@
   "themeDark": "Dark",
   "language": "Language",
   "raffleTitleHint": "Enter Raffle Title*",
-  "selectRaffleType": "Select Raffle Type",
-  "selectSector": "Select Sector",
   "createNewYearRaffle": "Create New Year Raffle",
   "createGiftRaffle": "Create Gift Raffle",
   "addParticipant": "Add New Participant",
   "newParticipant": "New Participant",
-  "name": "Name",
-  "surname": "Surname",
-  "email": "Email",
+  "name": "Full name",
   "add": "Add",
   "save": "Save",
   "next": "Continue",
@@ -38,27 +34,188 @@
   "statGiftRaffle": "Gift Raffle",
   "statGiftCount": "Gift Count",
   "statParticipantCount": "Participant Count",
-  "successMessage": "The raffle was completed successfully.\nPlease check your emails.",
   "aboutText": "A new year is a fresh start. It is time to leave the past behind and step into a tomorrow full of new hopes. Look ahead with hope, discover the beauties of life and share them with your loved ones. May the new year bring you happiness, health and success! 🌟 🎉",
   "mobileDevelopers": "Mobile Developers",
   "backendDevelopers": "BackEnd Developers",
   "warning": "Warning",
   "ok": "OK",
   "enterTitle": "Please enter the raffle title.",
-  "allFieldsRequired": "All fields are required and the email must be valid!",
   "allGiftFieldsRequired": "All fields are required!",
-  "emailAlreadyAdded": "This email has already been added!",
-  "minParticipants": "You must add at least 3 people!",
-  "minGifts": "You must add at least 3 gifts!",
+  "minParticipants": "You must add at least {count} people!",
+  "@minParticipants": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "minGifts": "You must add at least {count, plural, =1{1 gift} other{{count} gifts}}!",
+  "@minGifts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "genericError": "An error occurred. Please try again.",
-  "groupTeam": "Team-Company",
-  "groupFriends": "Friends-Class",
-  "groupFamily": "Family-Relatives",
-  "groupOther": "Other",
-  "sectorTech": "Technology",
-  "sectorEducation": "Education",
-  "sectorFood": "Food",
-  "sectorHealth": "Health",
-  "sectorSports": "Sports",
-  "sectorOther": "Other"
+  "history": "Past Raffles",
+  "viewMyResult": "View My Result",
+  "raffleNoteHint": "Note for participants (optional)",
+  "emailOptional": "Email (optional)",
+  "nameRequired": "Please enter a name.",
+  "invalidEmail": "The email address is not valid.",
+  "nameAlreadyAdded": "This name has already been added!",
+  "tooManyGifts": "There can't be more gifts than participants.",
+  "statsThisDevice": "On this device",
+  "statsAllUsers": "All users",
+  "globalStatsError": "Global statistics are unavailable right now.",
+  "retry": "Try Again",
+  "resultSecretInfo": "Results are secret! Pass the phone around; each person taps their own name to see who they're buying a gift for.",
+  "resultGiftInfo": "The raffle is done! Here are the winners.",
+  "tapToReveal": "Tap to reveal",
+  "seen": "Seen",
+  "revealTitle": "Only {name} should look!",
+  "@revealTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "revealBody": "Hand the phone to {name} now. Tap \"Reveal\" when ready.",
+  "@revealBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reveal": "Reveal",
+  "hide": "Hide",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "greeting": "Hi {name}!",
+  "@greeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "yourGiftee": "You're buying a gift for",
+  "yourPrize": "Your prize",
+  "noPrize": "No prize this time. Better luck next time!",
+  "noPrizeShort": "No prize",
+  "shareResults": "Share Results",
+  "share": "Share",
+  "sendByEmail": "Send by email",
+  "publishOnline": "Create Online Codes",
+  "publishInfo": "A personal code is created for each participant. Participants enter it under \"View My Result\" in the Noel Raffle app and see only their own result.",
+  "codesReady": "Online codes are ready. Use the share icon to send each participant their own code.",
+  "publishFailed": "Couldn't create the codes. Check your internet connection and try again.",
+  "codeLabel": "Code: {code}",
+  "@codeLabel": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "shareSecretSantaMessage": "🎄 {title}\nHi {name}! In the New Year raffle you're buying a gift for: {match}",
+  "@shareSecretSantaMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      },
+      "match": {
+        "type": "String"
+      }
+    }
+  },
+  "shareGiftMessage": "🎁 {title}\nHi {name}! Your prize in the raffle: {match}",
+  "@shareGiftMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      },
+      "match": {
+        "type": "String"
+      }
+    }
+  },
+  "shareNoPrizeMessage": "🎁 {title}\nHi {name}! No prize this time. Better luck next time!",
+  "@shareNoPrizeMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "shareCodeMessage": "🎄 {title}\nHi {name}! To see your raffle result, open the Noel Raffle app and enter this code under \"View My Result\": {code}\n\nApp: {url}",
+  "@shareCodeMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      },
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "shareNoteLine": "Note: {note}",
+  "@shareNoteLine": {
+    "placeholders": {
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "shareAllTitle": "🎁 {title} — Results",
+  "@shareAllTitle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "emailSubject": "{title} — Your raffle result",
+  "@emailSubject": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "historyEmpty": "You haven't run any raffles yet.",
+  "deleteRaffleConfirm": "Delete this raffle from history?",
+  "deleteRaffleCodesNote": "The online codes sent to participants will stop working too.",
+  "participantCount": "{count, plural, =1{1 participant} other{{count} participants}}",
+  "@participantCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lookupInfo": "Enter the code the organizer sent you.",
+  "codeHint": "Code (e.g. ABCD-EFGH)",
+  "invalidCode": "The code must be 8 characters (e.g. ABCD-EFGH).",
+  "resultNotFound": "No result was found for this code.",
+  "lookupFailed": "Couldn't get the result. Check your internet connection and try again.",
+  "showResult": "Show Result"
 }

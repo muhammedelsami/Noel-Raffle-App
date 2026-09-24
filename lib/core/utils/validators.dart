@@ -5,5 +5,9 @@ abstract final class Validators {
 
   static bool isValidEmail(String value) => _emailRegExp.hasMatch(value.trim());
 
+  /// Empty input is allowed; anything else must be a valid email.
+  static bool isValidOptionalEmail(String value) =>
+      value.trim().isEmpty || isValidEmail(value);
+
   static bool isNotBlank(String value) => value.trim().isNotEmpty;
 }

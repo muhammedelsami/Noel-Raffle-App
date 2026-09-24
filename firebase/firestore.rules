@@ -1,0 +1,89 @@
+rules_version = '2';
+
+// Security rules for Noel Raffle. Deploy with:
+//   firebase deploy --only firestore:rules
+//
+// There is no backend: the app writes directly to Firestore as an anonymous
+// Firebase user, so these rules are what keeps the data valid and private.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // One document per participant, keyed by their personal share code.
+    // Knowing the code is what grants access to a result, so documents can
+    // be read one at a time but never listed, and never changed afterwards.
+    match /results/{code} {
+      allow get: if isShareCode(code);
+      allow list: if false;
+      allow create: if request.auth != null
+        && isShareCode(code)
+        && isValidResult(request.resource.data);
+      allow update: if false;
+      allow delete: if request.auth != null
+        && resource.data.ownerUid == request.auth.uid;
+    }
+
+    // Global usage counters. Each write may only add one raffle's numbers.
+    match /stats/global {
+      allow get: if true;
+      allow list: if false;
+      allow create: if request.auth != null
+        && isOneRaffleMore(zeroStats(), request.resource.data);
+      allow update: if request.auth != null
+        && isOneRaffleMore(resource.data, request.resource.data);
+      allow delete: if false;
+    }
+
+    function isShareCode(code) {
+      // Same alphabet and length as ShareCode in lib/domain/services.
+      return code.matches('^[A-HJ-NP-Z2-9]{8}$');
+    }
+
+    function isShortString(value, max) {
+      return value is string && value.size() <= max;
+    }
+
+    function isValidResult(data) {
+      return data.keys().hasOnly([
+          'title', 'note', 'type', 'participantName', 'match',
+          'raffleId', 'ownerUid', 'createdAt'])
+        && data.keys().hasAll([
+          'title', 'type', 'participantName', 'raffleId', 'ownerUid',
+          'createdAt'])
+        && data.ownerUid == request.auth.uid
+        && data.createdAt == request.time
+        && isShortString(data.title, 100)
+        && data.title.size() > 0
+        && (!('note' in data) || isShortString(data.note, 500))
+        && data.type in ['newYear', 'gift']
+        && isShortString(data.participantName, 100)
+        && data.participantName.size() > 0
+        && (!('match' in data) || data.match == null
+            || isShortString(data.match, 100))
+        && isShortString(data.raffleId, 40);
+    }
+
+    function zeroStats() {
+      return {
+        'totalRaffleCount': 0,
+        'newYearRaffleCount': 0,
+        'giftRaffleCount': 0,
+        'participantCount': 0,
+        'giftCount': 0
+      };
+    }
+
+    function isOneRaffleMore(before, after) {
+      return after.keys().hasOnly(zeroStats().keys())
+        && after.keys().hasAll(zeroStats().keys())
+        && after.totalRaffleCount == before.totalRaffleCount + 1
+        && after.newYearRaffleCount + after.giftRaffleCount
+            == before.newYearRaffleCount + before.giftRaffleCount + 1
+        && after.newYearRaffleCount >= before.newYearRaffleCount
+        && after.giftRaffleCount >= before.giftRaffleCount
+        && after.participantCount - before.participantCount >= 3
+        && after.participantCount - before.participantCount <= 1000
+        && after.giftCount - before.giftCount >= 0
+        && after.giftCount - before.giftCount <= 1000;
+    }
+  }
+}
