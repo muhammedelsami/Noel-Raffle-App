@@ -1,9 +1,16 @@
-Noel Raffle ile yılbaşı (Gizli Noel Baba) ve hediye çekilişleri hızlı, adil ve eğlenceli. Çekilişi saniyeler içinde kurun, telefonu elden ele dolaştırın ve herkes kendi sonucunu gizlice görsün. Üyelik ve internet bağlantısı gerekmez.
+Noel Raffle ile yılbaşı (Gizli Noel Baba) ve hediye çekilişleri hızlı, adil ve eğlenceli. Çekilişi saniyeler içinde kurun, telefonu elden ele dolaştırın ve herkes kendi sonucunu gizlice görsün. Üyelik gerekmez, çekiliş internet bağlantısı olmadan da çalışır.
 
 İki çekiliş türü
 
 • Yılbaşı çekilişi (Gizli Noel Baba): Herkes başka birine hediye alır. Katılımcılar tek bir hediye zincirine dizilir; kimse kendi adını çekmez ve iki kişi yalnızca birbirine hediye almaz.
 • Hediye çekilişi: Hediyeleri ve adetlerini girin, Noel Raffle onları rastgele katılımcılara dağıtsın. Her kişi en fazla bir hediye kazanır.
+
+Kurallar sizden
+
+• Çiftler ya da ev arkadaşları gibi kişileri ayırın, birbirlerini çekmesinler
+• Aynı grup yeniden çekiliş yaptığında geçen seferki eşleşmeleri tekrarlamayın
+• Herkes için hediye fikirleri ekleyin; onu çeken kişi sonucunda görür
+• Hediye gününü belirleyin, bir gün önce telefonunuza hatırlatma gelsin
 
 Sonuçlar gizli kalır
 
@@ -11,23 +18,26 @@ Yılbaşı çekilişinde sonuçlar gizlidir. Telefonu sırayla verin; herkes ken
 
 Dilediğiniz gibi paylaşın
 
-Her kişiye kendi sonucunu WhatsApp, SMS ya da telefonunuzdaki başka bir uygulamayla, e-posta adresini eklediyseniz e-postayla gönderin. Hediye çekilişinin kazananlarını tek bir liste olarak paylaşabilirsiniz.
+Her kişiye kendi sonucunu WhatsApp, SMS ya da başka bir uygulamayla, e-postayla veya şık bir görsel kart olarak gönderin. Dilerseniz çekilişi internette yayınlayın: herkes kişisel bir kod alır ve kendi sonucunu kendi telefonundan, uygulamada görür. Hediye çekilişinin kazananlarını tek bir liste olarak paylaşabilirsiniz.
 
 Gruplar için tasarlandı
 
-• Katılımcıları saniyeler içinde ekleyin, isterseniz e-posta adresiyle
-• Herkese bir not bırakın: hediye bütçesi, buluşma tarihi gibi
+• Katılımcıları tek tek ekleyin ya da bütün listeyi bir kerede yapıştırın
+• Yanlışlıkla mı sildiniz? Tek dokunuşla geri alın
+• Herkese bir not bırakın: hediye bütçesi gibi
 • Aynı isim iki kez eklenemez, karışıklık olmaz
+• Geçmişten aynı grupla yeniden çekiliş yapın
 • Geçmiş çekilişler cihazınızda saklanır, basit istatistiklerle birlikte
 
 Gizliliğinize saygılı
 
-Çekiliş telefonunuzda yapılır ve çekilişleriniz cihazınızda kalır. Hesap açmanız gerekmez.
+Çekiliş telefonunuzda yapılır ve çekilişleriniz cihazınızda kalır. Hesap açmanız gerekmez. Genel istatistikler için tutulan anonim sayılar dışında internette yalnızca yayınladığınız sonuçlar saklanır; e-posta adresleri yüklenmez ve bir sonucu yalnızca kodunu bilen açabilir.
 
 Kullanımı rahat
 
 • Açık ve koyu tema ya da sistem ayarınızı takip etme
 • Türkçe, İngilizce ve Arapça; sağdan sola yazım desteğiyle
+• Telefonda da tablette de rahat; Android 13 ve üzerinde temalı ikon
 • Sade, erişilebilir ve kolay okunan tasarım
 
 Ofis partileri, aile buluşmaları, sınıflar ve arkadaş grupları için ideal. Mutlu yıllar!

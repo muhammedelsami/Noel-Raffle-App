@@ -1,7 +1,9 @@
-A brand-new Noel Raffle!
-• Fresh, modern design with refined light and dark themes
-• New app icon and a clearer, step-by-step raffle setup
-• See at a glance how many people have revealed their Secret Santa result
-• Friendlier participant and gift lists with instant warnings
-• New Settings screen for theme and language
-• Faster, smoother screens and an improved right-to-left layout
+New in Noel Raffle:
+• Matching rules: keep couples apart and avoid last year's pairs
+• Gift ideas for every participant
+• A gift day, with a reminder the day before
+• Online results with personal codes
+• Share a result as an image card
+• Paste a whole list of names, and undo a delete
+• Draw again with the same group from your history
+• A draw animation, a themed icon and a tablet layout

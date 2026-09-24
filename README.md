@@ -17,27 +17,37 @@ and adds online result codes.
 - **Gift raffle:** list the gifts (with quantities) and they are handed out to random
   participants, with at most one gift per person. The app warns right away when there are
   more gifts than participants.
-- **Step-by-step setup:** name the raffle, add a note for everyone (such as the gift budget
-  or the exchange date), then add the participants and gifts. A progress bar shows each
-  step, and the same name can't be added twice.
+- **Matching rules:** keep two people apart (a couple, roommates) and skip last time's pairs
+  when the same group draws again. The app says so when the rules leave no possible draw.
+- **Step-by-step setup:** name the raffle, add a note for everyone (such as the gift budget),
+  then add the participants and gifts. A progress bar shows each step, and the same name
+  can't be added twice.
+- **Quick lists:** paste a whole list of names (and emails) at once, and undo a removal
+  from the snack bar.
+- **Gift ideas:** each participant can leave ideas, shown to whoever draws them.
+- **Gift day and reminder:** pick the day the gifts are handed out and get a notification
+  on the phone the day before.
+- **Draw again:** start a new raffle with the same people, gifts and rules from the result
+  screen or the history.
 
 ### Results
 
 - **Secret results on one phone:** results stay hidden. Pass the phone around; each person
   taps their own name and sees only their own result. A progress bar shows how many people
   have already looked.
-- **Share results** one by one through WhatsApp, SMS or any app, or by email from your
-  own mail app (participant emails are optional). Gift raffle winners can be shared as one
-  list.
-- **Online codes (optional, Firebase):** every participant gets a personal code and sees
-  only their own result under "View my result" in the app, on their own phone.
+- **Share results** one by one as a message (WhatsApp, SMS or any app), as an image card, or
+  by email from your own mail app (participant emails are optional). Gift raffle winners can
+  be shared as one list.
+- **Online codes (Firebase):** every participant gets a personal code and sees only their
+  own result under "View my result" in the app, on their own phone.
 
 ### App
 
 - **Works offline, no account:** the draw runs on the phone, and history and statistics
   are kept on the device. With Firebase you also get totals across all users.
 - **Modern design:** Material 3 with light, dark or system theme, WCAG AA contrast in both
-  themes, the Alexandria font and an adaptive app icon.
+  themes, the Alexandria font, a short draw animation and an adaptive app icon with a themed
+  (monochrome) layer. Wide screens such as tablets get a two-column layout.
 - **Three languages:** Turkish, English and Arabic, with a full right-to-left layout.
   Theme and language are changed in the Settings screen.
 

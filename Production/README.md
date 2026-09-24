@@ -22,8 +22,8 @@ Production/
 | --- | --- | --- | --- | --- |
 | Title | 25 | 29 | 27 | 30 |
 | Short description | 74 | 79 | 69 | 80 |
-| Full description | 1669 | 1708 | 1475 | 4000 |
-| What's new | 383 | 394 | 316 | 500 |
+| Full description | 2411 | 2501 | 2180 | 4000 |
+| What's new | 389 | 401 | 353 | 500 |
 
 All images are 24-bit PNGs without an alpha channel, as Play requires for screenshots and the
 feature graphic. The screenshots show the real app with language-specific sample data:
@@ -68,8 +68,9 @@ writes every image for all three languages, plus the project README showcase
 
 ## Notes
 
-- The listing does not mention online result codes. Builds without a configured
-  `lib/firebase_options.dart` hide that feature. Add it to the descriptions once release builds
-  ship with Firebase.
+- The listing mentions online result codes because release builds ship with Firebase: the
+  release workflow restores `lib/firebase_options.dart` from its secrets. Builds without it
+  hide that feature.
 - Claims in the texts match the app: the draw runs offline on the device, no account is needed,
-  nobody draws their own name, and each person wins at most one gift.
+  nobody draws their own name, each person wins at most one gift, only published results and
+  anonymous statistics are stored online, and emails are never uploaded.
