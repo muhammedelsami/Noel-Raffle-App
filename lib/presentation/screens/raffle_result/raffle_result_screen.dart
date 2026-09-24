@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:confetti/confetti.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/l10n_extensions.dart';
 import '../../../core/l10n/raffle_texts.dart';
+import '../../../core/review/review_prompter.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/raffle_type_style.dart';
@@ -62,9 +64,18 @@ class RaffleResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RaffleResultCubit>(
+    final Widget screen = BlocProvider<RaffleResultCubit>(
       create: (_) => sl<RaffleResultCubit>(param1: raffle),
       child: _RaffleResultView(celebrate: celebrate),
+    );
+    if (!celebrate) return screen;
+    // Leaving a fresh result is when the organizer is done: a good moment
+    // for the occasional review prompt.
+    return PopScope<Object?>(
+      onPopInvokedWithResult: (bool didPop, _) {
+        if (didPop) unawaited(sl<ReviewPrompter>().onDrawFinished());
+      },
+      child: screen,
     );
   }
 }
