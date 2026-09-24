@@ -423,4 +423,44 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get newGift => 'هدية جديدة';
+
+  @override
+  String get matchRules => 'قواعد المطابقة';
+
+  @override
+  String get matchRulesInfo =>
+      'امنع الأزواج أو أي شخصين آخرين من أن يسحب أحدهما الآخر.';
+
+  @override
+  String get addRule => 'إضافة قاعدة';
+
+  @override
+  String get keepApart => 'لا يسحب أحدهما الآخر';
+
+  @override
+  String get firstPerson => 'الشخص الأول';
+
+  @override
+  String get secondPerson => 'الشخص الثاني';
+
+  @override
+  String ruleLabel(String first, String second) {
+    return '$first و$second';
+  }
+
+  @override
+  String get ruleDescription => 'لن يسحب أحدهما الآخر';
+
+  @override
+  String get ruleSamePerson => 'اختر شخصين مختلفين.';
+
+  @override
+  String get ruleExists => 'هذه القاعدة موجودة بالفعل.';
+
+  @override
+  String get avoidPrevious => 'لا تكرر مطابقات المرة السابقة';
+
+  @override
+  String get noValidMatch =>
+      'لا توجد قرعة تناسب هذه القواعد. احذف قاعدة أو أضف أشخاصًا.';
 }

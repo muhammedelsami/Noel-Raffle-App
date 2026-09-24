@@ -417,4 +417,44 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newGift => 'New gift';
+
+  @override
+  String get matchRules => 'Matching rules';
+
+  @override
+  String get matchRulesInfo =>
+      'Keep couples or anyone else from drawing each other.';
+
+  @override
+  String get addRule => 'Add a rule';
+
+  @override
+  String get keepApart => 'Keep apart';
+
+  @override
+  String get firstPerson => 'First person';
+
+  @override
+  String get secondPerson => 'Second person';
+
+  @override
+  String ruleLabel(String first, String second) {
+    return '$first and $second';
+  }
+
+  @override
+  String get ruleDescription => 'Won\'t draw each other';
+
+  @override
+  String get ruleSamePerson => 'Pick two different people.';
+
+  @override
+  String get ruleExists => 'This rule already exists.';
+
+  @override
+  String get avoidPrevious => 'Don\'t repeat last time\'s matches';
+
+  @override
+  String get noValidMatch =>
+      'No draw fits these rules. Remove a rule or add more people.';
 }

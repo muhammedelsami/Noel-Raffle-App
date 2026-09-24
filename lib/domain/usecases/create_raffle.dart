@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import '../entities/draw_assignment.dart';
+import '../entities/draw_constraints.dart';
 import '../entities/gift.dart';
+import '../entities/match_exclusion.dart';
 import '../entities/participant.dart';
 import '../entities/raffle.dart';
 import '../entities/raffle_config.dart';
@@ -28,11 +30,13 @@ class CreateRaffle {
     required RaffleConfig config,
     required List<Participant> participants,
     List<Gift> gifts = const <Gift>[],
+    DrawConstraints constraints = DrawConstraints.none,
   }) async {
     final List<DrawAssignment> assignments = _drawer.draw(
       type: config.type,
       participants: participants,
       gifts: gifts,
+      constraints: constraints,
     );
     final DateTime now = _clock();
     final Raffle raffle = Raffle(
@@ -41,6 +45,9 @@ class CreateRaffle {
       createdAt: now,
       assignments: assignments,
       gifts: config.type.hasGifts ? gifts : const <Gift>[],
+      exclusions: config.type.hasGifts
+          ? const <MatchExclusion>[]
+          : constraints.exclusions,
     );
     await _history.save(raffle);
 

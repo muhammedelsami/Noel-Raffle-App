@@ -113,5 +113,17 @@
   "giftQuantity": "Adet: {count}",
   "giftUnits": "{count} hediye",
   "revealProgress": "{total} kişiden {seen} kişi baktı",
-  "newGift": "Yeni hediye"
+  "newGift": "Yeni hediye",
+  "matchRules": "Eşleşme kuralları",
+  "matchRulesInfo": "Çiftlerin ya da istediğiniz kişilerin birbirini çekmesini engelleyin.",
+  "addRule": "Kural ekle",
+  "keepApart": "Birbirini çekmesin",
+  "firstPerson": "Birinci kişi",
+  "secondPerson": "İkinci kişi",
+  "ruleLabel": "{first} ve {second}",
+  "ruleDescription": "Birbirini çekmez",
+  "ruleSamePerson": "İki farklı kişi seçin.",
+  "ruleExists": "Bu kural zaten var.",
+  "avoidPrevious": "Geçen seferki eşleşmeleri tekrarlama",
+  "noValidMatch": "Bu kurallarla uygun bir eşleşme bulunamadı. Bir kuralı kaldırın ya da kişi ekleyin."
 }

@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:noel_raffle/app/app.dart';
 import 'package:noel_raffle/core/constants/app_constants.dart';
 import 'package:noel_raffle/core/di/injection.dart';
+import 'package:noel_raffle/domain/entities/draw_assignment.dart';
 import 'package:noel_raffle/domain/entities/raffle.dart';
 import 'package:noel_raffle/domain/usecases/get_raffle_history.dart';
 import 'package:noel_raffle/l10n/app_localizations.dart';
@@ -152,5 +153,45 @@ void main() {
     await tester.scrollUntilVisible(find.text(l10n.history), 200);
     await tapText(tester, l10n.history);
     expect(find.text('Yılbaşı Partisi'), findsOneWidget);
+  });
+
+  testWidgets('matching rules keep two people apart',
+      (WidgetTester tester) async {
+    await bootToHome(tester);
+
+    await tapText(tester, l10n.newYearRaffle);
+    await tester.enterText(
+      find.widgetWithText(TextField, l10n.raffleTitleHint),
+      'Aile',
+    );
+    await tapButton(tester, l10n.next);
+    for (final String name in <String>['Ayşe', 'Burak', 'Cem']) {
+      await addParticipant(tester, name);
+    }
+
+    // Ayşe and Burak are the default pick of the rule dialog.
+    await tester.scrollUntilVisible(find.text(l10n.addRule), 200);
+    await tapText(tester, l10n.addRule);
+    await tapButton(tester, l10n.add);
+    expect(find.text(l10n.ruleLabel('Ayşe', 'Burak')), findsOneWidget);
+
+    // Three people always form one circle through Ayşe and Burak.
+    await tapButton(tester, l10n.startRaffle);
+    expect(find.text(l10n.noValidMatch), findsOneWidget);
+    await tester.tap(find.widgetWithText(TextButton, l10n.ok));
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(find.text(l10n.addParticipant), -200);
+    await addParticipant(tester, 'Deniz');
+    await tapButton(tester, l10n.startRaffle);
+    expect(find.byType(RaffleResultScreen), findsOneWidget);
+
+    final Raffle raffle = (await sl<GetRaffleHistory>()()).single;
+    final Map<String, String?> giftee = <String, String?>{
+      for (final DrawAssignment a in raffle.assignments)
+        a.participant.name: a.match,
+    };
+    expect(giftee['Ayşe'], isNot('Burak'));
+    expect(giftee['Burak'], isNot('Ayşe'));
   });
 }

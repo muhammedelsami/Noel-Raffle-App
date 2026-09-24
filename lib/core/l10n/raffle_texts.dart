@@ -25,6 +25,7 @@ String ruleViolationMessage(
         l10n.minParticipants(RaffleRules.minParticipants),
       RaffleRuleViolation.notEnoughGifts => l10n.minGifts(RaffleRules.minGifts),
       RaffleRuleViolation.tooManyGifts => l10n.tooManyGifts,
+      RaffleRuleViolation.noValidMatch => l10n.noValidMatch,
     };
 
 /// The private message sent to one participant.
@@ -77,9 +78,11 @@ String allResultsMessage(AppLocalizations l10n, Raffle raffle) {
 String _withNote(AppLocalizations l10n, String body, String note) =>
     note.isEmpty ? body : '$body\n\n${l10n.shareNoteLine(note)}';
 
+/// When [raffle] was drawn, e.g. "Dec 24, 2026 19:30".
+String raffleDate(AppLocalizations l10n, Raffle raffle) =>
+    DateFormat.yMMMd(l10n.localeName).add_Hm().format(raffle.createdAt);
+
 /// One-line description of a drawn raffle: date and participant count.
-String raffleSummary(AppLocalizations l10n, Raffle raffle) {
-  final String date =
-      DateFormat.yMMMd(l10n.localeName).add_Hm().format(raffle.createdAt);
-  return '$date • ${l10n.participantCount(raffle.assignments.length)}';
-}
+String raffleSummary(AppLocalizations l10n, Raffle raffle) =>
+    '${raffleDate(l10n, raffle)} • '
+    '${l10n.participantCount(raffle.assignments.length)}';

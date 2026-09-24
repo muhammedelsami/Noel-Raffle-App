@@ -783,6 +783,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New gift'**
   String get newGift;
+
+  /// No description provided for @matchRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Matching rules'**
+  String get matchRules;
+
+  /// No description provided for @matchRulesInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep couples or anyone else from drawing each other.'**
+  String get matchRulesInfo;
+
+  /// No description provided for @addRule.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a rule'**
+  String get addRule;
+
+  /// No description provided for @keepApart.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep apart'**
+  String get keepApart;
+
+  /// No description provided for @firstPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'First person'**
+  String get firstPerson;
+
+  /// No description provided for @secondPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Second person'**
+  String get secondPerson;
+
+  /// No description provided for @ruleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{first} and {second}'**
+  String ruleLabel(String first, String second);
+
+  /// No description provided for @ruleDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Won\'t draw each other'**
+  String get ruleDescription;
+
+  /// No description provided for @ruleSamePerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick two different people.'**
+  String get ruleSamePerson;
+
+  /// No description provided for @ruleExists.
+  ///
+  /// In en, this message translates to:
+  /// **'This rule already exists.'**
+  String get ruleExists;
+
+  /// No description provided for @avoidPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t repeat last time\'s matches'**
+  String get avoidPrevious;
+
+  /// No description provided for @noValidMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No draw fits these rules. Remove a rule or add more people.'**
+  String get noValidMatch;
 }
 
 class _AppLocalizationsDelegate

@@ -4,8 +4,8 @@ import '../../core/theme/app_dimens.dart';
 import 'empty_state.dart';
 
 /// Body of the participant and gift steps: a [header], an optional [notice],
-/// an [addButton] and the list, or an empty state while the list is empty.
-/// Only the visible rows are built.
+/// an [addButton] and the list, or an empty state while the list is empty,
+/// followed by an optional [footer]. Only the visible rows are built.
 class EditableListBody extends StatelessWidget {
   const EditableListBody({
     super.key,
@@ -16,6 +16,7 @@ class EditableListBody extends StatelessWidget {
     required this.itemCount,
     required this.itemBuilder,
     this.notice,
+    this.footer,
   });
 
   final Widget header;
@@ -27,6 +28,9 @@ class EditableListBody extends StatelessWidget {
 
   /// Shown between the header and the add button, e.g. a rule warning.
   final Widget? notice;
+
+  /// Shown below the list, e.g. extra settings for the list.
+  final Widget? footer;
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +77,16 @@ class EditableListBody extends StatelessWidget {
               separatorBuilder: (_, __) =>
                   const SizedBox(height: AppSpacing.sm),
             ),
+          ),
+        if (footer != null)
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.page,
+              0,
+              AppSpacing.page,
+              AppSpacing.xl,
+            ),
+            sliver: SliverToBoxAdapter(child: footer),
           ),
       ],
     );
