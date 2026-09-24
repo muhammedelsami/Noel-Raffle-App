@@ -1,11 +1,15 @@
+import '../entities/raffle.dart';
 import '../entities/statistics.dart';
-import '../repositories/statistics_repository.dart';
+import '../repositories/raffle_history_repository.dart';
 
-/// Fetches aggregate raffle statistics.
+/// Totals for the raffles drawn on this device.
 class GetStatistics {
-  const GetStatistics(this._repository);
+  const GetStatistics(this._history);
 
-  final StatisticsRepository _repository;
+  final RaffleHistoryRepository _history;
 
-  Future<Statistics> call() => _repository.fetch();
+  Future<Statistics> call() async {
+    final List<Raffle> raffles = await _history.getAll();
+    return Statistics.fromRaffles(raffles);
+  }
 }

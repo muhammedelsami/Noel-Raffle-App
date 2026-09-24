@@ -8,17 +8,18 @@ import '../../../core/l10n/l10n_extensions.dart';
 import '../../../domain/entities/gift.dart';
 import '../../../domain/entities/participant.dart';
 import '../../../domain/entities/raffle_config.dart';
+import '../../../domain/entities/raffle_rules.dart';
 import '../../cubit/gifts/gifts_cubit.dart';
-import '../../cubit/raffle_submit/raffle_submit_cubit.dart';
+import '../../cubit/raffle_draw/raffle_draw_cubit.dart';
 import '../../widgets/app_background.dart';
 import '../../widgets/app_dialogs.dart';
 import '../../widgets/app_list_tile_card.dart';
 import '../../widgets/gift_form_dialog.dart';
 import '../../widgets/loading_overlay.dart';
 import '../../widgets/primary_button.dart';
-import '../success/success_screen.dart';
+import '../../widgets/raffle_draw_listener.dart';
 
-/// Lets the user build the gift list, then submits the gift raffle.
+/// Lets the user build the gift list, then draws the gift raffle.
 class GiftsScreen extends StatelessWidget {
   const GiftsScreen({
     super.key,
@@ -34,9 +35,11 @@ class GiftsScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
         BlocProvider<GiftsCubit>(create: (_) => GiftsCubit()),
-        BlocProvider<RaffleSubmitCubit>(create: (_) => sl<RaffleSubmitCubit>()),
+        BlocProvider<RaffleDrawCubit>(create: (_) => sl<RaffleDrawCubit>()),
       ],
-      child: _GiftsView(config: config, participants: participants),
+      child: RaffleDrawListener(
+        child: _GiftsView(config: config, participants: participants),
+      ),
     );
   }
 }
@@ -62,10 +65,10 @@ class _GiftsView extends StatelessWidget {
   void _start(BuildContext context) {
     final GiftsCubit cubit = context.read<GiftsCubit>();
     if (!cubit.state.canProceed) {
-      showWarningDialog(context, context.l10n.minGifts);
+      showWarningDialog(context, context.l10n.minGifts(RaffleRules.minGifts));
       return;
     }
-    context.read<RaffleSubmitCubit>().submit(
+    context.read<RaffleDrawCubit>().draw(
           config: config,
           participants: participants,
           gifts: cubit.state.gifts,
@@ -74,59 +77,48 @@ class _GiftsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RaffleSubmitCubit, RaffleSubmitState>(
-      listener: (BuildContext context, RaffleSubmitState state) {
-        if (state.status == RaffleSubmitStatus.success) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute<void>(builder: (_) => const SuccessScreen()),
-          );
-        } else if (state.status == RaffleSubmitStatus.failure) {
-          showWarningDialog(context, state.error ?? context.l10n.genericError);
-        }
-      },
-      builder: (BuildContext context, RaffleSubmitState submitState) {
-        return Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(),
-          body: AppBackground(
-            child: SafeArea(
-              child: LoadingOverlay(
-                isLoading: submitState.isLoading,
-                child: Column(
-                  children: <Widget>[
-                    Image.asset(
-                      AppAssets.giftHand,
-                      height: 180,
-                      fit: BoxFit.contain,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppConstants.pagePadding,
-                      ),
-                      child: PrimaryButton(
-                        label: context.l10n.addGift,
-                        icon: Icons.add_box_rounded,
-                        color: Theme.of(context).colorScheme.secondary,
-                        onPressed: () => _addGift(context),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Expanded(child: _GiftList(onEdit: _editGift)),
-                    Padding(
-                      padding: const EdgeInsets.all(AppConstants.pagePadding),
-                      child: PrimaryButton(
-                        label: context.l10n.startRaffle,
-                        icon: Icons.celebration_rounded,
-                        onPressed: () => _start(context),
-                      ),
-                    ),
-                  ],
+    final bool isDrawing =
+        context.select((RaffleDrawCubit cubit) => cubit.state.isDrawing);
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(),
+      body: AppBackground(
+        child: SafeArea(
+          child: LoadingOverlay(
+            isLoading: isDrawing,
+            child: Column(
+              children: <Widget>[
+                Image.asset(
+                  AppAssets.giftHand,
+                  height: 180,
+                  fit: BoxFit.contain,
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppConstants.pagePadding,
+                  ),
+                  child: PrimaryButton(
+                    label: context.l10n.addGift,
+                    icon: Icons.add_box_rounded,
+                    color: Theme.of(context).colorScheme.secondary,
+                    onPressed: () => _addGift(context),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Expanded(child: _GiftList(onEdit: _editGift)),
+                Padding(
+                  padding: const EdgeInsets.all(AppConstants.pagePadding),
+                  child: PrimaryButton(
+                    label: context.l10n.startRaffle,
+                    icon: Icons.celebration_rounded,
+                    onPressed: () => _start(context),
+                  ),
+                ),
+              ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
@@ -148,8 +140,9 @@ class _GiftList extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             final Gift gift = state.gifts[index];
             return AppListTileCard(
+              leading: Icons.card_giftcard_rounded,
               title: gift.name,
-              subtitle: '${gift.count}',
+              subtitle: '× ${gift.count}',
               onTap: () => onEdit(context, index, gift),
               onDelete: () => context.read<GiftsCubit>().removeAt(index),
             );

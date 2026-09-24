@@ -5,8 +5,8 @@ class ParticipantsState extends Equatable {
 
   final List<Participant> participants;
 
-  /// Enough participants have been added to start the raffle.
-  bool get canProceed => participants.length >= AppConstants.minParticipants;
+  /// Enough participants have been added to continue.
+  bool get canProceed => participants.length >= RaffleRules.minParticipants;
 
   @override
   List<Object?> get props => <Object?>[participants];

@@ -7,19 +7,20 @@ import '../../../core/di/injection.dart';
 import '../../../core/l10n/l10n_extensions.dart';
 import '../../../domain/entities/participant.dart';
 import '../../../domain/entities/raffle_config.dart';
+import '../../../domain/entities/raffle_rules.dart';
 import '../../cubit/participants/participants_cubit.dart';
-import '../../cubit/raffle_submit/raffle_submit_cubit.dart';
+import '../../cubit/raffle_draw/raffle_draw_cubit.dart';
 import '../../widgets/app_background.dart';
 import '../../widgets/app_dialogs.dart';
 import '../../widgets/app_list_tile_card.dart';
 import '../../widgets/loading_overlay.dart';
 import '../../widgets/participant_form_dialog.dart';
 import '../../widgets/primary_button.dart';
+import '../../widgets/raffle_draw_listener.dart';
 import '../gifts/gifts_screen.dart';
-import '../success/success_screen.dart';
 
 /// Lets the user build the participant list, then either continues to the
-/// gifts step (gift raffle) or submits directly (new-year raffle).
+/// gifts step (gift raffle) or draws right away (new-year raffle).
 class ParticipantsScreen extends StatelessWidget {
   const ParticipantsScreen({super.key, required this.config});
 
@@ -30,9 +31,9 @@ class ParticipantsScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
         BlocProvider<ParticipantsCubit>(create: (_) => ParticipantsCubit()),
-        BlocProvider<RaffleSubmitCubit>(create: (_) => sl<RaffleSubmitCubit>()),
+        BlocProvider<RaffleDrawCubit>(create: (_) => sl<RaffleDrawCubit>()),
       ],
-      child: _ParticipantsView(config: config),
+      child: RaffleDrawListener(child: _ParticipantsView(config: config)),
     );
   }
 }
@@ -48,7 +49,7 @@ class _ParticipantsView extends StatelessWidget {
     final ParticipantsCubit cubit = context.read<ParticipantsCubit>();
     final Participant? result = await showParticipantForm(
       context,
-      isDuplicate: (String email) => cubit.emailExists(email),
+      isDuplicate: (String name) => cubit.nameExists(name),
     );
     if (result != null) cubit.add(result);
   }
@@ -62,8 +63,8 @@ class _ParticipantsView extends StatelessWidget {
     final Participant? result = await showParticipantForm(
       context,
       initial: participant,
-      isDuplicate: (String email) =>
-          cubit.emailExists(email, excludingIndex: index),
+      isDuplicate: (String name) =>
+          cubit.nameExists(name, excludingIndex: index),
     );
     if (result != null) cubit.update(index, result);
   }
@@ -71,14 +72,17 @@ class _ParticipantsView extends StatelessWidget {
   void _onNext(BuildContext context) {
     final ParticipantsCubit cubit = context.read<ParticipantsCubit>();
     if (!cubit.state.canProceed) {
-      showWarningDialog(context, context.l10n.minParticipants);
+      showWarningDialog(
+        context,
+        context.l10n.minParticipants(RaffleRules.minParticipants),
+      );
       return;
     }
     final List<Participant> participants = cubit.state.participants;
     if (_isNewYear) {
       context
-          .read<RaffleSubmitCubit>()
-          .submit(config: config, participants: participants);
+          .read<RaffleDrawCubit>()
+          .draw(config: config, participants: participants);
     } else {
       Navigator.of(context).push(
         MaterialPageRoute<void>(
@@ -91,59 +95,52 @@ class _ParticipantsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RaffleSubmitCubit, RaffleSubmitState>(
-      listener: (BuildContext context, RaffleSubmitState state) {
-        if (state.status == RaffleSubmitStatus.success) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute<void>(builder: (_) => const SuccessScreen()),
-          );
-        } else if (state.status == RaffleSubmitStatus.failure) {
-          showWarningDialog(context, state.error ?? context.l10n.genericError);
-        }
-      },
-      builder: (BuildContext context, RaffleSubmitState submitState) {
-        return Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(),
-          body: AppBackground(
-            child: SafeArea(
-              child: LoadingOverlay(
-                isLoading: submitState.isLoading,
-                child: Column(
-                  children: <Widget>[
-                    Image.asset(
-                      _isNewYear ? AppAssets.newYearLogo : AppAssets.giftHand,
-                      height: 180,
-                      fit: BoxFit.contain,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppConstants.pagePadding,
-                      ),
-                      child: PrimaryButton(
-                        label: context.l10n.addParticipant,
-                        icon: Icons.person_add_alt_1_rounded,
-                        color: Theme.of(context).colorScheme.secondary,
-                        onPressed: () => _addParticipant(context),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Expanded(child: _ParticipantList(onEdit: _editParticipant)),
-                    Padding(
-                      padding: const EdgeInsets.all(AppConstants.pagePadding),
-                      child: PrimaryButton(
-                        label: context.l10n.next,
-                        icon: Icons.arrow_forward_rounded,
-                        onPressed: () => _onNext(context),
-                      ),
-                    ),
-                  ],
+    final bool isDrawing =
+        context.select((RaffleDrawCubit cubit) => cubit.state.isDrawing);
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(),
+      body: AppBackground(
+        child: SafeArea(
+          child: LoadingOverlay(
+            isLoading: isDrawing,
+            child: Column(
+              children: <Widget>[
+                Image.asset(
+                  _isNewYear ? AppAssets.newYearLogo : AppAssets.giftHand,
+                  height: 180,
+                  fit: BoxFit.contain,
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppConstants.pagePadding,
+                  ),
+                  child: PrimaryButton(
+                    label: context.l10n.addParticipant,
+                    icon: Icons.person_add_alt_1_rounded,
+                    color: Theme.of(context).colorScheme.secondary,
+                    onPressed: () => _addParticipant(context),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Expanded(child: _ParticipantList(onEdit: _editParticipant)),
+                Padding(
+                  padding: const EdgeInsets.all(AppConstants.pagePadding),
+                  child: PrimaryButton(
+                    label: _isNewYear
+                        ? context.l10n.startRaffle
+                        : context.l10n.next,
+                    icon: _isNewYear
+                        ? Icons.celebration_rounded
+                        : Icons.arrow_forward_rounded,
+                    onPressed: () => _onNext(context),
+                  ),
+                ),
+              ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
@@ -165,11 +162,11 @@ class _ParticipantList extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             final Participant participant = state.participants[index];
             return AppListTileCard(
-              title: participant.fullName,
+              leading: Icons.person_rounded,
+              title: participant.name,
               subtitle: participant.email,
               onTap: () => onEdit(context, index, participant),
-              onDelete: () =>
-                  context.read<ParticipantsCubit>().removeAt(index),
+              onDelete: () => context.read<ParticipantsCubit>().removeAt(index),
             );
           },
         );

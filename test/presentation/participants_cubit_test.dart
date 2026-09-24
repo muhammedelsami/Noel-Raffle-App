@@ -3,9 +3,9 @@ import 'package:noel_raffle/domain/entities/participant.dart';
 import 'package:noel_raffle/presentation/cubit/participants/participants_cubit.dart';
 
 void main() {
-  const Participant a = Participant(name: 'A', surname: 'A', email: 'a@x.com');
-  const Participant b = Participant(name: 'B', surname: 'B', email: 'b@x.com');
-  const Participant c = Participant(name: 'C', surname: 'C', email: 'c@x.com');
+  const Participant a = Participant(name: 'Ayşe', email: 'a@x.com');
+  const Participant b = Participant(name: 'Burak');
+  const Participant c = Participant(name: 'Cem');
 
   late ParticipantsCubit cubit;
 
@@ -40,10 +40,11 @@ void main() {
     expect(cubit.state.participants.single, b);
   });
 
-  test('emailExists is case-insensitive and respects exclusion', () {
-    cubit.add(a);
-    expect(cubit.emailExists('A@X.COM'), isTrue);
-    expect(cubit.emailExists('a@x.com', excludingIndex: 0), isFalse);
-    expect(cubit.emailExists('missing@x.com'), isFalse);
+  test('nameExists is case-insensitive, trims and respects exclusion', () {
+    cubit.add(b);
+    expect(cubit.nameExists('BURAK'), isTrue);
+    expect(cubit.nameExists('  burak '), isTrue);
+    expect(cubit.nameExists('Burak', excludingIndex: 0), isFalse);
+    expect(cubit.nameExists('Cem'), isFalse);
   });
 }

@@ -12,18 +12,28 @@ import 'primary_button.dart';
 /// language picker.
 Future<void> showAppMenu(
   BuildContext context, {
+  required VoidCallback onHistory,
   required VoidCallback onStatistics,
   required VoidCallback onAbout,
 }) {
   return showDialog<void>(
     context: context,
-    builder: (_) => _MenuDialog(onStatistics: onStatistics, onAbout: onAbout),
+    builder: (_) => _MenuDialog(
+      onHistory: onHistory,
+      onStatistics: onStatistics,
+      onAbout: onAbout,
+    ),
   );
 }
 
 class _MenuDialog extends StatelessWidget {
-  const _MenuDialog({required this.onStatistics, required this.onAbout});
+  const _MenuDialog({
+    required this.onHistory,
+    required this.onStatistics,
+    required this.onAbout,
+  });
 
+  final VoidCallback onHistory;
   final VoidCallback onStatistics;
   final VoidCallback onAbout;
 
@@ -43,49 +53,60 @@ class _MenuDialog extends StatelessWidget {
       title: Text(context.l10n.appName, textAlign: TextAlign.center),
       content: SizedBox(
         width: double.maxFinite,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            PrimaryButton(
-              label: context.l10n.statistics,
-              icon: Icons.bar_chart_rounded,
-              onPressed: () {
-                Navigator.of(context).pop();
-                onStatistics();
-              },
-            ),
-            const SizedBox(height: 12),
-            PrimaryButton(
-              label: context.l10n.about,
-              icon: Icons.info_outline_rounded,
-              onPressed: () {
-                Navigator.of(context).pop();
-                onAbout();
-              },
-            ),
-            const SizedBox(height: 12),
-            PrimaryButton(
-              label: context.l10n.rateUs,
-              icon: Icons.star_rounded,
-              onPressed: () => _openUrl(context, AppConstants.playStoreUrl),
-            ),
-            const SizedBox(height: 12),
-            PrimaryButton(
-              label: context.l10n.website,
-              icon: Icons.public_rounded,
-              onPressed: () => _openUrl(context, AppConstants.websiteUrl),
-            ),
-            const SizedBox(height: 12),
-            PrimaryButton(
-              label: context.l10n.contribute,
-              icon: Icons.code_rounded,
-              onPressed: () => _openUrl(context, AppConstants.repoUrl),
-            ),
-            const SizedBox(height: 12),
-            const _LanguageButton(),
-            const SizedBox(height: 12),
-            const _ThemeToggleButton(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              PrimaryButton(
+                label: context.l10n.history,
+                icon: Icons.history_rounded,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  onHistory();
+                },
+              ),
+              const SizedBox(height: 12),
+              PrimaryButton(
+                label: context.l10n.statistics,
+                icon: Icons.bar_chart_rounded,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  onStatistics();
+                },
+              ),
+              const SizedBox(height: 12),
+              PrimaryButton(
+                label: context.l10n.about,
+                icon: Icons.info_outline_rounded,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  onAbout();
+                },
+              ),
+              const SizedBox(height: 12),
+              PrimaryButton(
+                label: context.l10n.rateUs,
+                icon: Icons.star_rounded,
+                onPressed: () => _openUrl(context, AppConstants.playStoreUrl),
+              ),
+              const SizedBox(height: 12),
+              PrimaryButton(
+                label: context.l10n.website,
+                icon: Icons.public_rounded,
+                onPressed: () => _openUrl(context, AppConstants.websiteUrl),
+              ),
+              const SizedBox(height: 12),
+              PrimaryButton(
+                label: context.l10n.contribute,
+                icon: Icons.code_rounded,
+                onPressed: () => _openUrl(context, AppConstants.repoUrl),
+              ),
+              const SizedBox(height: 12),
+              const _LanguageButton(),
+              const SizedBox(height: 12),
+              const _ThemeToggleButton(),
+            ],
+          ),
         ),
       ),
       actions: <Widget>[
@@ -152,7 +173,10 @@ class _ThemeToggleButton extends StatelessWidget {
               Icons.brightness_auto_rounded,
               context.l10n.themeSystem
             ),
-          ThemeMode.light => (Icons.light_mode_rounded, context.l10n.themeLight),
+          ThemeMode.light => (
+              Icons.light_mode_rounded,
+              context.l10n.themeLight
+            ),
           ThemeMode.dark => (Icons.dark_mode_rounded, context.l10n.themeDark),
         };
         return PrimaryButton(

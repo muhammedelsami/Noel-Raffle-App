@@ -16,6 +16,18 @@ void main() {
     });
   });
 
+  group('Validators.isValidOptionalEmail', () {
+    test('allows empty input', () {
+      expect(Validators.isValidOptionalEmail(''), isTrue);
+      expect(Validators.isValidOptionalEmail('   '), isTrue);
+    });
+
+    test('still validates non-empty input', () {
+      expect(Validators.isValidOptionalEmail('a@b.com'), isTrue);
+      expect(Validators.isValidOptionalEmail('nope'), isFalse);
+    });
+  });
+
   group('Validators.isNotBlank', () {
     test('treats whitespace-only as blank', () {
       expect(Validators.isNotBlank('   '), isFalse);

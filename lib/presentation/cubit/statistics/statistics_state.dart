@@ -1,18 +1,21 @@
 part of 'statistics_cubit.dart';
 
-enum StatisticsStatus { loading, loaded, error }
+enum GlobalStatisticsStatus { unavailable, loading, loaded, error }
 
 class StatisticsState extends Equatable {
   const StatisticsState({
-    this.status = StatisticsStatus.loading,
-    this.data,
-    this.error,
+    this.local,
+    this.global,
+    this.globalStatus = GlobalStatisticsStatus.loading,
   });
 
-  final StatisticsStatus status;
-  final Statistics? data;
-  final String? error;
+  /// This device's totals; `null` until loaded.
+  final Statistics? local;
+
+  /// Totals across all users once [globalStatus] is loaded.
+  final Statistics? global;
+  final GlobalStatisticsStatus globalStatus;
 
   @override
-  List<Object?> get props => <Object?>[status, data, error];
+  List<Object?> get props => <Object?>[local, global, globalStatus];
 }
