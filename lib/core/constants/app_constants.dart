@@ -1,26 +1,12 @@
 import 'package:flutter/widgets.dart';
 
-/// Business and layout constants shared across the app.
+/// Layout constants, input limits and external links shared across the app.
+/// Raffle business rules live in the domain (`RaffleRules`).
 abstract final class AppConstants {
-  /// Minimum number of participants required before a raffle can start.
-  static const int minParticipants = 3;
-
-  /// Minimum number of gifts required for a gift raffle.
-  static const int minGifts = 3;
-
-  /// Backend gift identifier kept identical to the original API contract.
-  static const String defaultGiftId = '1bc4a4af-134b-448d-afcb-162fadffb170';
-
-  /// Numeric code used when no group/sector is chosen (legacy default).
-  static const int unspecifiedCode = 100;
-
-  /// Group option backend codes, in display order. Labels are localized via
-  /// `groupLabel` in `core/l10n/option_labels.dart`.
-  static const List<int> groupCodes = <int>[10, 20, 30, 40];
-
-  /// Sector option backend codes, in display order. Labels are localized via
-  /// `sectorLabel` in `core/l10n/option_labels.dart`.
-  static const List<int> sectorCodes = <int>[10, 20, 30, 40, 50, 60];
+  // Input limits. The Firestore rules accept a bit more, so these always pass.
+  static const int maxTitleLength = 80;
+  static const int maxNoteLength = 300;
+  static const int maxNameLength = 60;
 
   // External links.
   static const String playStoreUrl =

@@ -2,21 +2,21 @@ import 'package:equatable/equatable.dart';
 
 import 'raffle_type.dart';
 
-/// The setup data captured before participants are added: the raffle title and
-/// the numeric group/sector codes expected by the backend.
+/// The setup data captured before participants are added.
 class RaffleConfig extends Equatable {
   const RaffleConfig({
     required this.title,
     required this.type,
-    required this.group,
-    required this.sector,
+    this.note = '',
   });
 
   final String title;
   final RaffleType type;
-  final int group;
-  final int sector;
+
+  /// Optional message shown to every participant with their result
+  /// (e.g. the gift budget or when the gifts are exchanged).
+  final String note;
 
   @override
-  List<Object?> get props => <Object?>[title, type, group, sector];
+  List<Object?> get props => <Object?>[title, type, note];
 }

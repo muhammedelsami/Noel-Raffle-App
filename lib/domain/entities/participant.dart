@@ -1,27 +1,16 @@
 import 'package:equatable/equatable.dart';
 
-/// A person taking part in a raffle.
+/// A person taking part in a raffle. [name] identifies them in the results, so
+/// it is unique within a raffle; [email] is optional and only used to send the
+/// result from the organizer's own mail app.
 class Participant extends Equatable {
-  const Participant({
-    required this.name,
-    required this.surname,
-    required this.email,
-  });
+  const Participant({required this.name, this.email});
 
   final String name;
-  final String surname;
-  final String email;
+  final String? email;
 
-  String get fullName => '$name $surname';
-
-  Participant copyWith({String? name, String? surname, String? email}) {
-    return Participant(
-      name: name ?? this.name,
-      surname: surname ?? this.surname,
-      email: email ?? this.email,
-    );
-  }
+  bool get hasEmail => email != null && email!.isNotEmpty;
 
   @override
-  List<Object?> get props => <Object?>[name, surname, email];
+  List<Object?> get props => <Object?>[name, email];
 }

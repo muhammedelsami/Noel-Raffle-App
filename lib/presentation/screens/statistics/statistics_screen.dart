@@ -12,7 +12,8 @@ import '../../widgets/app_logo_header.dart';
 import '../../widgets/glass_card.dart';
 import '../../widgets/primary_button.dart';
 
-/// Shows aggregate raffle statistics fetched from the backend.
+/// Shows this device's raffle totals and, when Firebase is configured, the
+/// totals across all users.
 class StatisticsScreen extends StatelessWidget {
   const StatisticsScreen({super.key});
 
@@ -27,15 +28,32 @@ class StatisticsScreen extends StatelessWidget {
           child: SafeArea(
             child: BlocBuilder<StatisticsCubit, StatisticsState>(
               builder: (BuildContext context, StatisticsState state) {
-                return switch (state.status) {
-                  StatisticsStatus.loading =>
-                    const Center(child: CircularProgressIndicator()),
-                  StatisticsStatus.error => _ErrorView(
-                      message: state.error ?? context.l10n.genericError,
-                      onRetry: () => context.read<StatisticsCubit>().load(),
-                    ),
-                  StatisticsStatus.loaded => _StatisticsContent(state.data!),
-                };
+                final Statistics? local = state.local;
+                if (local == null) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.all(AppConstants.pagePadding),
+                  child: Column(
+                    children: <Widget>[
+                      const AppLogoHeader(),
+                      Image.asset(AppAssets.logo, height: 160),
+                      const SizedBox(height: 16),
+                      _StatisticsCard(
+                        title: context.l10n.statsThisDevice,
+                        child: _StatisticsRows(local),
+                      ),
+                      if (state.globalStatus !=
+                          GlobalStatisticsStatus.unavailable) ...<Widget>[
+                        const SizedBox(height: 16),
+                        _StatisticsCard(
+                          title: context.l10n.statsAllUsers,
+                          child: _GlobalStatistics(state: state),
+                        ),
+                      ],
+                    ],
+                  ),
+                );
               },
             ),
           ),
@@ -45,36 +63,73 @@ class StatisticsScreen extends StatelessWidget {
   }
 }
 
-class _StatisticsContent extends StatelessWidget {
-  const _StatisticsContent(this.stats);
+class _GlobalStatistics extends StatelessWidget {
+  const _GlobalStatistics({required this.state});
+
+  final StatisticsState state;
+
+  @override
+  Widget build(BuildContext context) {
+    return switch (state.globalStatus) {
+      GlobalStatisticsStatus.loaded => _StatisticsRows(state.global!),
+      GlobalStatisticsStatus.error => Column(
+          children: <Widget>[
+            Text(
+              context.l10n.globalStatsError,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            const SizedBox(height: 12),
+            PrimaryButton(
+              label: context.l10n.retry,
+              icon: Icons.refresh_rounded,
+              onPressed: () => context.read<StatisticsCubit>().load(),
+            ),
+          ],
+        ),
+      _ => const Padding(
+          padding: EdgeInsets.all(16),
+          child: Center(child: CircularProgressIndicator()),
+        ),
+    };
+  }
+}
+
+class _StatisticsCard extends StatelessWidget {
+  const _StatisticsCard({required this.title, required this.child});
+
+  final String title;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return GlassCard(
+      child: Column(
+        children: <Widget>[
+          Text(title, style: Theme.of(context).textTheme.headlineMedium),
+          const SizedBox(height: 4),
+          child,
+        ],
+      ),
+    );
+  }
+}
+
+class _StatisticsRows extends StatelessWidget {
+  const _StatisticsRows(this.stats);
 
   final Statistics stats;
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(AppConstants.pagePadding),
-      child: Column(
-        children: <Widget>[
-          const AppLogoHeader(),
-          Image.asset(AppAssets.logo, height: 200),
-          const SizedBox(height: 16),
-          GlassCard(
-            child: Column(
-              children: <Widget>[
-                _StatRow(
-                    context.l10n.statTotalRaffle, stats.totalRaffleCount),
-                _StatRow(
-                    context.l10n.statNewYearRaffle, stats.newYearRaffleCount),
-                _StatRow(context.l10n.statGiftRaffle, stats.giftRaffleCount),
-                _StatRow(context.l10n.statGiftCount, stats.giftCount),
-                _StatRow(context.l10n.statParticipantCount,
-                    stats.participantCount),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return Column(
+      children: <Widget>[
+        _StatRow(context.l10n.statTotalRaffle, stats.totalRaffleCount),
+        _StatRow(context.l10n.statNewYearRaffle, stats.newYearRaffleCount),
+        _StatRow(context.l10n.statGiftRaffle, stats.giftRaffleCount),
+        _StatRow(context.l10n.statGiftCount, stats.giftCount),
+        _StatRow(context.l10n.statParticipantCount, stats.participantCount),
+      ],
     );
   }
 }
@@ -89,43 +144,13 @@ class _StatRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextStyle? style = Theme.of(context).textTheme.titleLarge;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(label, style: style),
+          Flexible(child: Text(label, style: style)),
           Text('$value', style: style),
         ],
-      ),
-    );
-  }
-}
-
-class _ErrorView extends StatelessWidget {
-  const _ErrorView({required this.message, required this.onRetry});
-
-  final String message;
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AppConstants.pagePadding),
-        child: GlassCard(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                message,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 16),
-              PrimaryButton(label: context.l10n.ok, onPressed: onRetry),
-            ],
-          ),
-        ),
       ),
     );
   }

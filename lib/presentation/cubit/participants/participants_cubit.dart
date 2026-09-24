@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/constants/app_constants.dart';
 import '../../../domain/entities/participant.dart';
+import '../../../domain/entities/raffle_rules.dart';
 
 part 'participants_state.dart';
 
@@ -28,12 +28,13 @@ class ParticipantsCubit extends Cubit<ParticipantsState> {
     emit(ParticipantsState(participants: list));
   }
 
-  /// Whether [email] is already used by another participant.
-  bool emailExists(String email, {int? excludingIndex}) {
-    final String normalized = email.trim().toLowerCase();
+  /// Whether [name] is already used by another participant. Names identify
+  /// people in the results, so they must be unique (ignoring case).
+  bool nameExists(String name, {int? excludingIndex}) {
+    final String normalized = name.trim().toLowerCase();
     for (int i = 0; i < state.participants.length; i++) {
       if (i == excludingIndex) continue;
-      if (state.participants[i].email.toLowerCase() == normalized) return true;
+      if (state.participants[i].name.toLowerCase() == normalized) return true;
     }
     return false;
   }

@@ -5,6 +5,7 @@ import '../../core/l10n/l10n_extensions.dart';
 import '../../core/utils/validators.dart';
 import '../../domain/entities/gift.dart';
 import 'app_text_field.dart';
+import 'form_error_text.dart';
 import 'primary_button.dart';
 
 /// Shows the add/edit gift form and resolves to the saved [Gift], or `null`
@@ -34,6 +35,9 @@ class _GiftFormState extends State<_GiftForm> {
 
   final FocusNode _countFocus = FocusNode();
 
+  /// Validation message shown inside the dialog (see the participant form).
+  String? _error;
+
   @override
   void dispose() {
     _name.dispose();
@@ -47,11 +51,7 @@ class _GiftFormState extends State<_GiftForm> {
     final int? count = int.tryParse(_count.text.trim());
 
     if (!Validators.isNotBlank(name) || count == null || count <= 0) {
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(content: Text(context.l10n.allGiftFieldsRequired)),
-        );
+      setState(() => _error = context.l10n.allGiftFieldsRequired);
       return;
     }
     Navigator.of(context).pop(Gift(name: name, count: count));
@@ -68,22 +68,26 @@ class _GiftFormState extends State<_GiftForm> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-            AppTextField(
-              controller: _name,
-              label: context.l10n.giftName,
-              autofocus: true,
-              textInputAction: TextInputAction.next,
-              onSubmitted: (_) => _countFocus.requestFocus(),
-            ),
-            const SizedBox(height: 12),
-            AppTextField(
-              controller: _count,
-              label: context.l10n.giftCount,
-              focusNode: _countFocus,
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.done,
-              onSubmitted: (_) => _submit(),
-            ),
+              AppTextField(
+                controller: _name,
+                label: context.l10n.giftName,
+                autofocus: true,
+                maxLength: AppConstants.maxNameLength,
+                textCapitalization: TextCapitalization.sentences,
+                textInputAction: TextInputAction.next,
+                onSubmitted: (_) => _countFocus.requestFocus(),
+              ),
+              const SizedBox(height: 12),
+              AppTextField(
+                controller: _count,
+                label: context.l10n.giftCount,
+                focusNode: _countFocus,
+                keyboardType: TextInputType.number,
+                maxLength: 3,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) => _submit(),
+              ),
+              if (_error != null) FormErrorText(_error!),
             ],
           ),
         ),
@@ -91,7 +95,11 @@ class _GiftFormState extends State<_GiftForm> {
       actions: <Widget>[
         SizedBox(
           width: double.infinity,
-          child: PrimaryButton(label: context.l10n.add, onPressed: _submit),
+          child: PrimaryButton(
+            label:
+                widget.initial == null ? context.l10n.add : context.l10n.save,
+            onPressed: _submit,
+          ),
         ),
       ],
     );

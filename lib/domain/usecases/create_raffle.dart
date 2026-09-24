@@ -1,24 +1,53 @@
+import 'dart:async';
+
+import '../entities/draw_assignment.dart';
 import '../entities/gift.dart';
 import '../entities/participant.dart';
+import '../entities/raffle.dart';
 import '../entities/raffle_config.dart';
-import '../repositories/raffle_repository.dart';
+import '../repositories/online_raffle_repository.dart';
+import '../repositories/raffle_history_repository.dart';
+import '../services/raffle_drawer.dart';
 
-/// Submits a raffle. Encapsulates the single business action so the
-/// presentation layer never touches repositories directly.
+/// Draws a raffle on the device and saves it to the local history.
 class CreateRaffle {
-  const CreateRaffle(this._repository);
+  CreateRaffle(
+    this._drawer,
+    this._history,
+    this._online, {
+    DateTime Function()? clock,
+  }) : _clock = clock ?? DateTime.now;
 
-  final RaffleRepository _repository;
+  final RaffleDrawer _drawer;
+  final RaffleHistoryRepository _history;
+  final OnlineRaffleRepository _online;
+  final DateTime Function() _clock;
 
-  Future<void> call({
+  /// Throws `RaffleRuleException` when the raffle cannot be drawn yet.
+  Future<Raffle> call({
     required RaffleConfig config,
     required List<Participant> participants,
     List<Gift> gifts = const <Gift>[],
-  }) {
-    return _repository.submit(
-      config: config,
+  }) async {
+    final List<DrawAssignment> assignments = _drawer.draw(
+      type: config.type,
       participants: participants,
       gifts: gifts,
     );
+    final DateTime now = _clock();
+    final Raffle raffle = Raffle(
+      id: now.microsecondsSinceEpoch.toRadixString(36),
+      config: config,
+      createdAt: now,
+      assignments: assignments,
+      gifts: config.type.hasGifts ? gifts : const <Gift>[],
+    );
+    await _history.save(raffle);
+
+    // Global counters are best-effort: they must never delay or fail a draw.
+    if (_online.isAvailable) {
+      unawaited(_online.recordStatistics(raffle).catchError((Object _) {}));
+    }
+    return raffle;
   }
 }
