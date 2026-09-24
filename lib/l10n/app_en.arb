@@ -339,5 +339,11 @@
         "type": "String"
       }
     }
-  }
+  },
+  "shareAsMessage": "Share as a message",
+  "shareAsCard": "Share as a card",
+  "resultCard": "Result card",
+  "yourCode": "Your personal code",
+  "cardCodeHint": "Open Noel Raffle and enter it under \"View my result\".",
+  "drawnWith": "Drawn with Noel Raffle"
 }

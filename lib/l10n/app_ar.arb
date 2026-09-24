@@ -138,5 +138,11 @@
   "bulkAddSkipped": "{count, plural, =1{اسم واحد موجود بالفعل في القائمة} =2{اسمان موجودان بالفعل في القائمة} few{{count} أسماء موجودة بالفعل في القائمة} many{{count} اسمًا موجودًا بالفعل في القائمة} other{{count} اسم موجود بالفعل في القائمة}}",
   "bulkAddEmpty": "أدخل اسمًا جديدًا واحدًا على الأقل.",
   "undo": "تراجع",
-  "removedItem": "تم حذف {name}"
+  "removedItem": "تم حذف {name}",
+  "shareAsMessage": "مشاركة كرسالة",
+  "shareAsCard": "مشاركة كبطاقة",
+  "resultCard": "بطاقة النتيجة",
+  "yourCode": "رمزك الشخصي",
+  "cardCodeHint": "افتح Noel Raffle وأدخله في قسم \"اعرض نتيجتي\".",
+  "drawnWith": "سُحبت عبر Noel Raffle"
 }

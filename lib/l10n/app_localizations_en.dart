@@ -518,4 +518,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String removedItem(String name) {
     return '$name removed';
   }
+
+  @override
+  String get shareAsMessage => 'Share as a message';
+
+  @override
+  String get shareAsCard => 'Share as a card';
+
+  @override
+  String get resultCard => 'Result card';
+
+  @override
+  String get yourCode => 'Your personal code';
+
+  @override
+  String get cardCodeHint =>
+      'Open Noel Raffle and enter it under \"View my result\".';
+
+  @override
+  String get drawnWith => 'Drawn with Noel Raffle';
 }

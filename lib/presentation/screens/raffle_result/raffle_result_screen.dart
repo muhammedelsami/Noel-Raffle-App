@@ -28,6 +28,7 @@ import '../../widgets/loading_overlay.dart';
 import '../../widgets/page_scaffold.dart';
 import '../../widgets/note_line.dart';
 import '../../widgets/result_card.dart';
+import '../../widgets/result_share_card.dart';
 import '../../widgets/status_pill.dart';
 import '../raffle_setup/raffle_setup_screen.dart';
 
@@ -337,7 +338,7 @@ class _RevealProgress extends StatelessWidget {
   }
 }
 
-enum _ShareChannel { share, email }
+enum _ShareChannel { message, card, email }
 
 class _AssignmentTile extends StatelessWidget {
   const _AssignmentTile({
@@ -392,39 +393,48 @@ class _AssignmentTile extends StatelessWidget {
 
   Future<void> _share(BuildContext context) async {
     final AppLocalizations l10n = context.l10n;
-    final String message = participantMessage(l10n, raffle, _assignment);
-    final String subject = l10n.emailSubject(raffle.title);
     final String? email = _assignment.participant.email;
-
-    final _ShareChannel? channel = email == null || email.isEmpty
-        ? _ShareChannel.share
-        : await showModalBottomSheet<_ShareChannel>(
-            context: context,
-            builder: (BuildContext context) => SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
-                    leading: const Icon(Icons.share_rounded),
-                    title: Text(l10n.share),
-                    onTap: () => Navigator.of(context).pop(_ShareChannel.share),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.mail_outline_rounded),
-                    title: Text(l10n.sendByEmail),
-                    subtitle: Text(email),
-                    onTap: () => Navigator.of(context).pop(_ShareChannel.email),
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                ],
-              ),
+    final _ShareChannel? channel = await showModalBottomSheet<_ShareChannel>(
+      context: context,
+      builder: (BuildContext context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: const Icon(Icons.chat_bubble_outline_rounded),
+              title: Text(l10n.shareAsMessage),
+              onTap: () => Navigator.of(context).pop(_ShareChannel.message),
             ),
-          );
+            ListTile(
+              leading: const Icon(Icons.image_outlined),
+              title: Text(l10n.shareAsCard),
+              onTap: () => Navigator.of(context).pop(_ShareChannel.card),
+            ),
+            if (email != null && email.isNotEmpty)
+              ListTile(
+                leading: const Icon(Icons.mail_outline_rounded),
+                title: Text(l10n.sendByEmail),
+                subtitle: Text(email),
+                onTap: () => Navigator.of(context).pop(_ShareChannel.email),
+              ),
+            const SizedBox(height: AppSpacing.sm),
+          ],
+        ),
+      ),
+    );
     if (channel == null || !context.mounted) return;
 
+    final String message = participantMessage(l10n, raffle, _assignment);
+    final String subject = l10n.emailSubject(raffle.title);
     switch (channel) {
-      case _ShareChannel.share:
+      case _ShareChannel.message:
         await ShareHelper.shareText(context, message, subject: subject);
+      case _ShareChannel.card:
+        await showResultCardPreview(
+          context,
+          raffle: raffle,
+          assignment: _assignment,
+        );
       case _ShareChannel.email:
         final bool opened = await UrlLauncherHelper.email(
           to: email!,

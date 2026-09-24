@@ -138,5 +138,11 @@
   "bulkAddSkipped": "{count} isim zaten listede",
   "bulkAddEmpty": "En az bir yeni isim girin.",
   "undo": "Geri al",
-  "removedItem": "{name} silindi"
+  "removedItem": "{name} silindi",
+  "shareAsMessage": "Mesaj olarak paylaş",
+  "shareAsCard": "Kart olarak paylaş",
+  "resultCard": "Sonuç kartı",
+  "yourCode": "Kişisel kodun",
+  "cardCodeHint": "Noel Raffle'ı aç ve \"Sonucumu gör\" bölümüne gir.",
+  "drawnWith": "Noel Raffle ile çekildi"
 }
