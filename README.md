@@ -130,7 +130,7 @@ GitHub Actions builds and ships the Android app:
 
 | Workflow | Trigger | What it does |
 | --- | --- | --- |
-| `ci.yml` | Pull request to `dev` or `main` | `flutter analyze` and `flutter test`, no secrets |
+| `ci.yml` | Pull request to `dev` or `main` | `flutter analyze`, `flutter test` and a debug Android build, no secrets |
 | `release.yml` | Push to `dev` | Signed app bundle to the Play **internal testing** track |
 | `release.yml` | Push to `main` | Signed app bundle to the Play **production** track |
 
