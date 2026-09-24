@@ -27,6 +27,7 @@ import '../../presentation/cubit/result_lookup/result_lookup_cubit.dart';
 import '../../presentation/cubit/statistics/statistics_cubit.dart';
 import '../l10n/locale_cubit.dart';
 import '../notifications/local_reminder_scheduler.dart';
+import '../review/review_prompter.dart';
 import '../theme/theme_cubit.dart';
 
 /// Global service locator.
@@ -85,6 +86,7 @@ Future<void> configureDependencies({bool cloudEnabled = false}) async {
 
   // App-wide state
   sl
+    ..registerLazySingleton<ReviewPrompter>(() => ReviewPrompter(sl()))
     ..registerLazySingleton<ThemeCubit>(() => ThemeCubit(sl()))
     ..registerLazySingleton<LocaleCubit>(() => LocaleCubit(sl()));
 

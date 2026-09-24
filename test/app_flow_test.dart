@@ -5,6 +5,7 @@ import 'package:noel_raffle/app/app.dart';
 import 'package:noel_raffle/core/constants/app_constants.dart';
 import 'package:noel_raffle/core/di/injection.dart';
 import 'package:noel_raffle/core/l10n/raffle_texts.dart';
+import 'package:noel_raffle/core/review/review_prompter.dart';
 import 'package:noel_raffle/domain/entities/draw_assignment.dart';
 import 'package:noel_raffle/domain/entities/raffle.dart';
 import 'package:noel_raffle/domain/repositories/reminder_scheduler.dart';
@@ -122,6 +123,8 @@ void main() {
     await tester.pageBack();
     await tester.pumpAndSettle();
     expect(find.byType(HomeScreen), findsOneWidget);
+    // Leaving the fresh result counts towards the review prompt.
+    expect(sl<SharedPreferences>().getInt(ReviewPrompter.drawCountKey), 1);
   });
 
   testWidgets('draws a gift raffle and lists it in the history',
