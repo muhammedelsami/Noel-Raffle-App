@@ -969,6 +969,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Drawn with Noel Raffle'**
   String get drawnWith;
+
+  /// No description provided for @drawing.
+  ///
+  /// In en, this message translates to:
+  /// **'Drawing…'**
+  String get drawing;
 }
 
 class _AppLocalizationsDelegate

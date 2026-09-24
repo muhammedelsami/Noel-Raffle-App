@@ -144,5 +144,6 @@
   "resultCard": "Sonuç kartı",
   "yourCode": "Kişisel kodun",
   "cardCodeHint": "Noel Raffle'ı aç ve \"Sonucumu gör\" bölümüne gir.",
-  "drawnWith": "Noel Raffle ile çekildi"
+  "drawnWith": "Noel Raffle ile çekildi",
+  "drawing": "Çekiliş yapılıyor…"
 }

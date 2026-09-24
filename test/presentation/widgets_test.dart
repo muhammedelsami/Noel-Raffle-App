@@ -8,6 +8,7 @@ import 'package:noel_raffle/domain/entities/raffle_config.dart';
 import 'package:noel_raffle/domain/entities/raffle_type.dart';
 import 'package:noel_raffle/l10n/app_localizations.dart';
 import 'package:noel_raffle/presentation/widgets/app_button.dart';
+import 'package:noel_raffle/presentation/widgets/draw_animation.dart';
 import 'package:noel_raffle/presentation/widgets/initials_avatar.dart';
 import 'package:noel_raffle/presentation/widgets/result_share_card.dart';
 import 'package:noel_raffle/presentation/widgets/step_header.dart';
@@ -114,6 +115,42 @@ void main() {
       );
       expect(find.text('ABCD-EFGH'), findsOneWidget);
       expect(find.text('Bob'), findsNothing);
+    });
+  });
+
+  group('showDrawAnimation', () {
+    Widget launcher({bool reduceMotion = false}) => Builder(
+          builder: (BuildContext context) => MediaQuery(
+            data: MediaQuery.of(context)
+                .copyWith(disableAnimations: reduceMotion),
+            child: Builder(
+              builder: (BuildContext context) => TextButton(
+                onPressed: () => showDrawAnimation(
+                  context,
+                  names: const <String>['Ann', 'Bob', 'Cid'],
+                ),
+                child: const Text('Draw'),
+              ),
+            ),
+          ),
+        );
+
+    testWidgets('shuffles names, then closes by itself',
+        (WidgetTester tester) async {
+      await pump(tester, launcher());
+      await tester.tap(find.text('Draw'));
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.text('Drawing…'), findsOneWidget);
+      await tester.pumpAndSettle();
+      expect(find.text('Drawing…'), findsNothing);
+    });
+
+    testWidgets('is skipped when motion is reduced',
+        (WidgetTester tester) async {
+      await pump(tester, launcher(reduceMotion: true));
+      await tester.tap(find.text('Draw'));
+      await tester.pump();
+      expect(find.text('Drawing…'), findsNothing);
     });
   });
 }

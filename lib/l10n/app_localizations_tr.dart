@@ -514,4 +514,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get drawnWith => 'Noel Raffle ile çekildi';
+
+  @override
+  String get drawing => 'Çekiliş yapılıyor…';
 }

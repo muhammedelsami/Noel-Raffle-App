@@ -144,5 +144,6 @@
   "resultCard": "بطاقة النتيجة",
   "yourCode": "رمزك الشخصي",
   "cardCodeHint": "افتح Noel Raffle وأدخله في قسم \"اعرض نتيجتي\".",
-  "drawnWith": "سُحبت عبر Noel Raffle"
+  "drawnWith": "سُحبت عبر Noel Raffle",
+  "drawing": "جارٍ السحب…"
 }
