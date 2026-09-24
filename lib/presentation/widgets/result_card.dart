@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
+import '../../core/l10n/raffle_texts.dart';
 import '../../core/theme/app_dimens.dart';
 import '../../core/theme/raffle_type_style.dart';
 import '../../core/theme/theme_context.dart';
@@ -18,6 +19,7 @@ class ResultCard extends StatelessWidget {
     this.match,
     this.matchWish,
     this.note = '',
+    this.eventDate,
   });
 
   final RaffleType type;
@@ -30,6 +32,9 @@ class ResultCard extends StatelessWidget {
   final String? matchWish;
   final String note;
 
+  /// The raffle's gift day, if it has one.
+  final DateTime? eventDate;
+
   @override
   Widget build(BuildContext context) {
     final TextTheme text = context.textTheme;
@@ -37,6 +42,7 @@ class ResultCard extends StatelessWidget {
     final AccentColors accent = type.accentColors(colors);
     final String? match = this.match;
     final String? wish = matchWish;
+    final DateTime? day = eventDate;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -98,6 +104,14 @@ class ResultCard extends StatelessWidget {
             wish,
             icon: Icons.lightbulb_outline_rounded,
             label: context.l10n.giftIdeas,
+          ),
+        ],
+        if (day != null) ...<Widget>[
+          const SizedBox(height: AppSpacing.lg),
+          NoteLine(
+            giftDayLabel(context.l10n, day),
+            icon: Icons.event_rounded,
+            label: context.l10n.giftDay,
           ),
         ],
         if (note.isNotEmpty) ...<Widget>[

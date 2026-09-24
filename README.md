@@ -93,7 +93,7 @@ billing account is needed.
 
 | Path | Content | Access |
 | --- | --- | --- |
-| `results/{code}` | One participant's result: raffle title, note, their name, their match and, in a new-year raffle, the match's gift ideas | Read by code only (no listing); only the publishing device can delete |
+| `results/{code}` | One participant's result: raffle title, note, gift day, their name, their match and, in a new-year raffle, the match's gift ideas | Read by code only (no listing); only the publishing device can delete |
 | `stats/global` | Global counters (raffles, participants, gifts) | Anyone can read; each write may only add one raffle |
 
 Emails and other participants' results are never uploaded. The full history stays on

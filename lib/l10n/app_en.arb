@@ -346,5 +346,31 @@
   "yourCode": "Your personal code",
   "cardCodeHint": "Open Noel Raffle and enter it under \"View my result\".",
   "drawnWith": "Drawn with Noel Raffle",
-  "drawing": "Drawing…"
+  "drawing": "Drawing…",
+  "giftDay": "Gift day",
+  "giftDayOptional": "Gift day (optional)",
+  "giftDayHint": "When the gifts are handed out",
+  "clearDate": "Remove date",
+  "remindMe": "Remind me the day before",
+  "remindMeInfo": "A notification on this phone",
+  "notificationsOff": "Notifications are off for this app. Turn them on in your phone's settings to get a reminder.",
+  "reminderOn": "Reminder on",
+  "reminderChannel": "Reminders",
+  "reminderChannelInfo": "Reminders before a gift day",
+  "reminderBody": "Gift day: {date}. Is your gift ready? 🎁",
+  "@reminderBody": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "shareDateLine": "Gift day: {date}",
+  "@shareDateLine": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

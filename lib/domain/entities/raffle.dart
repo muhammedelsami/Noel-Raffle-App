@@ -30,6 +30,7 @@ class Raffle extends Equatable {
   String get title => config.title;
   String get note => config.note;
   RaffleType get type => config.type;
+  DateTime? get eventDate => config.eventDate;
 
   /// Whether every participant has a personal online code.
   bool get isPublished =>

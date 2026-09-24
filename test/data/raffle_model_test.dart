@@ -59,6 +59,30 @@ void main() {
       expect(RaffleModel.fromJson(json).exclusions, isEmpty);
     });
 
+    test('keeps the gift day as a date and reads raffles without one', () {
+      final Raffle dated = Raffle(
+        id: 'd',
+        config: RaffleConfig(
+          title: 'Aile',
+          type: RaffleType.newYear,
+          eventDate: DateTime(2026, 12, 31),
+          remind: true,
+        ),
+        createdAt: DateTime.utc(2026, 12, 1),
+        assignments: const <DrawAssignment>[],
+      );
+      final Map<String, dynamic> json = RaffleModel.fromEntity(dated).toJson();
+      expect(json['eventDate'], '2026-12-31');
+      expect(RaffleModel.fromJson(json), dated);
+
+      json
+        ..remove('eventDate')
+        ..remove('remind');
+      final Raffle undated = RaffleModel.fromJson(json);
+      expect(undated.eventDate, isNull);
+      expect(undated.config.remind, isFalse);
+    });
+
     test('keeps gift ideas', () {
       const Participant withWish =
           Participant(name: 'Deniz', wish: 'Bir kitap');

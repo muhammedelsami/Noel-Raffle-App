@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Small icon of the gift day reminders: the app mark in one color, traced from BrandMarkPainter. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="74"
+    android:viewportHeight="74">
+    <group android:translateX="-14.75" android:translateY="-10.25">
+        <group
+            android:translateX="41"
+            android:translateY="34.5"
+            android:rotation="26.36">
+            <path
+                android:pathData="M-10,0 A10,5.5 0 1 1 10,0 A10,5.5 0 1 1 -10,0 Z"
+                android:strokeColor="#FFFFFFFF"
+                android:strokeWidth="4.5" />
+        </group>
+        <group
+            android:translateX="59"
+            android:translateY="34.5"
+            android:rotation="-26.36">
+            <path
+                android:pathData="M-10,0 A10,5.5 0 1 1 10,0 A10,5.5 0 1 1 -10,0 Z"
+                android:strokeColor="#FFFFFFFF"
+                android:strokeWidth="4.5" />
+        </group>
+        <!-- lid, left -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M24,40 H43.5 V52 H24 A4,4 0 0 1 20,48 V44 A4,4 0 0 1 24,40 Z" />
+        <!-- lid, right -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M56.5,40 H76 A4,4 0 0 1 80,44 V48 A4,4 0 0 1 76,52 H56.5 Z" />
+        <!-- box, left -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M29.5,54.5 H43.5 V80 H29.5 A4.5,4.5 0 0 1 25,75.5 V59 A4.5,4.5 0 0 1 29.5,54.5 Z" />
+        <!-- box, right -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M56.5,54.5 H70.5 A4.5,4.5 0 0 1 75,59 V75.5 A4.5,4.5 0 0 1 70.5,80 H56.5 Z" />
+        <!-- ribbon -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M45.5,40 H54.5 V80 H45.5 Z" />
+        <!-- knot -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M45.5,39 A4.5,4.5 0 1 1 54.5,39 A4.5,4.5 0 1 1 45.5,39 Z" />
+        <!-- sparkle -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M79,14.5 Q79,22 86.5,22 Q79,22 79,29.5 Q79,22 71.5,22 Q79,22 79,14.5 Z" />
+        <!-- small sparkle -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M21,21 Q21,25 25,25 Q21,25 21,29 Q21,25 17,25 Q21,25 21,21 Z" />
+    </group>
+</vector>

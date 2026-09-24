@@ -4,6 +4,7 @@ import '../../domain/entities/match_exclusion.dart';
 import '../../domain/entities/raffle.dart';
 import '../../domain/entities/raffle_config.dart';
 import '../../domain/entities/raffle_type.dart';
+import 'date_only.dart';
 import 'gift_model.dart';
 import 'participant_model.dart';
 
@@ -38,6 +39,8 @@ class RaffleModel extends Raffle {
         title: json['title'] as String,
         note: json['note'] as String? ?? '',
         type: RaffleType.fromName(json['type'] as String?),
+        eventDate: DateOnly.decode(json['eventDate']),
+        remind: json['remind'] as bool? ?? false,
       ),
       createdAt: DateTime.parse(json['createdAt'] as String),
       assignments: (json['assignments'] as List<dynamic>)
@@ -70,6 +73,9 @@ class RaffleModel extends Raffle {
         'note': note,
         'type': type.name,
         'createdAt': createdAt.toIso8601String(),
+        if (eventDate case final DateTime day)
+          'eventDate': DateOnly.encode(day),
+        if (config.remind) 'remind': true,
         'gifts':
             gifts.map((Gift g) => GiftModel.fromEntity(g).toJson()).toList(),
         'assignments': assignments

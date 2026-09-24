@@ -517,4 +517,45 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get drawing => 'Çekiliş yapılıyor…';
+
+  @override
+  String get giftDay => 'Hediye günü';
+
+  @override
+  String get giftDayOptional => 'Hediye günü (isteğe bağlı)';
+
+  @override
+  String get giftDayHint => 'Hediyelerin verileceği gün';
+
+  @override
+  String get clearDate => 'Tarihi kaldır';
+
+  @override
+  String get remindMe => 'Bir gün önce hatırlat';
+
+  @override
+  String get remindMeInfo => 'Bu telefona bildirim gelir';
+
+  @override
+  String get notificationsOff =>
+      'Bu uygulamanın bildirimleri kapalı. Hatırlatma almak için telefonunuzun ayarlarından açın.';
+
+  @override
+  String get reminderOn => 'Hatırlatma açık';
+
+  @override
+  String get reminderChannel => 'Hatırlatmalar';
+
+  @override
+  String get reminderChannelInfo => 'Hediye günü öncesi hatırlatmalar';
+
+  @override
+  String reminderBody(String date) {
+    return 'Hediye günü: $date. Hediyen hazır mı? 🎁';
+  }
+
+  @override
+  String shareDateLine(String date) {
+    return 'Hediye günü: $date';
+  }
 }
