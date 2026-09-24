@@ -933,6 +933,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{name} removed'**
   String removedItem(String name);
+
+  /// No description provided for @shareAsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Share as a message'**
+  String get shareAsMessage;
+
+  /// No description provided for @shareAsCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Share as a card'**
+  String get shareAsCard;
+
+  /// No description provided for @resultCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Result card'**
+  String get resultCard;
+
+  /// No description provided for @yourCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Your personal code'**
+  String get yourCode;
+
+  /// No description provided for @cardCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Noel Raffle and enter it under \"View my result\".'**
+  String get cardCodeHint;
+
+  /// No description provided for @drawnWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Drawn with Noel Raffle'**
+  String get drawnWith;
 }
 
 class _AppLocalizationsDelegate

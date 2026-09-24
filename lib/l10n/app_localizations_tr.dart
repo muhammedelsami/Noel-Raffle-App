@@ -495,4 +495,23 @@ class AppLocalizationsTr extends AppLocalizations {
   String removedItem(String name) {
     return '$name silindi';
   }
+
+  @override
+  String get shareAsMessage => 'Mesaj olarak paylaş';
+
+  @override
+  String get shareAsCard => 'Kart olarak paylaş';
+
+  @override
+  String get resultCard => 'Sonuç kartı';
+
+  @override
+  String get yourCode => 'Kişisel kodun';
+
+  @override
+  String get cardCodeHint =>
+      'Noel Raffle\'ı aç ve \"Sonucumu gör\" bölümüne gir.';
+
+  @override
+  String get drawnWith => 'Noel Raffle ile çekildi';
 }

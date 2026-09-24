@@ -530,4 +530,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String removedItem(String name) {
     return 'تم حذف $name';
   }
+
+  @override
+  String get shareAsMessage => 'مشاركة كرسالة';
+
+  @override
+  String get shareAsCard => 'مشاركة كبطاقة';
+
+  @override
+  String get resultCard => 'بطاقة النتيجة';
+
+  @override
+  String get yourCode => 'رمزك الشخصي';
+
+  @override
+  String get cardCodeHint => 'افتح Noel Raffle وأدخله في قسم \"اعرض نتيجتي\".';
+
+  @override
+  String get drawnWith => 'سُحبت عبر Noel Raffle';
 }
