@@ -4,10 +4,13 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/constants/app_constants.dart';
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/l10n_extensions.dart';
 import '../../../core/l10n/raffle_texts.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_dimens.dart';
+import '../../../core/theme/raffle_type_style.dart';
+import '../../../core/theme/theme_context.dart';
 import '../../../core/utils/share_helper.dart';
 import '../../../core/utils/url_launcher_helper.dart';
 import '../../../domain/entities/draw_assignment.dart';
@@ -15,13 +18,17 @@ import '../../../domain/entities/raffle.dart';
 import '../../../domain/services/share_code.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubit/raffle_result/raffle_result_cubit.dart';
-import '../../widgets/app_background.dart';
+import '../../widgets/app_button.dart';
+import '../../widgets/app_card.dart';
 import '../../widgets/app_dialogs.dart';
-import '../../widgets/app_list_tile_card.dart';
-import '../../widgets/glass_card.dart';
+import '../../widgets/app_list_tile.dart';
+import '../../widgets/info_banner.dart';
+import '../../widgets/initials_avatar.dart';
 import '../../widgets/loading_overlay.dart';
-import '../../widgets/primary_button.dart';
+import '../../widgets/page_scaffold.dart';
+import '../../widgets/quote_note.dart';
 import '../../widgets/result_card.dart';
+import '../../widgets/status_pill.dart';
 
 /// Shows a drawn raffle. New-year results stay hidden until each participant
 /// reveals their own; gift raffle winners are listed openly. Results can be
@@ -59,40 +66,26 @@ class RaffleResultScreen extends StatelessWidget {
   }
 }
 
-class _RaffleResultView extends StatefulWidget {
+class _RaffleResultView extends StatelessWidget {
   const _RaffleResultView({required this.celebrate});
 
   final bool celebrate;
-
-  @override
-  State<_RaffleResultView> createState() => _RaffleResultViewState();
-}
-
-class _RaffleResultViewState extends State<_RaffleResultView> {
-  final ConfettiController _confettiController =
-      ConfettiController(duration: const Duration(seconds: 2));
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.celebrate) _confettiController.play();
-  }
-
-  @override
-  void dispose() {
-    _confettiController.dispose();
-    super.dispose();
-  }
 
   Future<void> _publish(BuildContext context) async {
     final RaffleResultCubit cubit = context.read<RaffleResultCubit>();
     final bool confirmed = await showConfirmDialog(
       context,
+      icon: Icons.cloud_upload_outlined,
       title: context.l10n.publishOnline,
       message: context.l10n.publishInfo,
       confirmLabel: context.l10n.publishOnline,
     );
     if (confirmed) await cubit.publish();
+  }
+
+  String _infoMessage(AppLocalizations l10n, Raffle raffle) {
+    if (raffle.isPublished) return l10n.codesReady;
+    return raffle.type.isNewYear ? l10n.resultSecretInfo : l10n.resultGiftInfo;
   }
 
   void _onPublishStatus(BuildContext context, RaffleResultState state) {
@@ -113,91 +106,150 @@ class _RaffleResultViewState extends State<_RaffleResultView> {
       listener: _onPublishStatus,
       builder: (BuildContext context, RaffleResultState state) {
         final Raffle raffle = state.raffle;
+        final bool secret = raffle.type.isNewYear;
         final bool canPublish =
             context.read<RaffleResultCubit>().canPublish && !raffle.isPublished;
-        return Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(),
-          body: AppBackground(
-            child: Stack(
+        return LoadingOverlay(
+          isLoading: state.isPublishing,
+          child: PageScaffold(
+            body: Stack(
               children: <Widget>[
-                SafeArea(
-                  child: LoadingOverlay(
-                    isLoading: state.isPublishing,
-                    child: Column(
-                      children: <Widget>[
-                        Expanded(
-                          child: ListView(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: AppConstants.pagePadding,
+                CustomScrollView(
+                  slivers: <Widget>[
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.page,
+                        AppSpacing.sm,
+                        AppSpacing.page,
+                        AppSpacing.lg,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            _Header(raffle: raffle),
+                            const SizedBox(height: AppSpacing.md),
+                            InfoBanner(
+                              tone: raffle.isPublished
+                                  ? BannerTone.success
+                                  : BannerTone.info,
+                              message: _infoMessage(context.l10n, raffle),
                             ),
-                            children: <Widget>[
-                              _Header(raffle: raffle),
-                              const SizedBox(height: 16),
-                              for (int i = 0;
-                                  i < raffle.assignments.length;
-                                  i++)
-                                _AssignmentTile(
-                                  raffle: raffle,
-                                  index: i,
-                                  revealed: state.revealed.contains(i),
-                                ),
+                            if (secret) ...<Widget>[
+                              const SizedBox(height: AppSpacing.xl),
+                              _RevealProgress(
+                                seen: state.revealed.length,
+                                total: raffle.assignments.length,
+                              ),
                             ],
-                          ),
+                          ],
                         ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.all(AppConstants.pagePadding),
-                          child: Column(
-                            children: <Widget>[
-                              if (!raffle.type.isNewYear)
-                                Builder(
-                                  builder: (BuildContext context) =>
-                                      PrimaryButton(
-                                    label: context.l10n.shareResults,
-                                    icon: Icons.share_rounded,
-                                    onPressed: () => ShareHelper.shareText(
-                                      context,
-                                      allResultsMessage(context.l10n, raffle),
-                                      subject: raffle.title,
-                                    ),
-                                  ),
-                                ),
-                              if (!raffle.type.isNewYear && canPublish)
-                                const SizedBox(height: 12),
-                              if (canPublish)
-                                PrimaryButton(
-                                  label: context.l10n.publishOnline,
-                                  icon: Icons.cloud_upload_rounded,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  onPressed: () => _publish(context),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.page,
+                        0,
+                        AppSpacing.page,
+                        AppSpacing.xl,
+                      ),
+                      sliver: SliverList.separated(
+                        itemCount: raffle.assignments.length,
+                        separatorBuilder: (_, __) =>
+                            const SizedBox(height: AppSpacing.sm),
+                        itemBuilder: (BuildContext context, int index) =>
+                            _AssignmentTile(
+                          raffle: raffle,
+                          index: index,
+                          revealed: state.revealed.contains(index),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: ConfettiWidget(
-                    confettiController: _confettiController,
-                    blastDirectionality: BlastDirectionality.explosive,
-                    blastDirection: pi / 2,
-                    maxBlastForce: 5,
-                    minBlastForce: 2,
-                    emissionFrequency: 0.2,
-                    numberOfParticles: 30,
-                    gravity: 0.05,
-                  ),
-                ),
+                if (celebrate) const _Confetti(),
               ],
             ),
+            bottomBar: secret && !canPublish
+                ? null
+                : Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      if (!secret)
+                        Builder(
+                          // Its own context anchors the iPad share popover.
+                          builder: (BuildContext context) => AppButton(
+                            label: context.l10n.shareResults,
+                            icon: Icons.share_rounded,
+                            onPressed: () => ShareHelper.shareText(
+                              context,
+                              allResultsMessage(context.l10n, raffle),
+                              subject: raffle.title,
+                            ),
+                          ),
+                        ),
+                      if (!secret && canPublish)
+                        const SizedBox(height: AppSpacing.md),
+                      if (canPublish)
+                        AppButton.tonal(
+                          label: context.l10n.publishOnline,
+                          icon: Icons.cloud_upload_outlined,
+                          onPressed: () => _publish(context),
+                        ),
+                    ],
+                  ),
           ),
         );
       },
+    );
+  }
+}
+
+/// A one-off confetti burst from the top edge, isolated in its own layer so
+/// the particles never repaint the list.
+class _Confetti extends StatefulWidget {
+  const _Confetti();
+
+  @override
+  State<_Confetti> createState() => _ConfettiState();
+}
+
+class _ConfettiState extends State<_Confetti> {
+  final ConfettiController _controller =
+      ConfettiController(duration: const Duration(seconds: 2))..play();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colors = context.colors;
+    return IgnorePointer(
+      child: RepaintBoundary(
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: ConfettiWidget(
+            confettiController: _controller,
+            blastDirectionality: BlastDirectionality.explosive,
+            blastDirection: pi / 2,
+            maxBlastForce: 5,
+            minBlastForce: 2,
+            emissionFrequency: 0.2,
+            numberOfParticles: 24,
+            gravity: 0.08,
+            colors: <Color>[
+              colors.primary,
+              colors.secondary,
+              AppColors.gold,
+              colors.primaryContainer,
+              colors.secondaryContainer,
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -209,38 +261,66 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme text = Theme.of(context).textTheme;
-    final String info = raffle.isPublished
-        ? context.l10n.codesReady
-        : raffle.type.isNewYear
-            ? context.l10n.resultSecretInfo
-            : context.l10n.resultGiftInfo;
-    return GlassCard(
+    final TextTheme text = context.textTheme;
+    final ColorScheme colors = context.colors;
+    final AccentColors accent = raffle.type.accentColors(colors);
+    return AppCard(
+      padding: const EdgeInsets.all(AppSpacing.page),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            raffle.title,
-            textAlign: TextAlign.center,
-            style: text.headlineMedium,
+          StatusPill(
+            label: raffleTypeLabel(context.l10n, raffle.type),
+            icon: raffle.type.icon,
+            background: accent.container,
+            foreground: accent.onContainer,
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.md),
+          Text(raffle.title, style: text.headlineSmall),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             raffleSummary(context.l10n, raffle),
-            textAlign: TextAlign.center,
-            style: text.bodyMedium,
+            style: text.bodyMedium?.copyWith(color: colors.onSurfaceVariant),
           ),
           if (raffle.note.isNotEmpty) ...<Widget>[
-            const SizedBox(height: 8),
-            Text(
-              raffle.note,
-              textAlign: TextAlign.center,
-              style: text.bodyMedium?.copyWith(fontStyle: FontStyle.italic),
-            ),
+            const SizedBox(height: AppSpacing.md),
+            QuoteNote(raffle.note),
           ],
-          const SizedBox(height: 12),
-          Text(info, textAlign: TextAlign.center, style: text.titleMedium),
         ],
       ),
+    );
+  }
+}
+
+/// How many participants already looked at their secret result.
+class _RevealProgress extends StatelessWidget {
+  const _RevealProgress({required this.seen, required this.total});
+
+  final int seen;
+  final int total;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Text(
+          context.l10n.revealProgress(seen, total),
+          style: context.textTheme.titleSmall,
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        TweenAnimationBuilder<double>(
+          tween: Tween<double>(end: total == 0 ? 0 : seen / total),
+          duration: AppMotion.medium,
+          curve: AppMotion.emphasized,
+          builder: (_, double value, __) => LinearProgressIndicator(
+            value: value,
+            minHeight: 6,
+            color: context.colors.secondary,
+            borderRadius: const BorderRadius.all(Radius.circular(3)),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -265,6 +345,7 @@ class _AssignmentTile extends StatelessWidget {
     final String name = _assignment.participant.name;
     final bool ready = await showConfirmDialog(
       context,
+      icon: Icons.visibility_outlined,
       title: context.l10n.revealTitle(name),
       message: context.l10n.revealBody(name),
       confirmLabel: context.l10n.reveal,
@@ -275,24 +356,21 @@ class _AssignmentTile extends StatelessWidget {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) => AlertDialog(
-        insetPadding: AppConstants.dialogInset,
+        scrollable: true,
         content: SizedBox(
           width: double.maxFinite,
-          child: SingleChildScrollView(
-            child: ResultCard(
-              type: raffle.type,
-              participantName: name,
-              match: _assignment.match,
-              note: raffle.note,
-            ),
+          child: ResultCard(
+            type: raffle.type,
+            participantName: name,
+            match: _assignment.match,
+            note: raffle.note,
           ),
         ),
-        actionsAlignment: MainAxisAlignment.center,
         actions: <Widget>[
-          TextButton.icon(
+          AppButton.tonal(
+            label: context.l10n.hide,
+            icon: Icons.visibility_off_outlined,
             onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(Icons.visibility_off_rounded),
-            label: Text(context.l10n.hide),
           ),
         ],
       ),
@@ -319,11 +397,12 @@ class _AssignmentTile extends StatelessWidget {
                     onTap: () => Navigator.of(context).pop(_ShareChannel.share),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.email_rounded),
+                    leading: const Icon(Icons.mail_outline_rounded),
                     title: Text(l10n.sendByEmail),
                     subtitle: Text(email),
                     onTap: () => Navigator.of(context).pop(_ShareChannel.email),
                   ),
+                  const SizedBox(height: AppSpacing.sm),
                 ],
               ),
             ),
@@ -353,29 +432,77 @@ class _AssignmentTile extends StatelessWidget {
     final String? code = assignment.code;
     final bool secret = raffle.type.isNewYear;
 
-    final String status = secret
-        ? (revealed ? context.l10n.seen : context.l10n.tapToReveal)
-        : assignment.match ?? context.l10n.noPrizeShort;
-    final IconData icon = secret
-        ? (revealed ? Icons.check_circle_rounded : Icons.lock_rounded)
-        : assignment.match == null
-            ? Icons.remove_circle_outline_rounded
-            : Icons.card_giftcard_rounded;
-
-    return AppListTileCard(
-      leading: icon,
+    return AppListTile(
+      leading: InitialsAvatar(assignment.participant.name),
       title: assignment.participant.name,
-      subtitle: code == null
-          ? status
-          : '$status • ${context.l10n.codeLabel(ShareCode.format(code))}',
+      subtitle: Padding(
+        padding: const EdgeInsets.only(top: AppSpacing.xs),
+        child: Wrap(
+          spacing: AppSpacing.sm,
+          runSpacing: AppSpacing.xs,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: <Widget>[
+            _StatusBadge(
+              assignment: assignment,
+              secret: secret,
+              revealed: revealed,
+            ),
+            if (code != null)
+              Text(context.l10n.codeLabel(ShareCode.format(code))),
+          ],
+        ),
+      ),
       onTap: secret ? () => _reveal(context) : null,
       trailing: Builder(
         builder: (BuildContext context) => IconButton(
           tooltip: context.l10n.share,
-          icon: const Icon(Icons.share_rounded),
+          icon: const Icon(Icons.ios_share_rounded),
           onPressed: () => _share(context),
         ),
       ),
     );
+  }
+}
+
+/// Secret raffle: whether the result was seen. Gift raffle: the prize won.
+class _StatusBadge extends StatelessWidget {
+  const _StatusBadge({
+    required this.assignment,
+    required this.secret,
+    required this.revealed,
+  });
+
+  final DrawAssignment assignment;
+  final bool secret;
+  final bool revealed;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colors = context.colors;
+    final String? match = assignment.match;
+    if (secret) {
+      return revealed
+          ? StatusPill(
+              label: context.l10n.seen,
+              icon: Icons.check_circle_rounded,
+              background: colors.secondaryContainer,
+              foreground: colors.onSecondaryContainer,
+            )
+          : StatusPill(
+              label: context.l10n.tapToReveal,
+              icon: Icons.lock_outline_rounded,
+            );
+    }
+    return match == null
+        ? StatusPill(
+            label: context.l10n.noPrizeShort,
+            icon: Icons.remove_circle_outline_rounded,
+          )
+        : StatusPill(
+            label: match,
+            icon: Icons.card_giftcard_rounded,
+            background: colors.tertiaryContainer,
+            foreground: colors.onTertiaryContainer,
+          );
   }
 }

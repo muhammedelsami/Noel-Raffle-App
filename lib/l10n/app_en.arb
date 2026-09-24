@@ -1,42 +1,39 @@
 {
   "@@locale": "en",
   "appName": "Noel Raffle",
-  "homeTitle": "Gift Raffle",
-  "homeSubtitle": "Choose a raffle type",
+  "homeTitle": "Start a new raffle",
+  "homeSubtitle": "Pick the raffle type that suits your event.",
   "newYearRaffle": "New Year Raffle",
   "giftRaffle": "Gift Raffle",
-  "statistics": "Our Statistics",
-  "about": "About Us",
-  "rateUs": "Rate Us",
-  "website": "Our Website",
-  "contribute": "Contribute",
-  "close": "Close",
+  "statistics": "Statistics",
+  "about": "About us",
+  "rateUs": "Rate us",
+  "website": "Our website",
+  "contribute": "Contribute on GitHub",
   "theme": "Theme",
   "themeSystem": "System",
   "themeLight": "Light",
   "themeDark": "Dark",
   "language": "Language",
-  "raffleTitleHint": "Enter Raffle Title*",
-  "createNewYearRaffle": "Create New Year Raffle",
-  "createGiftRaffle": "Create Gift Raffle",
-  "addParticipant": "Add New Participant",
-  "newParticipant": "New Participant",
+  "raffleTitleHint": "Raffle title",
+  "addParticipant": "Add participant",
+  "newParticipant": "New participant",
   "name": "Full name",
   "add": "Add",
   "save": "Save",
   "next": "Continue",
-  "addGift": "Add New Gift",
-  "giftName": "Gift Name",
-  "giftCount": "Gift Count",
-  "startRaffle": "Start Raffle",
-  "statTotalRaffle": "Raffles",
+  "addGift": "Add gift",
+  "giftName": "Gift name",
+  "giftCount": "Quantity",
+  "startRaffle": "Start raffle",
+  "statTotalRaffle": "Raffles in total",
   "statNewYearRaffle": "New Year Raffle",
   "statGiftRaffle": "Gift Raffle",
-  "statGiftCount": "Gift Count",
-  "statParticipantCount": "Participant Count",
+  "statGiftCount": "Gifts",
+  "statParticipantCount": "Participants",
   "aboutText": "A new year is a fresh start. It is time to leave the past behind and step into a tomorrow full of new hopes. Look ahead with hope, discover the beauties of life and share them with your loved ones. May the new year bring you happiness, health and success! 🌟 🎉",
-  "mobileDevelopers": "Mobile Developers",
-  "backendDevelopers": "BackEnd Developers",
+  "mobileDevelopers": "Mobile developers",
+  "backendDevelopers": "Backend developers",
   "warning": "Warning",
   "ok": "OK",
   "enterTitle": "Please enter the raffle title.",
@@ -58,8 +55,8 @@
     }
   },
   "genericError": "An error occurred. Please try again.",
-  "history": "Past Raffles",
-  "viewMyResult": "View My Result",
+  "history": "Past raffles",
+  "viewMyResult": "View my result",
   "raffleNoteHint": "Note for participants (optional)",
   "emailOptional": "Email (optional)",
   "nameRequired": "Please enter a name.",
@@ -69,7 +66,7 @@
   "statsThisDevice": "On this device",
   "statsAllUsers": "All users",
   "globalStatsError": "Global statistics are unavailable right now.",
-  "retry": "Try Again",
+  "retry": "Try again",
   "resultSecretInfo": "Results are secret! Pass the phone around; each person taps their own name to see who they're buying a gift for.",
   "resultGiftInfo": "The raffle is done! Here are the winners.",
   "tapToReveal": "Tap to reveal",
@@ -106,11 +103,11 @@
   "yourPrize": "Your prize",
   "noPrize": "No prize this time. Better luck next time!",
   "noPrizeShort": "No prize",
-  "shareResults": "Share Results",
+  "shareResults": "Share results",
   "share": "Share",
   "sendByEmail": "Send by email",
-  "publishOnline": "Create Online Codes",
-  "publishInfo": "A personal code is created for each participant. Participants enter it under \"View My Result\" in the Noel Raffle app and see only their own result.",
+  "publishOnline": "Create online codes",
+  "publishInfo": "A personal code is created for each participant. Participants enter it under \"View my result\" in the Noel Raffle app and see only their own result.",
   "codesReady": "Online codes are ready. Use the share icon to send each participant their own code.",
   "publishFailed": "Couldn't create the codes. Check your internet connection and try again.",
   "codeLabel": "Code: {code}",
@@ -160,7 +157,7 @@
       }
     }
   },
-  "shareCodeMessage": "🎄 {title}\nHi {name}! To see your raffle result, open the Noel Raffle app and enter this code under \"View My Result\": {code}\n\nApp: {url}",
+  "shareCodeMessage": "🎄 {title}\nHi {name}! To see your raffle result, open the Noel Raffle app and enter this code under \"View my result\": {code}\n\nApp: {url}",
   "@shareCodeMessage": {
     "placeholders": {
       "title": {
@@ -217,5 +214,68 @@
   "invalidCode": "The code must be 8 characters (e.g. ABCD-EFGH).",
   "resultNotFound": "No result was found for this code.",
   "lookupFailed": "Couldn't get the result. Check your internet connection and try again.",
-  "showResult": "Show Result"
+  "showResult": "Show result",
+  "newYearRaffleDescription": "Secret Santa: everyone buys a gift for someone else.",
+  "giftRaffleDescription": "Hand out your gifts to random participants.",
+  "lookupDescription": "Got a code from the organizer? See your result.",
+  "quickAccess": "Quick access",
+  "settings": "Settings",
+  "more": "More",
+  "support": "Support us",
+  "raffleDetails": "Raffle details",
+  "raffleDetailsInfo": "Give your raffle a name. You can also leave a note for the participants.",
+  "stepProgress": "Step {current} of {total}",
+  "@stepProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "participantsTitle": "Participants",
+  "participantsInfo": "Add at least {count} people. Tap a name to edit it.",
+  "@participantsInfo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "participantsEmpty": "No participants yet",
+  "giftsTitle": "Gifts",
+  "giftsInfo": "Add the gifts to hand out. Each person wins at most one gift.",
+  "giftsEmpty": "No gifts yet",
+  "editGift": "Edit gift",
+  "editParticipant": "Edit participant",
+  "giftQuantity": "Quantity: {count}",
+  "@giftQuantity": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "giftUnits": "{count, plural, =1{1 gift} other{{count} gifts}}",
+  "@giftUnits": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "revealProgress": "{seen} of {total} revealed",
+  "@revealProgress": {
+    "placeholders": {
+      "seen": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "newGift": "New gift"
 }

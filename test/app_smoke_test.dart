@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:noel_raffle/app/app.dart';
@@ -26,16 +25,10 @@ void main() {
     await tester.pump(AppConstants.splashDuration);
     await tester.pumpAndSettle();
 
-    // Home offers a button for each raffle type, in the active locale.
+    // Home offers a card for each raffle type, in the active locale.
     final AppLocalizations l10n =
         AppLocalizations.of(tester.element(find.byType(HomeScreen)));
-    expect(
-      find.widgetWithText(ElevatedButton, l10n.newYearRaffle),
-      findsOneWidget,
-    );
-    expect(
-      find.widgetWithText(ElevatedButton, l10n.giftRaffle),
-      findsOneWidget,
-    );
+    expect(find.text(l10n.newYearRaffle), findsOneWidget);
+    expect(find.text(l10n.giftRaffle), findsOneWidget);
   });
 }

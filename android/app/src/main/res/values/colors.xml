@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Matches the Flutter splash gradient, so launching never flashes white. -->
+    <color name="launch_background">#AA1A30</color>
+</resources>
