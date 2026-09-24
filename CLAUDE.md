@@ -106,7 +106,8 @@ links to history, statistics and about. Light/dark/system theme (`ThemeCubit`) a
   evergreen, gold over warm neutrals); `BrandColors` is a `ThemeExtension` for colors without a
   scheme role (hero gradient, card border, avatar palette); `AppSpacing`, `AppRadius` and
   `AppMotion` in `app_dimens.dart`; `AppTypography` is the type scale on the single variable
-  font Cairo (Latin, Turkish and Arabic). `AppTheme.light`/`dark` are built once and hold every
+  Google Font Alexandria (Latin, Turkish and Arabic), bundled in `assets/fonts/` with its OFL
+  license (registered in `main()`). `AppTheme.light`/`dark` are built once and hold every
   component theme. Read them with `context.colors`, `context.textTheme` and `context.brand`
   (`theme_context.dart`).
 - **Building blocks** (`presentation/widgets/`): `PageScaffold` (app bar, width-capped body,

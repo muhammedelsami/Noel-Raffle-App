@@ -62,9 +62,11 @@ flutter:
   assets:
     - assets/images/gift-raffle.png
     - assets/images/gift-hand.png
+    - assets/fonts/Alexandria-OFL.txt
 
   fonts:
-    # Variable font (wght 200–1000) with Latin, Turkish and Arabic glyphs.
-    - family: Cairo
+    # Google Fonts "Alexandria", bundled so it works offline: a variable font
+    # (wght 100–900) with Latin, Turkish and Arabic glyphs.
+    - family: Alexandria
       fonts:
-        - asset: assets/fonts/Cairo.ttf
+        - asset: assets/fonts/Alexandria.ttf
