@@ -6,7 +6,7 @@ and adds online result codes.
 
 # Screenshots
 
-![Alt text](https://github.com/edabarutcu/Noel-Raffle-App/blob/main/screenshots/screen.png)
+![Noel Raffle: splash, home, participants, secret reveal and gift results](screenshots/screen.png)
 
 ## Features
 

@@ -5,13 +5,15 @@
 /// * `featureGraphic.png`: 1024 × 500 banner,
 /// * `phoneScreenshots/`: annotated 1080 × 1920 screenshots of the real app.
 ///
+/// It also renders the showcase at the top of the project README,
+/// `screenshots/screen.png`.
+///
 /// Run it from the project root after UI changes:
 ///
 ///     flutter test Production/tool/store_assets.dart
 library;
 
 import 'dart:convert';
-import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -28,12 +30,28 @@ import 'src/store_locale.dart';
 const String _metadataDir = 'Production/metadata/android';
 
 void main() {
-  setUpAll(() async {
-    await _loadBundledFonts();
-    for (final StoreLocale store in StoreLocale.values) {
-      final Directory shots = Directory(_screenshotsDir(store));
-      if (shots.existsSync()) shots.deleteSync(recursive: true);
-    }
+  setUpAll(_loadBundledFonts);
+
+  testWidgets('README showcase', (WidgetTester tester) async {
+    final AppScenes scenes = AppScenes(tester, StoreLocale.en);
+    final List<PhoneScreen> screens = <PhoneScreen>[
+      await scenes.splash(),
+      for (final StoreShot shot in <StoreShot>[
+        StoreShot.home,
+        StoreShot.participants,
+        StoreShot.reveal,
+        StoreShot.prizes,
+      ])
+        ...await scenes.capture(shot),
+    ];
+    await _renderArtwork(
+      tester,
+      StoreLocale.en,
+      size: showcaseSize,
+      pixelRatio: 2,
+      path: 'screenshots/screen.png',
+      child: ReadmeShowcase(screens: screens),
+    );
   });
 
   for (final StoreLocale store in StoreLocale.values) {

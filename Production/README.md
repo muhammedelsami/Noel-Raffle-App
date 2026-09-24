@@ -63,7 +63,8 @@ flutter test Production/tool/store_assets.dart
 ```
 
 It drives the real screens with the sample data in `tool/src/store_locale.dart`, frames them and
-writes every image for all three languages. Captions and sample data live in the same file.
+writes every image for all three languages, plus the project README showcase
+(`screenshots/screen.png`). Captions and sample data live in the same file.
 
 ## Notes
 

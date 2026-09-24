@@ -15,6 +15,9 @@ const Size screenshotSize = Size(360, 640);
 /// Logical size of the feature graphic; rendered at 2x (1024 × 500 px).
 const Size featureGraphicSize = Size(512, 250);
 
+/// Logical size of the README showcase; rendered at 2x (3200 × 1600 px).
+const Size showcaseSize = Size(1600, 800);
+
 const TextStyle _headline = TextStyle(
   fontFamily: AppFonts.body,
   fontSize: 27,
@@ -93,6 +96,34 @@ class StoreScreenshot extends StatelessWidget {
                   ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// The wide banner at the top of the project README: the app on a row of
+/// phones, largest in the middle.
+class ReadmeShowcase extends StatelessWidget {
+  const ReadmeShowcase({super.key, required this.screens})
+      : assert(screens.length == 5);
+
+  static const List<double> _widths = <double>[236, 258, 288, 258, 236];
+
+  final List<PhoneScreen> screens;
+
+  @override
+  Widget build(BuildContext context) {
+    return _BrandBackdrop(
+      child: Center(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            for (int i = 0; i < screens.length; i++) ...<Widget>[
+              if (i > 0) const SizedBox(width: 36),
+              PhoneFrame(screen: screens[i], width: _widths[i]),
+            ],
+          ],
+        ),
       ),
     );
   }
