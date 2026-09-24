@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -16,15 +15,6 @@ import '../../widgets/section_header.dart';
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
-  static const _Developer _muhammed = _Developer(
-    name: 'Muhammed Elşami',
-    title: 'Android Developer',
-    image: 'https://avatars.githubusercontent.com/u/69201829?v=4',
-    linkedIn: 'https://www.linkedin.com/in/muhammed-elsami/',
-    github: 'https://github.com/muhammedelsami',
-    mail: 'mailto:muhammed97r@hotmail.com',
-  );
-
   static const _Developer _eda = _Developer(
     name: 'Eda Barutçu',
     title: 'iOS Developer',
@@ -34,20 +24,17 @@ class AboutScreen extends StatelessWidget {
     mail: 'mailto:edabarutcu@protonmail.com',
   );
 
-  static const _Developer _kursat = _Developer(
-    name: 'Kürşat Şimşek',
-    title: 'Full Stack Developer',
-    image: 'https://avatars.githubusercontent.com/u/80540635?v=4',
-    linkedIn: 'https://www.linkedin.com/in/kursatsmsek/',
-    github: 'https://github.com/kursatsmsek',
-    mail: 'mailto:kursatsimsek@protonmail.ch',
+  static const _Developer _muhammed = _Developer(
+    name: 'Muhammed Elşami',
+    title: 'Android Developer',
+    image: 'https://avatars.githubusercontent.com/u/69201829?v=4',
+    linkedIn: 'https://www.linkedin.com/in/muhammed-elsami/',
+    github: 'https://github.com/muhammedelsami',
+    mail: 'mailto:muhammed97r@hotmail.com',
   );
 
-  /// Mobile developers ordered so the current platform's developer is first.
-  static List<_Developer> get _mobileDevelopers =>
-      defaultTargetPlatform == TargetPlatform.iOS
-          ? const <_Developer>[_eda, _muhammed]
-          : const <_Developer>[_muhammed, _eda];
+  /// Shown in this order on every platform.
+  static const List<_Developer> _developers = <_Developer>[_eda, _muhammed];
 
   @override
   Widget build(BuildContext context) {
@@ -77,12 +64,10 @@ class AboutScreen extends StatelessWidget {
                 ?.copyWith(color: context.colors.onSurfaceVariant),
           ),
           SectionHeader(context.l10n.mobileDevelopers),
-          for (final _Developer developer in _mobileDevelopers) ...<Widget>[
+          for (final _Developer developer in _developers) ...<Widget>[
             _DeveloperCard(developer),
             const SizedBox(height: AppSpacing.sm),
           ],
-          SectionHeader(context.l10n.backendDevelopers),
-          const _DeveloperCard(_kursat),
         ],
       ),
     );

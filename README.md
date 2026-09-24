@@ -10,19 +10,36 @@ and adds online result codes.
 
 ## Features
 
+### Raffles
+
 - **New Year raffle (Secret Santa):** everyone is assigned one person to buy a gift for.
   The draw forms a single circle, so nobody draws themselves and no two people just swap.
 - **Gift raffle:** list the gifts (with quantities) and they are handed out to random
-  participants, with at most one gift per person.
-- **Secret results on one phone:** results stay hidden. Pass the phone around, and
-  each person taps their own name to see their result.
+  participants, with at most one gift per person. The app warns right away when there are
+  more gifts than participants.
+- **Step-by-step setup:** name the raffle, add a note for everyone (such as the gift budget
+  or the exchange date), then add the participants and gifts. A progress bar shows each
+  step, and the same name can't be added twice.
+
+### Results
+
+- **Secret results on one phone:** results stay hidden. Pass the phone around; each person
+  taps their own name and sees only their own result. A progress bar shows how many people
+  have already looked.
 - **Share results** one by one through WhatsApp, SMS or any app, or by email from your
-  own mail app (participant emails are optional).
+  own mail app (participant emails are optional). Gift raffle winners can be shared as one
+  list.
 - **Online codes (optional, Firebase):** every participant gets a personal code and sees
-  only their own result under "View My Result" in the app, on their own phone.
-- **History and statistics** are kept on the device. With Firebase you also get
-  totals across all users.
-- Turkish, English and Arabic (RTL), light/dark theme.
+  only their own result under "View my result" in the app, on their own phone.
+
+### App
+
+- **Works offline, no account:** the draw runs on the phone, and history and statistics
+  are kept on the device. With Firebase you also get totals across all users.
+- **Modern design:** Material 3 with light, dark or system theme, WCAG AA contrast in both
+  themes, the Alexandria font and an adaptive app icon.
+- **Three languages:** Turkish, English and Arabic, with a full right-to-left layout.
+  Theme and language are changed in the Settings screen.
 
 ## Getting Started
 
@@ -79,6 +96,14 @@ the device.
 ```bash
 flutter analyze
 flutter test
+```
+
+The Google Play listing (texts, icon, feature graphic and screenshots in English,
+Turkish and Arabic) lives in [`Production/`](Production/README.md). Its images, and the
+screenshot at the top of this README, are rendered from the real app:
+
+```bash
+flutter test Production/tool/store_assets.dart
 ```
 
 ## Contributing

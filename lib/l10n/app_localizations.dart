@@ -298,12 +298,6 @@ abstract class AppLocalizations {
   /// **'Mobile developers'**
   String get mobileDevelopers;
 
-  /// No description provided for @backendDevelopers.
-  ///
-  /// In en, this message translates to:
-  /// **'Backend developers'**
-  String get backendDevelopers;
-
   /// No description provided for @warning.
   ///
   /// In en, this message translates to:
