@@ -1,5 +1,6 @@
 import '../../domain/entities/draw_assignment.dart';
 import '../../domain/entities/gift.dart';
+import '../../domain/entities/match_exclusion.dart';
 import '../../domain/entities/raffle.dart';
 import '../../domain/entities/raffle_config.dart';
 import '../../domain/entities/raffle_type.dart';
@@ -14,6 +15,7 @@ class RaffleModel extends Raffle {
     required super.createdAt,
     required super.assignments,
     super.gifts,
+    super.exclusions,
   });
 
   factory RaffleModel.fromEntity(Raffle raffle) {
@@ -23,6 +25,7 @@ class RaffleModel extends Raffle {
       createdAt: raffle.createdAt,
       assignments: raffle.assignments,
       gifts: raffle.gifts,
+      exclusions: raffle.exclusions,
     );
   }
 
@@ -51,6 +54,13 @@ class RaffleModel extends Raffle {
           .cast<Map<String, dynamic>>()
           .map(GiftModel.fromJson)
           .toList(),
+      exclusions: (json['exclusions'] as List<dynamic>? ?? const <dynamic>[])
+          .cast<Map<String, dynamic>>()
+          .map(
+            (Map<String, dynamic> e) =>
+                MatchExclusion(e['first'] as String, e['second'] as String),
+          )
+          .toList(),
     );
   }
 
@@ -71,5 +81,14 @@ class RaffleModel extends Raffle {
               },
             )
             .toList(),
+        if (exclusions.isNotEmpty)
+          'exclusions': exclusions
+              .map(
+                (MatchExclusion e) => <String, dynamic>{
+                  'first': e.first,
+                  'second': e.second,
+                },
+              )
+              .toList(),
       };
 }

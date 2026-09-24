@@ -276,5 +276,27 @@
       }
     }
   },
-  "newGift": "New gift"
+  "newGift": "New gift",
+  "matchRules": "Matching rules",
+  "matchRulesInfo": "Keep couples or anyone else from drawing each other.",
+  "addRule": "Add a rule",
+  "keepApart": "Keep apart",
+  "firstPerson": "First person",
+  "secondPerson": "Second person",
+  "ruleLabel": "{first} and {second}",
+  "@ruleLabel": {
+    "placeholders": {
+      "first": {
+        "type": "String"
+      },
+      "second": {
+        "type": "String"
+      }
+    }
+  },
+  "ruleDescription": "Won't draw each other",
+  "ruleSamePerson": "Pick two different people.",
+  "ruleExists": "This rule already exists.",
+  "avoidPrevious": "Don't repeat last time's matches",
+  "noValidMatch": "No draw fits these rules. Remove a rule or add more people."
 }

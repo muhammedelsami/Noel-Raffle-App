@@ -113,5 +113,17 @@
   "giftQuantity": "الكمية: {count}",
   "giftUnits": "{count, plural, =0{لا هدايا} =1{هدية واحدة} =2{هديتان} few{{count} هدايا} many{{count} هدية} other{{count} هدية}}",
   "revealProgress": "كشف {seen} من {total}",
-  "newGift": "هدية جديدة"
+  "newGift": "هدية جديدة",
+  "matchRules": "قواعد المطابقة",
+  "matchRulesInfo": "امنع الأزواج أو أي شخصين آخرين من أن يسحب أحدهما الآخر.",
+  "addRule": "إضافة قاعدة",
+  "keepApart": "لا يسحب أحدهما الآخر",
+  "firstPerson": "الشخص الأول",
+  "secondPerson": "الشخص الثاني",
+  "ruleLabel": "{first} و{second}",
+  "ruleDescription": "لن يسحب أحدهما الآخر",
+  "ruleSamePerson": "اختر شخصين مختلفين.",
+  "ruleExists": "هذه القاعدة موجودة بالفعل.",
+  "avoidPrevious": "لا تكرر مطابقات المرة السابقة",
+  "noValidMatch": "لا توجد قرعة تناسب هذه القواعد. احذف قاعدة أو أضف أشخاصًا."
 }

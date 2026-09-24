@@ -10,6 +10,7 @@ import '../../../core/theme/theme_cubit.dart';
 import '../../../core/utils/url_launcher_helper.dart';
 import '../../widgets/page_scaffold.dart';
 import '../../widgets/section_header.dart';
+import '../../widgets/tile_group.dart';
 import '../about/about_screen.dart';
 import '../history/history_screen.dart';
 import '../statistics/statistics_screen.dart';
@@ -49,7 +50,7 @@ class SettingsScreen extends StatelessWidget {
           SectionHeader(context.l10n.language),
           const _LanguageSelector(),
           SectionHeader(context.l10n.more),
-          _TileGroup(
+          TileGroup(
             children: <Widget>[
               _NavigationTile(
                 icon: Icons.history_rounded,
@@ -69,7 +70,7 @@ class SettingsScreen extends StatelessWidget {
             ],
           ),
           SectionHeader(context.l10n.support),
-          _TileGroup(
+          TileGroup(
             children: <Widget>[
               _NavigationTile(
                 icon: Icons.star_outline_rounded,
@@ -136,7 +137,7 @@ class _LanguageSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String current = context.watch<LocaleCubit>().state.languageCode;
-    return _TileGroup(
+    return TileGroup(
       children: <Widget>[
         for (final Locale locale in kSupportedLocales)
           ListTile(
@@ -150,32 +151,6 @@ class _LanguageSelector extends StatelessWidget {
             onTap: () => context.read<LocaleCubit>().setLocale(locale),
           ),
       ],
-    );
-  }
-}
-
-/// List tiles on one card, separated by inset dividers. The card clips the
-/// ink, so the tiles themselves are square.
-class _TileGroup extends StatelessWidget {
-  const _TileGroup({required this.children});
-
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTileTheme.merge(
-        shape: const RoundedRectangleBorder(),
-        contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-        child: Column(
-          children: <Widget>[
-            for (int i = 0; i < children.length; i++) ...<Widget>[
-              if (i > 0) const Divider(indent: AppSpacing.lg),
-              children[i],
-            ],
-          ],
-        ),
-      ),
     );
   }
 }

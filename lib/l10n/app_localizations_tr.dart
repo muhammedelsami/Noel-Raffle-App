@@ -401,4 +401,44 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get newGift => 'Yeni hediye';
+
+  @override
+  String get matchRules => 'Eşleşme kuralları';
+
+  @override
+  String get matchRulesInfo =>
+      'Çiftlerin ya da istediğiniz kişilerin birbirini çekmesini engelleyin.';
+
+  @override
+  String get addRule => 'Kural ekle';
+
+  @override
+  String get keepApart => 'Birbirini çekmesin';
+
+  @override
+  String get firstPerson => 'Birinci kişi';
+
+  @override
+  String get secondPerson => 'İkinci kişi';
+
+  @override
+  String ruleLabel(String first, String second) {
+    return '$first ve $second';
+  }
+
+  @override
+  String get ruleDescription => 'Birbirini çekmez';
+
+  @override
+  String get ruleSamePerson => 'İki farklı kişi seçin.';
+
+  @override
+  String get ruleExists => 'Bu kural zaten var.';
+
+  @override
+  String get avoidPrevious => 'Geçen seferki eşleşmeleri tekrarlama';
+
+  @override
+  String get noValidMatch =>
+      'Bu kurallarla uygun bir eşleşme bulunamadı. Bir kuralı kaldırın ya da kişi ekleyin.';
 }
