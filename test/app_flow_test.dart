@@ -335,4 +335,17 @@ void main() {
       l10n.reminderBody(giftDayLabel(l10n, day)),
     );
   });
+
+  testWidgets('places the raffle types side by side on a tablet',
+      (WidgetTester tester) async {
+    await bootToHome(tester);
+    double top(String label) => tester.getTopLeft(find.text(label)).dy;
+
+    expect(top(l10n.giftRaffle), greaterThan(top(l10n.newYearRaffle)));
+
+    tester.view.physicalSize = const Size(2560, 1600); // 1280 × 800 at 2x
+    tester.view.devicePixelRatio = 2;
+    await tester.pumpAndSettle();
+    expect(top(l10n.giftRaffle), top(l10n.newYearRaffle));
+  });
 }
