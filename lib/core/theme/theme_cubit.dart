@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Holds the active [ThemeMode] and persists the user's choice.
 ///
 /// Defaults to [ThemeMode.system] so the app follows the device theme until
-/// the user explicitly overrides it from the menu.
+/// the user explicitly overrides it in the settings.
 class ThemeCubit extends Cubit<ThemeMode> {
   ThemeCubit(this._prefs) : super(_read(_prefs));
 
@@ -25,15 +25,5 @@ class ThemeCubit extends Cubit<ThemeMode> {
     if (mode == state) return;
     emit(mode);
     await _prefs.setString(_key, mode.name);
-  }
-
-  /// Cycles light → dark → system, used by the simple menu toggle.
-  Future<void> toggle() async {
-    final ThemeMode next = switch (state) {
-      ThemeMode.system => ThemeMode.light,
-      ThemeMode.light => ThemeMode.dark,
-      ThemeMode.dark => ThemeMode.system,
-    };
-    await setMode(next);
   }
 }
