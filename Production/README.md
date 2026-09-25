@@ -37,6 +37,11 @@ feature graphic. The screenshots show the real app with language-specific sample
 
 ## Uploading
 
+**Automatically:** the release workflow (`.github/workflows/release.yml`) runs `fastlane supply`
+on this folder after each app upload. A push to `dev` validates the listing without publishing
+it; a push to `main` publishes the texts and images. Unchanged images are skipped. So editing a
+text or regenerating the images and merging to `main` is all it takes.
+
 **By hand:** Play Console → the app → *Grow users → Store presence → Main store listing*. Fill in
 the texts and images for the default language, then use *Manage translations* to add Turkish and
 Arabic. Paste `changelogs/default.txt` into the release notes of the new release for each

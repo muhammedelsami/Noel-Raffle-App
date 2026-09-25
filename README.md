@@ -131,13 +131,18 @@ GitHub Actions builds and ships the Android app:
 | Workflow | Trigger | What it does |
 | --- | --- | --- |
 | `ci.yml` | Pull request to `dev` or `main` | `flutter analyze`, `flutter test` and a debug Android build, no secrets |
-| `release.yml` | Push to `dev` | Signed app bundle to the Play **internal testing** track |
-| `release.yml` | Push to `main` | Signed app bundle to the Play **production** track |
+| `release.yml` | Push to `dev` | Signed app bundle to the Play **internal testing** track; validates the store listing |
+| `release.yml` | Push to `main` | Signed app bundle to the Play **production** track; updates the store listing |
 
 Versions come from the workflow run number, so CI never commits back:
 `versionCode = 9 + run number` and `versionName = <major>.<minor>.<run number>`, with
 major and minor read from `version:` in `pubspec.yaml`. The release notes are
 `Production/metadata/android/<language>/changelogs/default.txt`.
+
+The store listing (title, descriptions, icon, feature graphic and screenshots) is synced from
+`Production/metadata/android` with `fastlane supply` after each upload. On `dev` it is only
+validated against Play's limits; on `main` it is published. Unchanged images are not uploaded
+again.
 
 The secrets are stored in the `play-store` environment (*Settings → Environments*), which
 only the `dev` and `main` branches can use. GitHub never shows secret values, and workflows
