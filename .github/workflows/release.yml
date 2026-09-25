@@ -129,7 +129,7 @@ jobs:
           packageName: ${{ env.PACKAGE_NAME }}
           releaseFiles: build/app/outputs/bundle/release/app-release.aab
           releaseName: ${{ steps.version.outputs.name }} (${{ steps.version.outputs.code }})
-          track: ${{ github.ref_name == 'main' && 'production' || 'internal' }}
+          tracks: ${{ github.ref_name == 'main' && 'production' || 'internal' }}
           status: completed
           whatsNewDirectory: ${{ runner.temp }}/whatsnew
 
