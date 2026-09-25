@@ -22,8 +22,8 @@ Production/
 | --- | --- | --- | --- | --- |
 | Title | 25 | 29 | 27 | 30 |
 | Short description | 74 | 79 | 69 | 80 |
-| Full description | 1669 | 1708 | 1475 | 4000 |
-| What's new | 383 | 394 | 316 | 500 |
+| Full description | 2411 | 2501 | 2180 | 4000 |
+| What's new | 389 | 401 | 353 | 500 |
 
 All images are 24-bit PNGs without an alpha channel, as Play requires for screenshots and the
 feature graphic. The screenshots show the real app with language-specific sample data:
@@ -51,8 +51,8 @@ fastlane supply --metadata_path Production/metadata/android \
 ```
 
 `changelogs/default.txt` is used for any version. To tie the notes to one build, rename it to
-`<versionCode>.txt`. The redesigned release is version `2.0.0` (versionCode `9`) in
-`pubspec.yaml`; raise it again for every later upload.
+`<versionCode>.txt`. Builds are uploaded by GitHub Actions, which sets the version and uses
+`changelogs/default.txt` as release notes (see the main README, "Continuous delivery").
 
 ## Regenerating the images
 
@@ -68,8 +68,9 @@ writes every image for all three languages, plus the project README showcase
 
 ## Notes
 
-- The listing does not mention online result codes: `lib/firebase_options.dart` is still the
-  placeholder, so that feature is hidden in this build. Add it to the descriptions once Firebase
-  is configured.
+- The listing mentions online result codes because release builds ship with Firebase: the
+  release workflow restores `lib/firebase_options.dart` from its secrets. Builds without it
+  hide that feature.
 - Claims in the texts match the app: the draw runs offline on the device, no account is needed,
-  nobody draws their own name, and each person wins at most one gift.
+  nobody draws their own name, each person wins at most one gift, only published results and
+  anonymous statistics are stored online, and emails are never uploaded.

@@ -8,7 +8,8 @@ part 'gifts_state.dart';
 
 /// Manages the in-memory gift list for a gift raffle.
 class GiftsCubit extends Cubit<GiftsState> {
-  GiftsCubit() : super(const GiftsState());
+  GiftsCubit({List<Gift> gifts = const <Gift>[]})
+      : super(GiftsState(gifts: gifts));
 
   void add(Gift gift) {
     emit(GiftsState(gifts: <Gift>[...state.gifts, gift]));
@@ -20,8 +21,17 @@ class GiftsCubit extends Cubit<GiftsState> {
     emit(GiftsState(gifts: list));
   }
 
-  void removeAt(int index) {
-    final List<Gift> list = <Gift>[...state.gifts]..removeAt(index);
-    emit(GiftsState(gifts: list));
+  /// Removes the gift at [index] and returns it, so [insert] can undo it.
+  Gift removeAt(int index) {
+    final Gift gift = state.gifts[index];
+    emit(GiftsState(gifts: <Gift>[...state.gifts]..removeAt(index)));
+    return gift;
+  }
+
+  void insert(int index, Gift gift) {
+    emit(GiftsState(
+      gifts: <Gift>[...state.gifts]
+        ..insert(index.clamp(0, state.gifts.length), gift),
+    ));
   }
 }

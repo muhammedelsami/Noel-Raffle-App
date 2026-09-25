@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:confetti/confetti.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/l10n_extensions.dart';
 import '../../../core/l10n/raffle_texts.dart';
+import '../../../core/review/review_prompter.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_dimens.dart';
 import '../../../core/theme/raffle_type_style.dart';
@@ -16,6 +18,7 @@ import '../../../core/utils/url_launcher_helper.dart';
 import '../../../domain/entities/draw_assignment.dart';
 import '../../../domain/entities/raffle.dart';
 import '../../../domain/services/share_code.dart';
+import '../../../domain/usecases/schedule_reminder.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cubit/raffle_result/raffle_result_cubit.dart';
 import '../../widgets/app_button.dart';
@@ -26,9 +29,11 @@ import '../../widgets/info_banner.dart';
 import '../../widgets/initials_avatar.dart';
 import '../../widgets/loading_overlay.dart';
 import '../../widgets/page_scaffold.dart';
-import '../../widgets/quote_note.dart';
+import '../../widgets/note_line.dart';
 import '../../widgets/result_card.dart';
+import '../../widgets/result_share_card.dart';
 import '../../widgets/status_pill.dart';
+import '../raffle_setup/raffle_setup_screen.dart';
 
 /// Shows a drawn raffle. New-year results stay hidden until each participant
 /// reveals their own; gift raffle winners are listed openly. Results can be
@@ -59,9 +64,18 @@ class RaffleResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RaffleResultCubit>(
+    final Widget screen = BlocProvider<RaffleResultCubit>(
       create: (_) => sl<RaffleResultCubit>(param1: raffle),
       child: _RaffleResultView(celebrate: celebrate),
+    );
+    if (!celebrate) return screen;
+    // Leaving a fresh result is when the organizer is done: a good moment
+    // for the occasional review prompt.
+    return PopScope<Object?>(
+      onPopInvokedWithResult: (bool didPop, _) {
+        if (didPop) unawaited(sl<ReviewPrompter>().onDrawFinished());
+      },
+      child: screen,
     );
   }
 }
@@ -112,6 +126,17 @@ class _RaffleResultView extends StatelessWidget {
         return LoadingOverlay(
           isLoading: state.isPublishing,
           child: PageScaffold(
+            actions: <Widget>[
+              IconButton(
+                tooltip: context.l10n.drawAgain,
+                icon: const Icon(Icons.replay_rounded),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => RaffleSetupScreen.again(raffle),
+                  ),
+                ),
+              ),
+            ],
             body: Stack(
               children: <Widget>[
                 CustomScrollView(
@@ -264,16 +289,31 @@ class _Header extends StatelessWidget {
     final TextTheme text = context.textTheme;
     final ColorScheme colors = context.colors;
     final AccentColors accent = raffle.type.accentColors(colors);
+    final DateTime? day = raffle.eventDate;
+    final bool reminderPending = raffle.config.remind &&
+        day != null &&
+        ScheduleReminder.reminderTime(day, DateTime.now()) != null;
     return AppCard(
       padding: const EdgeInsets.all(AppSpacing.page),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          StatusPill(
-            label: raffleTypeLabel(context.l10n, raffle.type),
-            icon: raffle.type.icon,
-            background: accent.container,
-            foreground: accent.onContainer,
+          Wrap(
+            spacing: AppSpacing.sm,
+            runSpacing: AppSpacing.sm,
+            children: <Widget>[
+              StatusPill(
+                label: raffleTypeLabel(context.l10n, raffle.type),
+                icon: raffle.type.icon,
+                background: accent.container,
+                foreground: accent.onContainer,
+              ),
+              if (reminderPending)
+                StatusPill(
+                  label: context.l10n.reminderOn,
+                  icon: Icons.notifications_active_outlined,
+                ),
+            ],
           ),
           const SizedBox(height: AppSpacing.md),
           Text(raffle.title, style: text.headlineSmall),
@@ -282,9 +322,17 @@ class _Header extends StatelessWidget {
             raffleSummary(context.l10n, raffle),
             style: text.bodyMedium?.copyWith(color: colors.onSurfaceVariant),
           ),
+          if (day != null) ...<Widget>[
+            const SizedBox(height: AppSpacing.md),
+            NoteLine(
+              giftDayLabel(context.l10n, day),
+              icon: Icons.event_rounded,
+              label: context.l10n.giftDay,
+            ),
+          ],
           if (raffle.note.isNotEmpty) ...<Widget>[
             const SizedBox(height: AppSpacing.md),
-            QuoteNote(raffle.note),
+            NoteLine(raffle.note),
           ],
         ],
       ),
@@ -325,7 +373,7 @@ class _RevealProgress extends StatelessWidget {
   }
 }
 
-enum _ShareChannel { share, email }
+enum _ShareChannel { message, card, email }
 
 class _AssignmentTile extends StatelessWidget {
   const _AssignmentTile({
@@ -363,7 +411,9 @@ class _AssignmentTile extends StatelessWidget {
             type: raffle.type,
             participantName: name,
             match: _assignment.match,
+            matchWish: raffle.wishOf(_assignment.match),
             note: raffle.note,
+            eventDate: raffle.eventDate,
           ),
         ),
         actions: <Widget>[
@@ -379,39 +429,48 @@ class _AssignmentTile extends StatelessWidget {
 
   Future<void> _share(BuildContext context) async {
     final AppLocalizations l10n = context.l10n;
-    final String message = participantMessage(l10n, raffle, _assignment);
-    final String subject = l10n.emailSubject(raffle.title);
     final String? email = _assignment.participant.email;
-
-    final _ShareChannel? channel = email == null || email.isEmpty
-        ? _ShareChannel.share
-        : await showModalBottomSheet<_ShareChannel>(
-            context: context,
-            builder: (BuildContext context) => SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
-                    leading: const Icon(Icons.share_rounded),
-                    title: Text(l10n.share),
-                    onTap: () => Navigator.of(context).pop(_ShareChannel.share),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.mail_outline_rounded),
-                    title: Text(l10n.sendByEmail),
-                    subtitle: Text(email),
-                    onTap: () => Navigator.of(context).pop(_ShareChannel.email),
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                ],
-              ),
+    final _ShareChannel? channel = await showModalBottomSheet<_ShareChannel>(
+      context: context,
+      builder: (BuildContext context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: const Icon(Icons.chat_bubble_outline_rounded),
+              title: Text(l10n.shareAsMessage),
+              onTap: () => Navigator.of(context).pop(_ShareChannel.message),
             ),
-          );
+            ListTile(
+              leading: const Icon(Icons.image_outlined),
+              title: Text(l10n.shareAsCard),
+              onTap: () => Navigator.of(context).pop(_ShareChannel.card),
+            ),
+            if (email != null && email.isNotEmpty)
+              ListTile(
+                leading: const Icon(Icons.mail_outline_rounded),
+                title: Text(l10n.sendByEmail),
+                subtitle: Text(email),
+                onTap: () => Navigator.of(context).pop(_ShareChannel.email),
+              ),
+            const SizedBox(height: AppSpacing.sm),
+          ],
+        ),
+      ),
+    );
     if (channel == null || !context.mounted) return;
 
+    final String message = participantMessage(l10n, raffle, _assignment);
+    final String subject = l10n.emailSubject(raffle.title);
     switch (channel) {
-      case _ShareChannel.share:
+      case _ShareChannel.message:
         await ShareHelper.shareText(context, message, subject: subject);
+      case _ShareChannel.card:
+        await showResultCardPreview(
+          context,
+          raffle: raffle,
+          assignment: _assignment,
+        );
       case _ShareChannel.email:
         final bool opened = await UrlLauncherHelper.email(
           to: email!,

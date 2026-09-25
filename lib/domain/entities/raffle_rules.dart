@@ -3,7 +3,14 @@ import 'participant.dart';
 import 'raffle_type.dart';
 
 /// Why a raffle cannot be drawn yet.
-enum RaffleRuleViolation { notEnoughParticipants, notEnoughGifts, tooManyGifts }
+enum RaffleRuleViolation {
+  notEnoughParticipants,
+  notEnoughGifts,
+  tooManyGifts,
+
+  /// The new-year matching rules leave no way to form a gift circle.
+  noValidMatch,
+}
 
 /// Thrown by the drawer when the input breaks a [RaffleRules] rule.
 class RaffleRuleException implements Exception {

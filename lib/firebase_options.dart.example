@@ -1,6 +1,7 @@
 // Placeholder so the app builds without a Firebase project.
 //
-// Run `flutterfire configure` to overwrite this file with your project's
+// lib/firebase_options.dart is not committed. Copy this file there to build
+// offline, or run `flutterfire configure` to generate it with your project's
 // options (see README, "Firebase setup"). Until then the app runs fully
 // offline and hides the online features.
 

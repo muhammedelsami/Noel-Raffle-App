@@ -1,8 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:noel_raffle/data/models/participant_model.dart';
 import 'package:noel_raffle/data/models/raffle_model.dart';
 import 'package:noel_raffle/data/models/statistics_model.dart';
 import 'package:noel_raffle/domain/entities/draw_assignment.dart';
 import 'package:noel_raffle/domain/entities/gift.dart';
+import 'package:noel_raffle/domain/entities/match_exclusion.dart';
 import 'package:noel_raffle/domain/entities/participant.dart';
 import 'package:noel_raffle/domain/entities/raffle.dart';
 import 'package:noel_raffle/domain/entities/raffle_config.dart';
@@ -35,6 +37,61 @@ void main() {
       final Map<String, dynamic> json =
           RaffleModel.fromEntity(giftRaffle).toJson();
       expect(RaffleModel.fromJson(json), giftRaffle);
+    });
+
+    test('round-trips matching rules and reads raffles saved without them', () {
+      final Raffle withRules = Raffle(
+        id: 'ny',
+        config: const RaffleConfig(title: 'Aile', type: RaffleType.newYear),
+        createdAt: DateTime.utc(2026, 12, 24),
+        assignments: const <DrawAssignment>[
+          DrawAssignment(participant: Participant(name: 'A'), match: 'B'),
+          DrawAssignment(participant: Participant(name: 'B'), match: 'C'),
+          DrawAssignment(participant: Participant(name: 'C'), match: 'A'),
+        ],
+        exclusions: const <MatchExclusion>[MatchExclusion('A', 'C')],
+      );
+      final Map<String, dynamic> json =
+          RaffleModel.fromEntity(withRules).toJson();
+      expect(RaffleModel.fromJson(json), withRules);
+
+      json.remove('exclusions');
+      expect(RaffleModel.fromJson(json).exclusions, isEmpty);
+    });
+
+    test('keeps the gift day as a date and reads raffles without one', () {
+      final Raffle dated = Raffle(
+        id: 'd',
+        config: RaffleConfig(
+          title: 'Aile',
+          type: RaffleType.newYear,
+          eventDate: DateTime(2026, 12, 31),
+          remind: true,
+        ),
+        createdAt: DateTime.utc(2026, 12, 1),
+        assignments: const <DrawAssignment>[],
+      );
+      final Map<String, dynamic> json = RaffleModel.fromEntity(dated).toJson();
+      expect(json['eventDate'], '2026-12-31');
+      expect(RaffleModel.fromJson(json), dated);
+
+      json
+        ..remove('eventDate')
+        ..remove('remind');
+      final Raffle undated = RaffleModel.fromJson(json);
+      expect(undated.eventDate, isNull);
+      expect(undated.config.remind, isFalse);
+    });
+
+    test('keeps gift ideas', () {
+      const Participant withWish =
+          Participant(name: 'Deniz', wish: 'Bir kitap');
+      expect(
+        ParticipantModel.fromJson(
+          ParticipantModel.fromEntity(withWish).toJson(),
+        ),
+        withWish,
+      );
     });
 
     test('omits empty emails and missing codes', () {

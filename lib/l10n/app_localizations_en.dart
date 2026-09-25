@@ -417,4 +417,168 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newGift => 'New gift';
+
+  @override
+  String get matchRules => 'Matching rules';
+
+  @override
+  String get matchRulesInfo =>
+      'Keep couples or anyone else from drawing each other.';
+
+  @override
+  String get addRule => 'Add a rule';
+
+  @override
+  String get keepApart => 'Keep apart';
+
+  @override
+  String get firstPerson => 'First person';
+
+  @override
+  String get secondPerson => 'Second person';
+
+  @override
+  String ruleLabel(String first, String second) {
+    return '$first and $second';
+  }
+
+  @override
+  String get ruleDescription => 'Won\'t draw each other';
+
+  @override
+  String get ruleSamePerson => 'Pick two different people.';
+
+  @override
+  String get ruleExists => 'This rule already exists.';
+
+  @override
+  String get avoidPrevious => 'Don\'t repeat last time\'s matches';
+
+  @override
+  String get noValidMatch =>
+      'No draw fits these rules. Remove a rule or add more people.';
+
+  @override
+  String get wishOptional => 'Gift ideas (optional)';
+
+  @override
+  String get giftIdeas => 'Gift ideas';
+
+  @override
+  String shareWishLine(String wish) {
+    return 'Gift ideas: $wish';
+  }
+
+  @override
+  String get drawAgain => 'Draw again with this group';
+
+  @override
+  String get moreOptions => 'More options';
+
+  @override
+  String get bulkAdd => 'Add several';
+
+  @override
+  String get bulkAddLabel => 'Names, one per line';
+
+  @override
+  String get bulkAddHint =>
+      'Add an email after a comma if you like: Ann Lee, ann@mail.com';
+
+  @override
+  String bulkAddPreview(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count new people will be added',
+      one: '1 new person will be added',
+      zero: 'No new names yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bulkAddSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count names are already on the list',
+      one: '1 name is already on the list',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get bulkAddEmpty => 'Enter at least one new name.';
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String removedItem(String name) {
+    return '$name removed';
+  }
+
+  @override
+  String get shareAsMessage => 'Share as a message';
+
+  @override
+  String get shareAsCard => 'Share as a card';
+
+  @override
+  String get resultCard => 'Result card';
+
+  @override
+  String get yourCode => 'Your personal code';
+
+  @override
+  String get cardCodeHint =>
+      'Open Noel Raffle and enter it under \"View my result\".';
+
+  @override
+  String get drawnWith => 'Drawn with Noel Raffle';
+
+  @override
+  String get drawing => 'Drawing…';
+
+  @override
+  String get giftDay => 'Gift day';
+
+  @override
+  String get giftDayOptional => 'Gift day (optional)';
+
+  @override
+  String get giftDayHint => 'When the gifts are handed out';
+
+  @override
+  String get clearDate => 'Remove date';
+
+  @override
+  String get remindMe => 'Remind me the day before';
+
+  @override
+  String get remindMeInfo => 'A notification on this phone';
+
+  @override
+  String get notificationsOff =>
+      'Notifications are off for this app. Turn them on in your phone\'s settings to get a reminder.';
+
+  @override
+  String get reminderOn => 'Reminder on';
+
+  @override
+  String get reminderChannel => 'Reminders';
+
+  @override
+  String get reminderChannelInfo => 'Reminders before a gift day';
+
+  @override
+  String reminderBody(String date) {
+    return 'Gift day: $date. Is your gift ready? 🎁';
+  }
+
+  @override
+  String shareDateLine(String date) {
+    return 'Gift day: $date';
+  }
 }

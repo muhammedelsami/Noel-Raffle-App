@@ -1,8 +1,10 @@
 import '../../domain/entities/draw_assignment.dart';
 import '../../domain/entities/gift.dart';
+import '../../domain/entities/match_exclusion.dart';
 import '../../domain/entities/raffle.dart';
 import '../../domain/entities/raffle_config.dart';
 import '../../domain/entities/raffle_type.dart';
+import 'date_only.dart';
 import 'gift_model.dart';
 import 'participant_model.dart';
 
@@ -14,6 +16,7 @@ class RaffleModel extends Raffle {
     required super.createdAt,
     required super.assignments,
     super.gifts,
+    super.exclusions,
   });
 
   factory RaffleModel.fromEntity(Raffle raffle) {
@@ -23,6 +26,7 @@ class RaffleModel extends Raffle {
       createdAt: raffle.createdAt,
       assignments: raffle.assignments,
       gifts: raffle.gifts,
+      exclusions: raffle.exclusions,
     );
   }
 
@@ -35,6 +39,8 @@ class RaffleModel extends Raffle {
         title: json['title'] as String,
         note: json['note'] as String? ?? '',
         type: RaffleType.fromName(json['type'] as String?),
+        eventDate: DateOnly.decode(json['eventDate']),
+        remind: json['remind'] as bool? ?? false,
       ),
       createdAt: DateTime.parse(json['createdAt'] as String),
       assignments: (json['assignments'] as List<dynamic>)
@@ -51,6 +57,13 @@ class RaffleModel extends Raffle {
           .cast<Map<String, dynamic>>()
           .map(GiftModel.fromJson)
           .toList(),
+      exclusions: (json['exclusions'] as List<dynamic>? ?? const <dynamic>[])
+          .cast<Map<String, dynamic>>()
+          .map(
+            (Map<String, dynamic> e) =>
+                MatchExclusion(e['first'] as String, e['second'] as String),
+          )
+          .toList(),
     );
   }
 
@@ -60,6 +73,9 @@ class RaffleModel extends Raffle {
         'note': note,
         'type': type.name,
         'createdAt': createdAt.toIso8601String(),
+        if (eventDate case final DateTime day)
+          'eventDate': DateOnly.encode(day),
+        if (config.remind) 'remind': true,
         'gifts':
             gifts.map((Gift g) => GiftModel.fromEntity(g).toJson()).toList(),
         'assignments': assignments
@@ -71,5 +87,14 @@ class RaffleModel extends Raffle {
               },
             )
             .toList(),
+        if (exclusions.isNotEmpty)
+          'exclusions': exclusions
+              .map(
+                (MatchExclusion e) => <String, dynamic>{
+                  'first': e.first,
+                  'second': e.second,
+                },
+              )
+              .toList(),
       };
 }

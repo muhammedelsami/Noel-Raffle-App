@@ -23,6 +23,7 @@ import '../../widgets/page_scaffold.dart';
 import '../../widgets/raffle_draw_listener.dart';
 import '../../widgets/status_pill.dart';
 import '../../widgets/step_header.dart';
+import '../../widgets/undo_snack_bar.dart';
 
 /// Last step of the gift raffle: builds the gift list, then draws.
 class GiftsScreen extends StatelessWidget {
@@ -30,16 +31,22 @@ class GiftsScreen extends StatelessWidget {
     super.key,
     required this.config,
     required this.participants,
+    this.initialGifts = const <Gift>[],
   });
 
   final RaffleConfig config;
   final List<Participant> participants;
 
+  /// Gifts to start with, e.g. from a past raffle drawn again.
+  final List<Gift> initialGifts;
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
-        BlocProvider<GiftsCubit>(create: (_) => GiftsCubit()),
+        BlocProvider<GiftsCubit>(
+          create: (_) => GiftsCubit(gifts: initialGifts),
+        ),
         BlocProvider<RaffleDrawCubit>(create: (_) => sl<RaffleDrawCubit>()),
       ],
       child: RaffleDrawListener(
@@ -65,6 +72,18 @@ class _GiftsView extends StatelessWidget {
     final GiftsCubit cubit = context.read<GiftsCubit>();
     final Gift? result = await showGiftForm(context, initial: gift);
     if (result != null) cubit.update(index, result);
+  }
+
+  void _remove(BuildContext context, int index) {
+    final GiftsCubit cubit = context.read<GiftsCubit>();
+    final Gift gift = cubit.removeAt(index);
+    showUndoSnackBar(
+      context,
+      name: gift.name,
+      onUndo: () {
+        if (!cubit.isClosed) cubit.insert(index, gift);
+      },
+    );
   }
 
   void _start(BuildContext context) {
@@ -135,7 +154,7 @@ class _GiftsView extends StatelessWidget {
                   title: gift.name,
                   subtitle: Text(context.l10n.giftQuantity(gift.count)),
                   onTap: () => _editGift(context, index, gift),
-                  onDelete: () => context.read<GiftsCubit>().removeAt(index),
+                  onDelete: () => _remove(context, index),
                 );
               },
             );

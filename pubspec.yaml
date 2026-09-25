@@ -37,6 +37,9 @@ dependencies:
   url_launcher: ^6.3.0
   share_plus: ^13.3.0
   font_awesome_flutter: ^11.0.0
+  flutter_local_notifications: ^22.3.1
+  timezone: ^0.11.1
+  in_app_review: ^2.0.12
 
 dev_dependencies:
   flutter_test:
@@ -49,7 +52,10 @@ dev_dependencies:
   fake_cloud_firestore: ^4.3.0
   firebase_auth_mocks: ^0.15.2
 
-# App icons are rendered from the in-app BrandMark painter.
+# App icons are rendered from the in-app BrandMark painter. The themed icon
+# layer (android/.../drawable/ic_launcher_monochrome.xml) is a vector traced
+# from it; this version of the tool drops its <monochrome> line from
+# mipmap-anydpi-v26/launcher_icon.xml, so add it back after regenerating.
 flutter_icons:
   android: "launcher_icon"
   ios: true

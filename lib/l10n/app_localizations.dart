@@ -783,6 +783,270 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New gift'**
   String get newGift;
+
+  /// No description provided for @matchRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Matching rules'**
+  String get matchRules;
+
+  /// No description provided for @matchRulesInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep couples or anyone else from drawing each other.'**
+  String get matchRulesInfo;
+
+  /// No description provided for @addRule.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a rule'**
+  String get addRule;
+
+  /// No description provided for @keepApart.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep apart'**
+  String get keepApart;
+
+  /// No description provided for @firstPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'First person'**
+  String get firstPerson;
+
+  /// No description provided for @secondPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Second person'**
+  String get secondPerson;
+
+  /// No description provided for @ruleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{first} and {second}'**
+  String ruleLabel(String first, String second);
+
+  /// No description provided for @ruleDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Won\'t draw each other'**
+  String get ruleDescription;
+
+  /// No description provided for @ruleSamePerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick two different people.'**
+  String get ruleSamePerson;
+
+  /// No description provided for @ruleExists.
+  ///
+  /// In en, this message translates to:
+  /// **'This rule already exists.'**
+  String get ruleExists;
+
+  /// No description provided for @avoidPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t repeat last time\'s matches'**
+  String get avoidPrevious;
+
+  /// No description provided for @noValidMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No draw fits these rules. Remove a rule or add more people.'**
+  String get noValidMatch;
+
+  /// No description provided for @wishOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift ideas (optional)'**
+  String get wishOptional;
+
+  /// No description provided for @giftIdeas.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift ideas'**
+  String get giftIdeas;
+
+  /// No description provided for @shareWishLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift ideas: {wish}'**
+  String shareWishLine(String wish);
+
+  /// No description provided for @drawAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw again with this group'**
+  String get drawAgain;
+
+  /// No description provided for @moreOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get moreOptions;
+
+  /// No description provided for @bulkAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add several'**
+  String get bulkAdd;
+
+  /// No description provided for @bulkAddLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Names, one per line'**
+  String get bulkAddLabel;
+
+  /// No description provided for @bulkAddHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add an email after a comma if you like: Ann Lee, ann@mail.com'**
+  String get bulkAddHint;
+
+  /// No description provided for @bulkAddPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No new names yet} =1{1 new person will be added} other{{count} new people will be added}}'**
+  String bulkAddPreview(int count);
+
+  /// No description provided for @bulkAddSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 name is already on the list} other{{count} names are already on the list}}'**
+  String bulkAddSkipped(int count);
+
+  /// No description provided for @bulkAddEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter at least one new name.'**
+  String get bulkAddEmpty;
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// No description provided for @removedItem.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} removed'**
+  String removedItem(String name);
+
+  /// No description provided for @shareAsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Share as a message'**
+  String get shareAsMessage;
+
+  /// No description provided for @shareAsCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Share as a card'**
+  String get shareAsCard;
+
+  /// No description provided for @resultCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Result card'**
+  String get resultCard;
+
+  /// No description provided for @yourCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Your personal code'**
+  String get yourCode;
+
+  /// No description provided for @cardCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Noel Raffle and enter it under \"View my result\".'**
+  String get cardCodeHint;
+
+  /// No description provided for @drawnWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Drawn with Noel Raffle'**
+  String get drawnWith;
+
+  /// No description provided for @drawing.
+  ///
+  /// In en, this message translates to:
+  /// **'Drawing…'**
+  String get drawing;
+
+  /// No description provided for @giftDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift day'**
+  String get giftDay;
+
+  /// No description provided for @giftDayOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift day (optional)'**
+  String get giftDayOptional;
+
+  /// No description provided for @giftDayHint.
+  ///
+  /// In en, this message translates to:
+  /// **'When the gifts are handed out'**
+  String get giftDayHint;
+
+  /// No description provided for @clearDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove date'**
+  String get clearDate;
+
+  /// No description provided for @remindMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me the day before'**
+  String get remindMe;
+
+  /// No description provided for @remindMeInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'A notification on this phone'**
+  String get remindMeInfo;
+
+  /// No description provided for @notificationsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off for this app. Turn them on in your phone\'s settings to get a reminder.'**
+  String get notificationsOff;
+
+  /// No description provided for @reminderOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder on'**
+  String get reminderOn;
+
+  /// No description provided for @reminderChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get reminderChannel;
+
+  /// No description provided for @reminderChannelInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders before a gift day'**
+  String get reminderChannelInfo;
+
+  /// No description provided for @reminderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift day: {date}. Is your gift ready? 🎁'**
+  String reminderBody(String date);
+
+  /// No description provided for @shareDateLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift day: {date}'**
+  String shareDateLine(String date);
 }
 
 class _AppLocalizationsDelegate

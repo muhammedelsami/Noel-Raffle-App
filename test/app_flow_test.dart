@@ -4,12 +4,19 @@ import 'package:get_it/get_it.dart';
 import 'package:noel_raffle/app/app.dart';
 import 'package:noel_raffle/core/constants/app_constants.dart';
 import 'package:noel_raffle/core/di/injection.dart';
+import 'package:noel_raffle/core/l10n/raffle_texts.dart';
+import 'package:noel_raffle/core/review/review_prompter.dart';
+import 'package:noel_raffle/domain/entities/draw_assignment.dart';
 import 'package:noel_raffle/domain/entities/raffle.dart';
+import 'package:noel_raffle/domain/repositories/reminder_scheduler.dart';
 import 'package:noel_raffle/domain/usecases/get_raffle_history.dart';
+import 'package:noel_raffle/domain/usecases/schedule_reminder.dart';
 import 'package:noel_raffle/l10n/app_localizations.dart';
 import 'package:noel_raffle/presentation/screens/home/home_screen.dart';
 import 'package:noel_raffle/presentation/screens/raffle_result/raffle_result_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'fakes/recording_reminders.dart';
 
 void main() {
   late AppLocalizations l10n;
@@ -116,6 +123,8 @@ void main() {
     await tester.pageBack();
     await tester.pumpAndSettle();
     expect(find.byType(HomeScreen), findsOneWidget);
+    // Leaving the fresh result counts towards the review prompt.
+    expect(sl<SharedPreferences>().getInt(ReviewPrompter.drawCountKey), 1);
   });
 
   testWidgets('draws a gift raffle and lists it in the history',
@@ -152,5 +161,191 @@ void main() {
     await tester.scrollUntilVisible(find.text(l10n.history), 200);
     await tapText(tester, l10n.history);
     expect(find.text('Yılbaşı Partisi'), findsOneWidget);
+  });
+
+  testWidgets('matching rules keep two people apart',
+      (WidgetTester tester) async {
+    await bootToHome(tester);
+
+    await tapText(tester, l10n.newYearRaffle);
+    await tester.enterText(
+      find.widgetWithText(TextField, l10n.raffleTitleHint),
+      'Aile',
+    );
+    await tapButton(tester, l10n.next);
+    for (final String name in <String>['Ayşe', 'Burak', 'Cem']) {
+      await addParticipant(tester, name);
+    }
+
+    // Ayşe and Burak are the default pick of the rule dialog.
+    await tester.scrollUntilVisible(find.text(l10n.addRule), 200);
+    await tapText(tester, l10n.addRule);
+    await tapButton(tester, l10n.add);
+    expect(find.text(l10n.ruleLabel('Ayşe', 'Burak')), findsOneWidget);
+
+    // Three people always form one circle through Ayşe and Burak.
+    await tapButton(tester, l10n.startRaffle);
+    expect(find.text(l10n.noValidMatch), findsOneWidget);
+    await tester.tap(find.widgetWithText(TextButton, l10n.ok));
+    await tester.pumpAndSettle();
+
+    await tester.scrollUntilVisible(find.text(l10n.addParticipant), -200);
+    await addParticipant(tester, 'Deniz');
+    await tapButton(tester, l10n.startRaffle);
+    expect(find.byType(RaffleResultScreen), findsOneWidget);
+
+    final Raffle raffle = (await sl<GetRaffleHistory>()()).single;
+    final Map<String, String?> giftee = <String, String?>{
+      for (final DrawAssignment a in raffle.assignments)
+        a.participant.name: a.match,
+    };
+    expect(giftee['Ayşe'], isNot('Burak'));
+    expect(giftee['Burak'], isNot('Ayşe'));
+  });
+
+  testWidgets('draws the same group again from the history',
+      (WidgetTester tester) async {
+    await bootToHome(tester);
+
+    await tapText(tester, l10n.giftRaffle);
+    await tester.enterText(
+      find.widgetWithText(TextField, l10n.raffleTitleHint),
+      'Kulüp',
+    );
+    await tapButton(tester, l10n.next);
+    for (final String name in <String>['Ayşe', 'Burak', 'Cem']) {
+      await addParticipant(tester, name);
+    }
+    await tapButton(tester, l10n.next);
+    await tapButton(tester, l10n.addGift);
+    await tester.enterText(
+        find.widgetWithText(TextField, l10n.giftName), 'Kupa');
+    await tester.enterText(find.widgetWithText(TextField, l10n.giftCount), '1');
+    await tapButton(tester, l10n.add);
+    await tapButton(tester, l10n.startRaffle);
+
+    // From the result screen: everything is filled in already.
+    await tester.tap(find.byTooltip(l10n.drawAgain));
+    await tester.pumpAndSettle();
+    expect(find.widgetWithText(TextField, 'Kulüp'), findsOneWidget);
+    await tapButton(tester, l10n.next);
+    expect(find.text(l10n.participantCount(3)), findsOneWidget);
+    await tapButton(tester, l10n.next);
+    expect(find.text('Kupa'), findsOneWidget);
+    await tapButton(tester, l10n.startRaffle);
+
+    expect(await sl<GetRaffleHistory>()(), hasLength(2));
+    expect(find.byType(RaffleResultScreen), findsOneWidget);
+  });
+
+  testWidgets('adds a pasted list of participants',
+      (WidgetTester tester) async {
+    await bootToHome(tester);
+    await tapText(tester, l10n.newYearRaffle);
+    await tester.enterText(
+      find.widgetWithText(TextField, l10n.raffleTitleHint),
+      'Sınıf',
+    );
+    await tapButton(tester, l10n.next);
+    await addParticipant(tester, 'Ayşe');
+
+    await tester.tap(find.byTooltip(l10n.bulkAdd));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.widgetWithText(TextField, l10n.bulkAddLabel),
+      'ayşe\nBurak, burak@mail.com\nCem',
+    );
+    await tester.pump();
+    expect(find.text(l10n.bulkAddPreview(2)), findsOneWidget);
+    expect(find.text(l10n.bulkAddSkipped(1)), findsOneWidget);
+    await tapButton(tester, l10n.add);
+
+    expect(find.text(l10n.participantCount(3)), findsOneWidget);
+    expect(find.text('burak@mail.com'), findsOneWidget);
+  });
+
+  testWidgets('undoes removing a participant', (WidgetTester tester) async {
+    await bootToHome(tester);
+    await tapText(tester, l10n.newYearRaffle);
+    await tester.enterText(
+      find.widgetWithText(TextField, l10n.raffleTitleHint),
+      'Ekip',
+    );
+    await tapButton(tester, l10n.next);
+    await addParticipant(tester, 'Ayşe');
+    await addParticipant(tester, 'Burak');
+
+    await tester.tap(find.byTooltip(l10n.delete).first);
+    await tester.pumpAndSettle();
+    expect(find.text('Ayşe'), findsNothing);
+    expect(find.text(l10n.removedItem('Ayşe')), findsOneWidget);
+
+    await tester.tap(find.text(l10n.undo));
+    await tester.pumpAndSettle();
+    expect(find.text('Ayşe'), findsOneWidget);
+    expect(find.text(l10n.participantCount(2)), findsOneWidget);
+  });
+
+  testWidgets('sets a gift day with a reminder', (WidgetTester tester) async {
+    final RecordingReminders reminders = RecordingReminders(allowed: false);
+    sl
+      ..unregister<ReminderScheduler>()
+      ..registerSingleton<ReminderScheduler>(reminders);
+    await bootToHome(tester);
+    await tapText(tester, l10n.newYearRaffle);
+    await tester.enterText(
+      find.widgetWithText(TextField, l10n.raffleTitleHint),
+      'Aile',
+    );
+
+    // The date picker opens a week ahead.
+    await tapText(tester, l10n.giftDayOptional);
+    await tapText(
+      tester,
+      MaterialLocalizations.of(tester.element(find.byType(DatePickerDialog)))
+          .okButtonLabel,
+    );
+    final DateTime now = DateTime.now();
+    final DateTime day = DateTime(now.year, now.month, now.day + 7);
+    expect(find.text(giftDayLabel(l10n, day)), findsOneWidget);
+
+    // Without notification permission the reminder stays off and says why.
+    await tapText(tester, l10n.remindMe);
+    expect(find.text(l10n.notificationsOff), findsOneWidget);
+    reminders.allowed = true;
+    await tapText(tester, l10n.remindMe);
+    expect(find.text(l10n.notificationsOff), findsNothing);
+
+    await tapButton(tester, l10n.next);
+    for (final String name in <String>['Ayşe', 'Burak', 'Cem']) {
+      await addParticipant(tester, name);
+    }
+    await tapButton(tester, l10n.startRaffle);
+
+    expect(find.text(l10n.reminderOn), findsOneWidget);
+    expect(find.text(giftDayLabel(l10n, day)), findsOneWidget);
+    final Raffle saved = (await sl<GetRaffleHistory>()()).single;
+    expect(saved.eventDate, day);
+    expect(
+      reminders.scheduled[saved.id]?.at,
+      ScheduleReminder.reminderTime(day, DateTime.now()),
+    );
+    expect(
+      reminders.scheduled[saved.id]?.body,
+      l10n.reminderBody(giftDayLabel(l10n, day)),
+    );
+  });
+
+  testWidgets('places the raffle types side by side on a tablet',
+      (WidgetTester tester) async {
+    await bootToHome(tester);
+    double top(String label) => tester.getTopLeft(find.text(label)).dy;
+
+    expect(top(l10n.giftRaffle), greaterThan(top(l10n.newYearRaffle)));
+
+    tester.view.physicalSize = const Size(2560, 1600); // 1280 × 800 at 2x
+    tester.view.devicePixelRatio = 2;
+    await tester.pumpAndSettle();
+    expect(top(l10n.giftRaffle), top(l10n.newYearRaffle));
   });
 }

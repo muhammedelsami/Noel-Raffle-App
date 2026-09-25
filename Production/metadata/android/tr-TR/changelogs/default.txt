@@ -1,7 +1,9 @@
-Yepyeni Noel Raffle!
-• Yenilenen modern tasarım, özenle hazırlanmış açık ve koyu tema
-• Yeni uygulama ikonu ve adım adım, daha anlaşılır çekiliş kurulumu
-• Yılbaşı çekilişinde kaç kişinin sonucuna baktığını bir bakışta görün
-• Anında uyarılarla daha kullanışlı katılımcı ve hediye listeleri
-• Tema ve dil için yeni Ayarlar ekranı
-• Daha hızlı, akıcı ekranlar ve iyileştirilmiş sağdan sola düzen
+Noel Raffle'da yeni:
+• Eşleşme kuralları: çiftleri ayırın, geçen yılın eşleşmelerini tekrarlamayın
+• Her katılımcı için hediye fikirleri
+• Hediye günü ve bir gün önce hatırlatma
+• Kişisel kodlarla çevrimiçi sonuçlar
+• Sonucu görsel kart olarak paylaşma
+• Bütün listeyi tek seferde yapıştırma, silmeyi geri alma
+• Geçmişten aynı grupla yeniden çekiliş
+• Çekiliş animasyonu, temalı ikon ve tablet düzeni

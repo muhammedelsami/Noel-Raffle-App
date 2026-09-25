@@ -423,4 +423,173 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get newGift => 'هدية جديدة';
+
+  @override
+  String get matchRules => 'قواعد المطابقة';
+
+  @override
+  String get matchRulesInfo =>
+      'امنع الأزواج أو أي شخصين آخرين من أن يسحب أحدهما الآخر.';
+
+  @override
+  String get addRule => 'إضافة قاعدة';
+
+  @override
+  String get keepApart => 'لا يسحب أحدهما الآخر';
+
+  @override
+  String get firstPerson => 'الشخص الأول';
+
+  @override
+  String get secondPerson => 'الشخص الثاني';
+
+  @override
+  String ruleLabel(String first, String second) {
+    return '$first و$second';
+  }
+
+  @override
+  String get ruleDescription => 'لن يسحب أحدهما الآخر';
+
+  @override
+  String get ruleSamePerson => 'اختر شخصين مختلفين.';
+
+  @override
+  String get ruleExists => 'هذه القاعدة موجودة بالفعل.';
+
+  @override
+  String get avoidPrevious => 'لا تكرر مطابقات المرة السابقة';
+
+  @override
+  String get noValidMatch =>
+      'لا توجد قرعة تناسب هذه القواعد. احذف قاعدة أو أضف أشخاصًا.';
+
+  @override
+  String get wishOptional => 'أفكار للهدايا (اختياري)';
+
+  @override
+  String get giftIdeas => 'أفكار للهدايا';
+
+  @override
+  String shareWishLine(String wish) {
+    return 'أفكار للهدايا: $wish';
+  }
+
+  @override
+  String get drawAgain => 'اسحب مجددًا مع هذه المجموعة';
+
+  @override
+  String get moreOptions => 'خيارات أخرى';
+
+  @override
+  String get bulkAdd => 'إضافة عدة أشخاص';
+
+  @override
+  String get bulkAddLabel => 'الأسماء، شخص في كل سطر';
+
+  @override
+  String get bulkAddHint =>
+      'يمكنك إضافة بريد إلكتروني بعد فاصلة: سارة علي، sara@mail.com';
+
+  @override
+  String bulkAddPreview(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'ستتم إضافة $count شخص جديد',
+      many: 'ستتم إضافة $count شخصًا جديدًا',
+      few: 'ستتم إضافة $count أشخاص جدد',
+      two: 'ستتم إضافة شخصين جديدين',
+      one: 'ستتم إضافة شخص جديد',
+      zero: 'لا توجد أسماء جديدة بعد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bulkAddSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count اسم موجود بالفعل في القائمة',
+      many: '$count اسمًا موجودًا بالفعل في القائمة',
+      few: '$count أسماء موجودة بالفعل في القائمة',
+      two: 'اسمان موجودان بالفعل في القائمة',
+      one: 'اسم واحد موجود بالفعل في القائمة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get bulkAddEmpty => 'أدخل اسمًا جديدًا واحدًا على الأقل.';
+
+  @override
+  String get undo => 'تراجع';
+
+  @override
+  String removedItem(String name) {
+    return 'تم حذف $name';
+  }
+
+  @override
+  String get shareAsMessage => 'مشاركة كرسالة';
+
+  @override
+  String get shareAsCard => 'مشاركة كبطاقة';
+
+  @override
+  String get resultCard => 'بطاقة النتيجة';
+
+  @override
+  String get yourCode => 'رمزك الشخصي';
+
+  @override
+  String get cardCodeHint => 'افتح Noel Raffle وأدخله في قسم \"اعرض نتيجتي\".';
+
+  @override
+  String get drawnWith => 'سُحبت عبر Noel Raffle';
+
+  @override
+  String get drawing => 'جارٍ السحب…';
+
+  @override
+  String get giftDay => 'يوم الهدايا';
+
+  @override
+  String get giftDayOptional => 'يوم الهدايا (اختياري)';
+
+  @override
+  String get giftDayHint => 'اليوم الذي تُسلَّم فيه الهدايا';
+
+  @override
+  String get clearDate => 'إزالة التاريخ';
+
+  @override
+  String get remindMe => 'ذكّرني قبلها بيوم';
+
+  @override
+  String get remindMeInfo => 'يصلك إشعار على هذا الهاتف';
+
+  @override
+  String get notificationsOff =>
+      'الإشعارات متوقفة لهذا التطبيق. فعّلها من إعدادات هاتفك لتصلك التذكيرات.';
+
+  @override
+  String get reminderOn => 'التذكير مفعّل';
+
+  @override
+  String get reminderChannel => 'التذكيرات';
+
+  @override
+  String get reminderChannelInfo => 'تذكيرات قبل يوم الهدايا';
+
+  @override
+  String reminderBody(String date) {
+    return 'يوم الهدايا: $date. هل هديتك جاهزة؟ 🎁';
+  }
+
+  @override
+  String shareDateLine(String date) {
+    return 'يوم الهدايا: $date';
+  }
 }

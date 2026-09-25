@@ -2,6 +2,7 @@ import '../../domain/entities/draw_assignment.dart';
 import '../../domain/entities/raffle.dart';
 import '../../domain/entities/raffle_type.dart';
 import '../../domain/entities/shared_result.dart';
+import 'date_only.dart';
 
 /// Firestore form of a single participant's result (`results/{code}`).
 ///
@@ -13,7 +14,9 @@ class SharedResultModel extends SharedResult {
     required super.type,
     required super.participantName,
     super.match,
+    super.matchWish,
     super.note,
+    super.eventDate,
   });
 
   /// Parses a Firestore document into the plain entity, so parsed values
@@ -26,21 +29,29 @@ class SharedResultModel extends SharedResult {
       type: RaffleType.fromName(data['type'] as String?),
       participantName: data['participantName'] as String? ?? '',
       match: data['match'] as String?,
+      matchWish: data['matchWish'] as String?,
+      eventDate: DateOnly.decode(data['eventDate']),
     );
   }
 
   /// The result fields for [assignment]; the data source adds ownership and
-  /// timestamp fields.
+  /// timestamp fields. A new-year result carries the giftee's gift ideas, and
+  /// every result carries the gift day when the raffle has one.
   static Map<String, dynamic> toFirestore(
     Raffle raffle,
     DrawAssignment assignment,
   ) {
+    final String? matchWish =
+        raffle.type.isNewYear ? raffle.wishOf(assignment.match) : null;
     return <String, dynamic>{
       'title': raffle.title,
       'note': raffle.note,
       'type': raffle.type.name,
       'participantName': assignment.participant.name,
       'match': assignment.match,
+      if (matchWish != null) 'matchWish': matchWish,
+      if (raffle.eventDate case final DateTime day)
+        'eventDate': DateOnly.encode(day),
     };
   }
 }

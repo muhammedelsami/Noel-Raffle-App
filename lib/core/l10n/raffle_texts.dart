@@ -25,6 +25,7 @@ String ruleViolationMessage(
         l10n.minParticipants(RaffleRules.minParticipants),
       RaffleRuleViolation.notEnoughGifts => l10n.minGifts(RaffleRules.minGifts),
       RaffleRuleViolation.tooManyGifts => l10n.tooManyGifts,
+      RaffleRuleViolation.noValidMatch => l10n.noValidMatch,
     };
 
 /// The private message sent to one participant.
@@ -49,13 +50,17 @@ String participantMessage(
       AppConstants.playStoreUrl,
     );
   } else if (raffle.type.isNewYear) {
-    body = l10n.shareSecretSantaMessage(raffle.title, name, match ?? '');
+    body = _withWish(
+      l10n,
+      l10n.shareSecretSantaMessage(raffle.title, name, match ?? ''),
+      raffle.wishOf(match),
+    );
   } else if (match != null) {
     body = l10n.shareGiftMessage(raffle.title, name, match);
   } else {
     body = l10n.shareNoPrizeMessage(raffle.title, name);
   }
-  return _withNote(l10n, body, raffle.note);
+  return _withDetails(l10n, body, raffle);
 }
 
 /// Every result in one message; only used for gift raffles, whose results are
@@ -67,19 +72,36 @@ String allResultsMessage(AppLocalizations l10n, Raffle raffle) {
             '${a.participant.name}: ${a.match ?? l10n.noPrizeShort}',
       )
       .join('\n');
-  return _withNote(
+  return _withDetails(
     l10n,
     '${l10n.shareAllTitle(raffle.title)}\n\n$lines',
-    raffle.note,
+    raffle,
   );
 }
 
-String _withNote(AppLocalizations l10n, String body, String note) =>
-    note.isEmpty ? body : '$body\n\n${l10n.shareNoteLine(note)}';
+/// Adds the gift day and the note, when the raffle has them.
+String _withDetails(AppLocalizations l10n, String body, Raffle raffle) {
+  final DateTime? day = raffle.eventDate;
+  final String note = raffle.note;
+  return <String>[
+    body,
+    if (day != null) l10n.shareDateLine(giftDayLabel(l10n, day)),
+    if (note.isNotEmpty) l10n.shareNoteLine(note),
+  ].join('\n\n');
+}
+
+String _withWish(AppLocalizations l10n, String body, String? wish) =>
+    wish == null || wish.isEmpty ? body : '$body\n${l10n.shareWishLine(wish)}';
+
+/// A gift day in full, e.g. "Thursday, December 24, 2026".
+String giftDayLabel(AppLocalizations l10n, DateTime day) =>
+    DateFormat.yMMMMEEEEd(l10n.localeName).format(day);
+
+/// When [raffle] was drawn, e.g. "Dec 24, 2026 19:30".
+String raffleDate(AppLocalizations l10n, Raffle raffle) =>
+    DateFormat.yMMMd(l10n.localeName).add_Hm().format(raffle.createdAt);
 
 /// One-line description of a drawn raffle: date and participant count.
-String raffleSummary(AppLocalizations l10n, Raffle raffle) {
-  final String date =
-      DateFormat.yMMMd(l10n.localeName).add_Hm().format(raffle.createdAt);
-  return '$date • ${l10n.participantCount(raffle.assignments.length)}';
-}
+String raffleSummary(AppLocalizations l10n, Raffle raffle) =>
+    '${raffleDate(l10n, raffle)} • '
+    '${l10n.participantCount(raffle.assignments.length)}';

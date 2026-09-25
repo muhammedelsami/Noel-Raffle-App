@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../domain/entities/draw_constraints.dart';
 import '../../../domain/entities/gift.dart';
 import '../../../domain/entities/participant.dart';
 import '../../../domain/entities/raffle.dart';
@@ -20,6 +21,7 @@ class RaffleDrawCubit extends Cubit<RaffleDrawState> {
     required RaffleConfig config,
     required List<Participant> participants,
     List<Gift> gifts = const <Gift>[],
+    DrawConstraints constraints = DrawConstraints.none,
   }) async {
     if (state.isDrawing) return;
     emit(const RaffleDrawState(status: RaffleDrawStatus.drawing));
@@ -28,6 +30,7 @@ class RaffleDrawCubit extends Cubit<RaffleDrawState> {
         config: config,
         participants: participants,
         gifts: gifts,
+        constraints: constraints,
       );
       emit(RaffleDrawState(status: RaffleDrawStatus.success, raffle: raffle));
     } on RaffleRuleException catch (e) {

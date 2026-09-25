@@ -401,4 +401,161 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get newGift => 'Yeni hediye';
+
+  @override
+  String get matchRules => 'Eşleşme kuralları';
+
+  @override
+  String get matchRulesInfo =>
+      'Çiftlerin ya da istediğiniz kişilerin birbirini çekmesini engelleyin.';
+
+  @override
+  String get addRule => 'Kural ekle';
+
+  @override
+  String get keepApart => 'Birbirini çekmesin';
+
+  @override
+  String get firstPerson => 'Birinci kişi';
+
+  @override
+  String get secondPerson => 'İkinci kişi';
+
+  @override
+  String ruleLabel(String first, String second) {
+    return '$first ve $second';
+  }
+
+  @override
+  String get ruleDescription => 'Birbirini çekmez';
+
+  @override
+  String get ruleSamePerson => 'İki farklı kişi seçin.';
+
+  @override
+  String get ruleExists => 'Bu kural zaten var.';
+
+  @override
+  String get avoidPrevious => 'Geçen seferki eşleşmeleri tekrarlama';
+
+  @override
+  String get noValidMatch =>
+      'Bu kurallarla uygun bir eşleşme bulunamadı. Bir kuralı kaldırın ya da kişi ekleyin.';
+
+  @override
+  String get wishOptional => 'Hediye fikirleri (isteğe bağlı)';
+
+  @override
+  String get giftIdeas => 'Hediye fikirleri';
+
+  @override
+  String shareWishLine(String wish) {
+    return 'Hediye fikirleri: $wish';
+  }
+
+  @override
+  String get drawAgain => 'Bu grupla tekrar çek';
+
+  @override
+  String get moreOptions => 'Diğer seçenekler';
+
+  @override
+  String get bulkAdd => 'Toplu ekle';
+
+  @override
+  String get bulkAddLabel => 'İsimler, her satıra bir kişi';
+
+  @override
+  String get bulkAddHint =>
+      'İsterseniz virgülden sonra e-posta ekleyin: Ayşe Kaya, ayse@mail.com';
+
+  @override
+  String bulkAddPreview(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count yeni kişi eklenecek',
+      zero: 'Henüz yeni isim yok',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bulkAddSkipped(int count) {
+    return '$count isim zaten listede';
+  }
+
+  @override
+  String get bulkAddEmpty => 'En az bir yeni isim girin.';
+
+  @override
+  String get undo => 'Geri al';
+
+  @override
+  String removedItem(String name) {
+    return '$name silindi';
+  }
+
+  @override
+  String get shareAsMessage => 'Mesaj olarak paylaş';
+
+  @override
+  String get shareAsCard => 'Kart olarak paylaş';
+
+  @override
+  String get resultCard => 'Sonuç kartı';
+
+  @override
+  String get yourCode => 'Kişisel kodun';
+
+  @override
+  String get cardCodeHint =>
+      'Noel Raffle\'ı aç ve \"Sonucumu gör\" bölümüne gir.';
+
+  @override
+  String get drawnWith => 'Noel Raffle ile çekildi';
+
+  @override
+  String get drawing => 'Çekiliş yapılıyor…';
+
+  @override
+  String get giftDay => 'Hediye günü';
+
+  @override
+  String get giftDayOptional => 'Hediye günü (isteğe bağlı)';
+
+  @override
+  String get giftDayHint => 'Hediyelerin verileceği gün';
+
+  @override
+  String get clearDate => 'Tarihi kaldır';
+
+  @override
+  String get remindMe => 'Bir gün önce hatırlat';
+
+  @override
+  String get remindMeInfo => 'Bu telefona bildirim gelir';
+
+  @override
+  String get notificationsOff =>
+      'Bu uygulamanın bildirimleri kapalı. Hatırlatma almak için telefonunuzun ayarlarından açın.';
+
+  @override
+  String get reminderOn => 'Hatırlatma açık';
+
+  @override
+  String get reminderChannel => 'Hatırlatmalar';
+
+  @override
+  String get reminderChannelInfo => 'Hediye günü öncesi hatırlatmalar';
+
+  @override
+  String reminderBody(String date) {
+    return 'Hediye günü: $date. Hediyen hazır mı? 🎁';
+  }
+
+  @override
+  String shareDateLine(String date) {
+    return 'Hediye günü: $date';
+  }
 }
