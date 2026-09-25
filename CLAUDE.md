@@ -157,7 +157,9 @@ links to history, statistics and about. Light/dark/system theme (`ThemeCubit`) a
 `.github/workflows/ci.yml` runs analyze, tests and a debug Android build on pull requests
 without secrets.
 `release.yml` builds a signed app bundle on push: `dev` goes to the Play internal track,
-`main` to production. The version comes from the run number (never commit a bumped build
+`main` to production. After the upload it syncs the store listing from
+`Production/metadata/android` with `fastlane supply` (validate only on `dev`, published on
+`main`; changelogs stay with the release notes). The version comes from the run number (never commit a bumped build
 number); only major/minor in `pubspec.yaml` are edited by hand. Secrets live in the
 `play-store` environment, limited to `dev` and `main`; never echo them or add
 `pull_request_target` triggers.

@@ -1,6 +1,7 @@
 # Builds a signed app bundle and uploads it to Google Play:
-#   push to dev  -> internal testing track
-#   push to main -> production track
+#   push to dev  -> internal testing track, store listing only validated
+#   push to main -> production track, store listing updated
+# The listing comes from Production/metadata/android (fastlane supply layout).
 #
 # Versions are set from the run number, so nothing is committed back:
 #   versionCode = VERSION_CODE_OFFSET + run number
@@ -131,3 +132,24 @@ jobs:
           track: ${{ github.ref_name == 'main' && 'production' || 'internal' }}
           status: completed
           whatsNewDirectory: ${{ runner.temp }}/whatsnew
+
+      # The store listing (texts, icon, feature graphic, screenshots) comes from
+      # Production/metadata/android. main publishes it; dev only validates it, so
+      # a broken listing shows up before it reaches main. Unchanged images are
+      # skipped; release notes are handled by the upload above.
+      - name: Install fastlane
+        run: sudo gem install fastlane --version 2.240.1 --no-document
+
+      - name: Update store listing
+        env:
+          SUPPLY_JSON_KEY_DATA: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          SUPPLY_PACKAGE_NAME: ${{ env.PACKAGE_NAME }}
+          SUPPLY_METADATA_PATH: Production/metadata/android
+          SUPPLY_SKIP_UPLOAD_APK: 'true'
+          SUPPLY_SKIP_UPLOAD_AAB: 'true'
+          SUPPLY_SKIP_UPLOAD_CHANGELOGS: 'true'
+          SUPPLY_SYNC_IMAGE_UPLOAD: 'true'
+          SUPPLY_VALIDATE_ONLY: ${{ github.ref_name == 'main' && 'false' || 'true' }}
+          FASTLANE_SKIP_UPDATE_CHECK: 'true'
+          FASTLANE_HIDE_CHANGELOG: 'true'
+        run: fastlane supply
