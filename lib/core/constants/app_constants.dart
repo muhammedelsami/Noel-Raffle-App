@@ -15,8 +15,8 @@ abstract final class AppConstants {
   // External links.
   static const String playStoreUrl =
       'https://play.google.com/store/apps/details?id=com.muhammed.noel_raffle';
-  static const String websiteUrl = 'https://www.noelraffle.com/tr';
-  static const String repoUrl = 'https://github.com/edabarutcu/Noel-Raffle-App';
+  static const String websiteUrl = 'https://noelraffle.vercel.app';
+  static const String repoUrl = 'https://github.com/muhammedelsami/Noel-Raffle-App';
 
   // Splash timing.
   static const Duration splashDuration = Duration(milliseconds: 1600);
